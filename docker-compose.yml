@@ -1,12 +1,12 @@
 version: '3'
 services:
   janusgraph-docker:
-    image: janusgraph/janusgraph:0.4.0
+    image: docker.io/janusgraph/janusgraph:0.4.0
     container_name: ergo_janusgraph
     user: root
     volumes:
-      - "./docker/janusgraph/:/etc/opt/janusgraph/:ro"
-      - "./docker/data/index:/var/lib/janusgraph/index"
+      - "./docker/janusgraph/:/etc/opt/janusgraph/:Z"
+      - "./docker/data/index:/var/lib/janusgraph/index:Z"
     ports:
       - "8182:8182"
     depends_on:
@@ -14,15 +14,15 @@ services:
     links:
      - cass-docker
   cass-docker:
-    image: cassandra:2.2.16
+    image: docker.io/cassandra:2.2.16
     container_name: ergo_cass
     user: root
     environment:
      - CASSANDRA_START_RPC=true
     volumes:
-      - "./docker/data/cass:/var/lib/cassandra"
+      - "./docker/data/cass:/var/lib/cassandra:Z"
   ergo-docker:
-    image: rdf4j:ergo
+    image: localhost/rdf4j:ergo
     container_name: ergo_rdf4j
     user: root
     build:
@@ -31,9 +31,9 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - "./docker/data/rdf4j:/root/.RDF4J/"
-      - "./docker/bulkloading/data:/usr/local/tomcat/bulkloading/data"
-      - "./docker/bulkloading/bulkload.properties:/usr/local/tomcat/bulkload.properties"
+      - "./docker/data/rdf4j:/root/.RDF4J/:Z"
+      - "./docker/bulkloading/data:/usr/local/tomcat/bulkloading/data:Z"
+      - "./docker/bulkloading/bulkload.properties:/usr/local/tomcat/bulkload.properties:Z"
     depends_on:
      - cass-docker
      - janusgraph-docker
