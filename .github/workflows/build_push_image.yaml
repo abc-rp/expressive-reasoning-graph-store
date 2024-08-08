@@ -2,7 +2,7 @@ name: Build and Push Docker image
 on:
   pull_request:
     branches:
-      - main
+      - master
 
 env:
   DOCKERFILE_PATH: "docker/rdf4j/Dockerfile" # Set your Dockerfile path here
