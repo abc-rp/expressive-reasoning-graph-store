@@ -24,7 +24,7 @@ ARG MAVEN_VERSION=3.6.3
 ARG USER_HOME_DIR="/root"
 
 RUN mkdir -p /usr/share/maven && \
-curl -fsSL https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.6.3/apache-maven-3.6.3-bin.tar.gz | tar -xzC /usr/share/maven --strip-components=1 && \
+curl -fsSL https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/$MAVEN_VERSION/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar -xzC /usr/share/maven --strip-components=1 && \
 ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
 
 ENV MAVEN_HOME /usr/share/maven
