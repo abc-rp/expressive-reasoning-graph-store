@@ -5,7 +5,7 @@ on:
       - main
 
 env:
-  DOCKERFILE_PATH: "./Dockerfile" # Set your Dockerfile path here
+  DOCKERFILE_PATH: "docker/rdf4j/Dockerfile" # Set your Dockerfile path here
 
 jobs:
   build:
@@ -23,10 +23,8 @@ jobs:
       - name: Build and tag image
         run: |
           COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
-          ARCHITECTURE="x86_64"
-          ROS_VERSION="ros1_noetic"
-          TAG="${ARCHITECTURE}-${ROS_VERSION}_${COMMIT_SHA}"
-          docker build --build-arg GH_PAT=${{ secrets.GH_PAT }} --build-arg BRANCH_NAME=${{ env.BRANCH_NAME }} -t ghcr.io/${{ github.repository }}:$TAG -f ${{ env.DOCKERFILE_PATH }} .
+          TAG="rdf4j_${COMMIT_SHA}"
+          docker build -t ghcr.io/${{ github.repository }}:$TAG -f ${{ env.DOCKERFILE_PATH }} .
           echo "tag=$TAG" >> $GITHUB_ENV
 
       - name: Push image to GHCR
