@@ -605,7 +605,7 @@ public class EliminateEJVar {
 
   /**
    * in afs, replace occurrence of variables in varsToReplace by replacementExpression
-   * 
+   *
    * @param afs
    * @param varsToReplace
    * @param replacementExpression
@@ -622,7 +622,7 @@ public class EliminateEJVar {
 
   /**
    * replace occurrence of variables in varsToReplace by replacementExpression
-   * 
+   *
    * @param afs
    * @param varsToReplace
    * @param replacementExpression
@@ -643,7 +643,7 @@ public class EliminateEJVar {
 
   /**
    * NOTE: if conceptPropertyWildcars.isEmpty() returns {Pair<EmptyList, EmptyList>}.
-   * 
+   *
    * @param conceptPropertyWildcards
    * @return
    */
@@ -683,7 +683,7 @@ public class EliminateEJVar {
 
   /**
    * return named classes nc such that c \subseteq nc
-   * 
+   *
    * @param c
    * @return
    */
@@ -701,7 +701,7 @@ public class EliminateEJVar {
 
   /**
    * return named properties p such that c \subseteq \some p T
-   * 
+   *
    * @param c
    * @return
    */
@@ -731,7 +731,7 @@ public class EliminateEJVar {
 
   /**
    * return named properties p such that c \subseteq \some inv(p) T
-   * 
+   *
    * @param c
    * @return
    */
@@ -755,7 +755,7 @@ public class EliminateEJVar {
 
   /**
    * returns BOUND(var, val1, ..., valN);
-   * 
+   *
    * @param var
    * @param values
    * @return

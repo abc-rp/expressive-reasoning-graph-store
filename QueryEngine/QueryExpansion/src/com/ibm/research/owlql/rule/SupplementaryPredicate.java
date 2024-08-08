@@ -22,7 +22,7 @@ public class SupplementaryPredicate extends Predicate {
 
 	private Rule rule;
 	private int position;
-	
+
 	static SupplementaryPredicate createSupplementaryPredicate(Rule rule, int position) {
 		return new SupplementaryPredicate("sup_"+rule.getId()+"_"+position, getRelevantBoundVariables(rule, position).size(), rule, position);
 	}
@@ -32,12 +32,12 @@ public class SupplementaryPredicate extends Predicate {
 		AtomicFormula supF = new AtomicFormula(supPred,args);
 		return  supF;
 	}
-	
+
 	static List<VariableExpr> getRelevantBoundVariables(Rule rule, int position) {
 		assert position <rule.getBody().size() : ""+rule+" "+position;
 		AtomicFormula head = rule.getHead();
 		assert head.getPredicate() instanceof UniqueBindingPredicate;
-		
+
 		List<VariableExpr> ret =  new ArrayList<VariableExpr>();
 		Set<VariableExpr> alreadySeenVars = new HashSet<VariableExpr>();
 		ret.addAll(((UniqueBindingPredicate) head.getPredicate()).getBoundVariablesList(head));
@@ -49,7 +49,7 @@ public class SupplementaryPredicate extends Predicate {
 				//ret.addAll(f.getAllVariables());
 				for (Iterator<? extends Expr> it=f.getArguments().iterator();it.hasNext();) {
 					Expr e = it.next();
-					if (e.isVariable() 
+					if (e.isVariable()
 					&& alreadySeenVars.add( (VariableExpr) e)) {
 						ret.add((VariableExpr)e);
 					}
@@ -59,7 +59,7 @@ public class SupplementaryPredicate extends Predicate {
 		ret.retainAll(getRelevantVariables(rule, position));
 		return ret;
 	}
-	
+
 	/*static SortedSet<VariableExpr> getRelevantFreeVariables(Rule rule, int position) {
 		assert position <rule.getBody().size();
 		AtomicFormula head = rule.getHead();
@@ -69,14 +69,14 @@ public class SupplementaryPredicate extends Predicate {
 			public int compare(VariableExpr o1, VariableExpr o2) {
 				return o1.getName().compareTo(o2.getName());
 			}
-			
+
 		};
 		SortedSet<VariableExpr> ret =  new TreeSet<VariableExpr>(comp);
 		ret.addAll(((UniqueBindingPredicate) head.getPredicate()).getBoundVariables(head));
 		for (int i=0;i<position;i++) {
 			AtomicFormula f = rule.getBody().get(i);
 			ret.addAll(f.getAllVariables());
-			
+
 		}
 		ret.retainAll(getRelevantVariables(rule, position));
 		return ret;
@@ -114,12 +114,12 @@ public class SupplementaryPredicate extends Predicate {
 	}
 	public Predicate negate() {
 		throw new RuntimeException("Cannot negate a supplementary predicate: "+ getName());
-		
+
 	}
 	public Predicate switchOptionalFlag() {
 		throw new RuntimeException("Cannot make a supplementary predicate optional: "+ getName());
 	}
-	
+
 	public Predicate withoutQualification() {
 		return clone();
 	}

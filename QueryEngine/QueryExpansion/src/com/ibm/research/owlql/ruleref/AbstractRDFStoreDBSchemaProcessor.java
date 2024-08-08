@@ -38,8 +38,8 @@ public abstract class AbstractRDFStoreDBSchemaProcessor implements  IRDFStoreDBS
 	protected RuleSystem newRules;
 	protected Map<Predicate, CreatableTable> predicate2Table;
 	protected Table singletonTable;
-	
-	
+
+
 
 	public AbstractRDFStoreDBSchemaProcessor() {
 		super();
@@ -74,7 +74,7 @@ public abstract class AbstractRDFStoreDBSchemaProcessor implements  IRDFStoreDBS
 		transform();
 		populateNonHeadPredicateToTableMap();
 		populateHeadPredicateToTableMap();
-		
+
 	}
 	protected void createSingletonTable() {
 		if (singletonTable==null) {
@@ -109,16 +109,16 @@ public abstract class AbstractRDFStoreDBSchemaProcessor implements  IRDFStoreDBS
 			}
 			predicate2Table.put(pred, t);
 		}
-		
+
 	}
 	protected void populateNonHeadPredicateToTableMap() {
 		predicate2Table.put(triplePredicate, triplesTable);
 	}
-	
+
 	protected abstract Object getID(ConstantExpr uri);
 	protected abstract Object getID(Predicate p);
 
-	
+
 
 	protected void transform() {
 		String prefix ="triples";
@@ -176,11 +176,11 @@ public abstract class AbstractRDFStoreDBSchemaProcessor implements  IRDFStoreDBS
 			return new ConstantExpr(id);
 		}
 	}
-	
+
 	protected Expr transform(Predicate p) {
 		Object id = getID(p);
 		return new ConstantExpr(id);
 	}
 
-	
+
 }

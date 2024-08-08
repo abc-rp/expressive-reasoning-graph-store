@@ -34,7 +34,7 @@ import com.ibm.research.ergs.ingestion.loader.ConstantParameters;
 
 /**
  * This class is base for different loading classes. It contains graph base operationss.
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */
@@ -51,7 +51,7 @@ public class GraphDBBaseOperations {
 
   /**
    * Consstructs {@link GraphDBBaseOperations}
-   * 
+   *
    * @param g
    * @param connectionMode
    */
@@ -67,7 +67,7 @@ public class GraphDBBaseOperations {
 
   /**
    * adds new vertex with label
-   * 
+   *
    * @param label: vertex label
    * @return: created vertex
    */
@@ -83,7 +83,7 @@ public class GraphDBBaseOperations {
 
   /**
    * creates edge from source to target with label as edgeLabel.
-   * 
+   *
    * @param source
    * @param target
    * @param edgeLabel
@@ -96,7 +96,7 @@ public class GraphDBBaseOperations {
 
   /**
    * creates edge from source to target (using their ids) with label as edgeLabel.
-   * 
+   *
    * @param sourceID
    * @param targetID
    * @param edgeLabel
@@ -110,7 +110,7 @@ public class GraphDBBaseOperations {
 
   /**
    * adds <propertyKey, propertyValue> to vertex.
-   * 
+   *
    * @param vertex
    * @param propertyKey
    * @param propertyValue
@@ -121,7 +121,7 @@ public class GraphDBBaseOperations {
 
   /**
    * adds <propertyKey, propertyValue> to vertex (using its id).
-   * 
+   *
    * @param vertexId
    * @param propertyKey
    * @param propertyValue
@@ -134,7 +134,7 @@ public class GraphDBBaseOperations {
   /**
    * This function returns vertex with propertyKey = propertyVal. It first checks for existing
    * vertex, if vertex does not exist then new vertex is created with given label.
-   * 
+   *
    * @param propertyKey
    * @param propertyValue
    * @param label
@@ -159,7 +159,7 @@ public class GraphDBBaseOperations {
 
   /**
    * this is wrapper to above method without label of vertex.
-   * 
+   *
    * @param propertyKey
    * @param propertyValue
    * @return
@@ -171,7 +171,7 @@ public class GraphDBBaseOperations {
   /**
    * This function returns type node. It maintains map of type cached vertices. It first checks type
    * vertex presence in map otherwise get from database.
-   * 
+   *
    * @param type
    * @return
    */
@@ -192,7 +192,7 @@ public class GraphDBBaseOperations {
   /**
    * This function writes schema information for new properties, edges, conflicting labels (used for
    * both property and edge), external indexing property
-   * 
+   *
    * @param propertyKeys
    * @param edgeLabels
    * @param conflictingLabels
@@ -251,7 +251,7 @@ public class GraphDBBaseOperations {
 
   /**
    * return existing property keys of graph
-   * 
+   *
    * @return: property keys and their data type
    */
   public HashMap<String, String> getPropertyKeys() {
@@ -278,7 +278,7 @@ public class GraphDBBaseOperations {
 
   /**
    * return existing edges of graph
-   * 
+   *
    * @return: set of edges
    */
   public Set<String> getEdgeLabels() {
@@ -295,7 +295,7 @@ public class GraphDBBaseOperations {
 
   /**
    * return existing conflicting labels of graph
-   * 
+   *
    * @return: conflicting labels
    */
   public HashMap<String, String> getConflictingLabels() {
@@ -322,7 +322,7 @@ public class GraphDBBaseOperations {
 
   /**
    * return existing number of indexed property (of external backend) of graph
-   * 
+   *
    * @return
    */
   public int getExteralIndexCount() {
@@ -337,7 +337,7 @@ public class GraphDBBaseOperations {
 
   /**
    * Creates vertex set. This is called for degree 0 vertex from {@link TriplesBatch}
-   * 
+   *
    * @param nodeIdSubList
    */
   public void createVertexSet(Set<String> nodeIdSubList) {
@@ -348,7 +348,7 @@ public class GraphDBBaseOperations {
 
   /**
    * This function adds properties to vertex.
-   * 
+   *
    * @param vertex: vertex
    * @param properties: Map of properties
    * @param propertyKeys: property key to datatype map
@@ -421,7 +421,7 @@ public class GraphDBBaseOperations {
 
   /**
    * converts string(yyyyMMdd) to date
-   * 
+   *
    * @param dateString
    * @return
    */
@@ -437,7 +437,7 @@ public class GraphDBBaseOperations {
 
   /**
    * converts string(yyyy) to date
-   * 
+   *
    * @param dateString
    * @return
    */
@@ -453,7 +453,7 @@ public class GraphDBBaseOperations {
 
   /**
    * converts string(yyyyMM) to date
-   * 
+   *
    * @param dateString
    * @return
    */
@@ -469,7 +469,7 @@ public class GraphDBBaseOperations {
 
   /**
    * This function writes edge statistics (instance count, domain count, range count)
-   * 
+   *
    * @param edgeLabel
    * @param statInstanceCount
    * @param statDomainCount
@@ -502,7 +502,7 @@ public class GraphDBBaseOperations {
 
   /**
    * This function returns propertyKey value of vertex
-   * 
+   *
    * @param vertex
    * @param propertyKey
    * @return: propertyValue
@@ -518,7 +518,7 @@ public class GraphDBBaseOperations {
 
   /**
    * writes property key statistics and its unique values.
-   * 
+   *
    * @param graphPropertyKey
    * @param statInstanceCount
    * @param propertyValues
@@ -551,7 +551,7 @@ public class GraphDBBaseOperations {
   /**
    * This function commits the data. before committing, edges statistics data is flushed into
    * database,
-   * 
+   *
    * @throws Exception
    */
   public void commit() throws Exception {

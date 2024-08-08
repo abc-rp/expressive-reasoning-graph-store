@@ -33,7 +33,7 @@ import org.apache.jena.sparql.syntax.ElementTriplesBlock;
  *
  */
 public class ConjunctiveQuery {
-	
+
 	private Query query;
 	public ConjunctiveQuery() {
 		query = new Query();
@@ -46,19 +46,19 @@ public class ConjunctiveQuery {
 		query = q;
 		setQueryPattern(q.getQueryPattern());
 	}
-	
+
 	public boolean isDistinct() {
 		return query.isDistinct();
 	}
 	public void setDistinct(boolean distinct) {
 		 query.setDistinct(distinct);
 	}
-	
+
 	public Query getQuery() {
 		return query;
 	}
-	
-	
+
+
 	protected List<Element> flatten(Element g) {
 		List<Element> ret = new ArrayList<Element>();
 		Stack<Element> stack = new Stack<Element>();
@@ -75,12 +75,12 @@ public class ConjunctiveQuery {
 			}
 		}
 		return ret;
-		
+
 	}
-	
+
 	public ConjunctiveQuery cloneConjQuery(boolean copyResultVars) {
 		//return new ConjunctiveQuery(query.cloneQuery());
-		
+
 		ConjunctiveQuery ret = new ConjunctiveQuery();
 		ElementTriplesBlock pattern = new ElementTriplesBlock();
 		for (Triple t: getTriples()) {
@@ -126,39 +126,39 @@ public class ConjunctiveQuery {
 					ElementPathBlock epb = (ElementPathBlock) e;
 					for (TriplePath p:epb.getPattern().getList()) {
 						if (!p.isTriple()) {
-							throw new IllegalArgumentException("Conjunctive query only accepts a basic graph patterns. No triple path:  "+ p+"\n"+graphPattern );	
+							throw new IllegalArgumentException("Conjunctive query only accepts a basic graph patterns. No triple path:  "+ p+"\n"+graphPattern );
 						}
 					}
 				} else 	if (!(e instanceof ElementTriplesBlock)
 				&&  !(e instanceof ElementFilter)) {
-					throw new IllegalArgumentException("Conjunctive query only accepts a basic graph patterns: "+ e+"\n"+graphPattern );	
+					throw new IllegalArgumentException("Conjunctive query only accepts a basic graph patterns: "+ e+"\n"+graphPattern );
 				}
 			}
 			query.setQueryPattern(graphPattern);
 		}
 		else {
-			throw new IllegalArgumentException("Conjunctive query only accepts a basic graph patterns: "+ graphPattern);				
+			throw new IllegalArgumentException("Conjunctive query only accepts a basic graph patterns: "+ graphPattern);
 		}
-		
+
 	}
 	public void addTriple(Triple t) {
 		if (query.getQueryPattern() instanceof ElementTriplesBlock) {
 			((ElementTriplesBlock)query.getQueryPattern()).addTriple(t);
-		} else { 
+		} else {
 			assert query.getQueryPattern() instanceof ElementGroup: query.getQueryPattern();
 			ElementGroup group = (ElementGroup) query.getQueryPattern();
 			group.addTriplePattern(t);
 		}
-			
+
 	}
-	
+
 	public List<String> getResultVars() {
 		return query.getResultVars();
 	}
 	public void addResultVar(String var) {
 		query.addResultVar(var);
 	}
-	
+
 	public List<Triple> getTriples() {
 		if (query.getQueryPattern() instanceof ElementTriplesBlock) {
 			ElementTriplesBlock  sp = (ElementTriplesBlock) query.getQueryPattern();
@@ -181,7 +181,7 @@ public class ConjunctiveQuery {
 			return ret;
 		}
 	}
-	
+
 	public List<ElementFilter>  getFilters() {
 		if (query.getQueryPattern() instanceof ElementTriplesBlock) {
 			return new ArrayList<ElementFilter>();
@@ -197,13 +197,13 @@ public class ConjunctiveQuery {
 			return ret;
 		}
 	}
-	
+
 	public void addFilter(Expr expr) {
 		addFilter(new ElementFilter(expr));
 	}
-	
-	
-	
+
+
+
 	public void addFilter(ElementFilter filter) {
 		if (query.getQueryPattern() instanceof ElementTriplesBlock) {
 			ElementGroup group = new ElementGroup();
@@ -228,7 +228,7 @@ public class ConjunctiveQuery {
 			group.addElement(elt);
 		}
 	}
-	
+
 	public String toString() {
 		return query.serialize(Syntax.syntaxSPARQL_11);
 	}
@@ -257,11 +257,11 @@ public class ConjunctiveQuery {
 		}
 		if (!new HashSet<ElementFilter>(getFilters()).equals(new HashSet<ElementFilter>(other.getFilters()))) {
 			return false;
-		}	
+		}
 		return true;
 	}
 	// delegate
-	
-	
-	
+
+
+
 }

@@ -47,7 +47,7 @@ public class Predicate {
 	public boolean isNegated() {
 		return isNegated;
 	}
-	
+
 	public Predicate negate() {
 		if (!isNegated && isOptional) {
 			throw new RuntimeException("Negated and optional predicate not allowed!");
@@ -63,11 +63,11 @@ public class Predicate {
 		}
 		return new Predicate(name, arity, isNegated, !isOptional);
 	}
-	
+
 	public Predicate withoutQualification() {
 		return new Predicate(name, arity, false, false);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -103,6 +103,6 @@ public class Predicate {
 	public String toString() {
 		return (isNegated? NEGATION_SYMBOL+"":"")+(isOptional? OPTIONAL_SYMBOL:"")+name;
 	}
-	
-	
+
+
 }

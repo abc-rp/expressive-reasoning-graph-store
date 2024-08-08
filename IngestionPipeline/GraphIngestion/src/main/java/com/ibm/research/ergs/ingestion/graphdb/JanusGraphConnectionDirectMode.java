@@ -40,7 +40,7 @@ import com.ibm.research.ergs.ingestion.naiveload.GraphDBNaiveLoad;
 
 /**
  * This is JanusGraphConnection interface implementation class for direct mode loading.
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */
@@ -54,7 +54,7 @@ public class JanusGraphConnectionDirectMode implements JanusGraphConnection {
 
   /**
    * Constructs {@link JanusGraphConnectionDirectMode}
-   * 
+   *
    * @param janusGraph
    * @param tboxStream
    */
@@ -168,7 +168,7 @@ public class JanusGraphConnectionDirectMode implements JanusGraphConnection {
 
   /**
    * returns GraphTraversalSource object for accessing and modification of graph
-   * 
+   *
    * @return
    */
   private GraphTraversalSource getTraversal() {

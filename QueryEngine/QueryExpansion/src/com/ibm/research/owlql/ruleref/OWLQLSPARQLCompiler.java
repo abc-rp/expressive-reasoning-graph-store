@@ -52,9 +52,9 @@ import com.ibm.research.owlql.rule.RuleSystem;
 import com.ibm.research.utils.FindAllVariables;
 import com.ibm.research.utils.OCUtils;
 /**
- * An OWL QL SPARQL Query compiler responsible for expanding a SPARQL query given an 
+ * An OWL QL SPARQL Query compiler responsible for expanding a SPARQL query given an
  * OWL QL ontology. The query expansion is performed by invoking the method {@link #compile(Query)}
- * 
+ *
  * <p>
  * Important note: According to OWL 2 Direct Semantics entailment regime, all variables in a query are distinguished variables.
  * </p>
@@ -67,7 +67,7 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 	/*protected class DNFTransformation implements ElementVisitor {
 
 		protected List<? extends Element> latestConjuncts;
-		
+
 		public Element getDNF() {
 			return createUnion(latestConjuncts);
 		}
@@ -84,14 +84,14 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 		}
 		@Override
 		public void visit(ElementAssign e) {
-			latestConjuncts = Collections.singletonList(new ElementAssign(e.getVar(), e.getExpr()));		
+			latestConjuncts = Collections.singletonList(new ElementAssign(e.getVar(), e.getExpr()));
 		}
 
-		
+
 		@Override
 		public void visit(ElementBind eb) {
-			latestConjuncts = Collections.singletonList(new ElementBind(eb.getVar(), eb.getExpr()));	
-			
+			latestConjuncts = Collections.singletonList(new ElementBind(eb.getVar(), eb.getExpr()));
+
 		}
 		@Override
 		public void visit(ElementDataset e) {
@@ -112,17 +112,17 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 			latestConjuncts = Collections.singletonList(
 					   new ElementMinus(createUnion(latestConjuncts)));
 		}
-		
+
 		@Override
 		public void visit(ElementFetch e) {
 			latestConjuncts = Collections.singletonList(
-				new ElementFetch(e.getFetchNode()));		
+				new ElementFetch(e.getFetchNode()));
 		}
 
 		@Override
 		public void visit(ElementFilter e) {
-			latestConjuncts = Collections.singletonList(new ElementFilter(e.getExpr()));		
-			
+			latestConjuncts = Collections.singletonList(new ElementFilter(e.getExpr()));
+
 		}
 
 		@Override
@@ -139,8 +139,8 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 			}
 			latestConjuncts = removeDuplicates(newConjuncts);
 		}
-		
-		
+
+
 		private Element createGroup(List<Element> elts) {
 			ElementGroup newgroup = new ElementGroup();
 			for (Element e: elts) {
@@ -148,10 +148,10 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 			}
 			return newgroup.getElements().size()==1?
 				newgroup.getElements().get(0) :newgroup;
-			
+
 		}*/
 		/**
-		 * create group without nested group and with at most one triple block. 
+		 * create group without nested group and with at most one triple block.
 		 * <p>NOTE: this performs only one level flattening of group, but it is called each time that a group is processed.
 		 * @param elts
 		 * @return
@@ -194,7 +194,7 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 							triples.addTriple(t);
 						}
 					}
-				} 
+				}
 				//
 				else {
 					newgroup.addElement(e);
@@ -202,7 +202,7 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 			}
 			return newgroup.getElements().size()==1?
 				newgroup.getElements().get(0) :newgroup;
-			
+
 		}*/
 		/*protected <T> List<T> removeDuplicates(List<T> l) {
 			List<T> ret = new LinkedList<T>();
@@ -226,7 +226,7 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 			}
 			return primComputeCartesianProduct(new LinkedList<List<? extends T>>(inputCollections));
 		}
-			
+
 		private <T>  List<List<T>> primComputeCartesianProduct(List<List<? extends T>> inputCollections) {
 			if (inputCollections.isEmpty()) {
 				List<List<T>> ret = new LinkedList<List<T>>();
@@ -242,11 +242,11 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 						ee.add(0,t);
 						ret.add(ee);
 					}
-					
+
 				}
 				return ret;
 			}
-			
+
 		}
 
 		@Override
@@ -275,7 +275,7 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 			e.getOptionalElement().visit(this);
 			latestConjuncts = Collections.singletonList(
 					new ElementOptional(createUnion(latestConjuncts)));
-			
+
 		}
 
 		@Override
@@ -298,7 +298,7 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 				latestConjuncts = Collections.singletonList(
 						new ElementService((Node) null, createUnion(latestConjuncts)));
 			}
-			
+
 		}
 
 		@Override
@@ -317,8 +317,8 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 			for (Triple t: triples.getPattern().getList()) {
 				newTriples.addTriple(t);
 			}
-			latestConjuncts = Collections.singletonList(newTriples);			
-			
+			latestConjuncts = Collections.singletonList(newTriples);
+
 		}
 
 		@Override
@@ -329,21 +329,21 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 				newConjuncts.addAll(latestConjuncts);
 			}
 			latestConjuncts = removeDuplicates(newConjuncts);
-			
-			
+
+
 		}
-		
+
 	}*/
 	/**
 	 * Perform OWL QL expansion of all basic graph patterns.
 	 * Assumption: All variables are distinguished variables
-	 * 
+	 *
 	 */
 	protected class ExpandBasicGraphPatterns extends ElementTransformCopyBase {
 
 		private Set<String> allVars;
 		//private List<String> distinguishedVars;
-		
+
 		public Element expand(Element root, /*List<String> distinguishedVars,*/  Set<String> allVars) {
 			this.allVars = allVars;
 			return ElementTransformer.transform(root, this);
@@ -369,7 +369,7 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 			logger.debug("RuleSystem:\n{}", outrs );
 			if (outrs!=null) {
 				Query q = RuleSystemToUnionQuery.toUnionQuery(outrs);
-				return q.getQueryPattern();		
+				return q.getQueryPattern();
 			} else {
 				/*ElementTriplesBlock ts = new ElementTriplesBlock();
 				Node owlNothing =  Node.createURI(OWL.Nothing.getURI());
@@ -378,9 +378,9 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 				result = ts;*/
 				return tb;
 			}
-		}		
+		}
 	}
-	
+
 	/**
 	 * Map-based implementation of a multiset.
 	 * @author fokoue
@@ -418,7 +418,7 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 		@Override
 		public void clear() {
 			elt2Count.clear();
-			
+
 		}
 
 		@Override
@@ -494,8 +494,8 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 			return elt2Count.keySet().toArray(arg0);
 		}
 
-	
-		
+
+
 		@Override
 		public int hashCode() {
 			final int prime = 31;
@@ -521,12 +521,12 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 				return false;
 			return true;
 		}
-		
+
 	}
-	
+
 	protected static class SkipMinusWalker extends ElementVisitorBase {
 		ElementVisitor proc;
-		
+
 		public SkipMinusWalker(ElementVisitor arg0) {
 			this.proc = arg0;
 		}
@@ -550,17 +550,17 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 		public void visit(ElementSubQuery el) {
 			 proc.visit(el) ;
 		}
-		
-		
+
+
 	}
-	
+
 	protected static MultiSet<Var> getVisibleVarsToOccurrences(Element e) {
-		
+
 		final MultiSet<Var> visibleVars = new MultiSet<Var>();
 		PatternVars.vars(visibleVars, e);
-		
+
 		ElementVisitorBase visitor = new ElementVisitorBase() {
-			
+
 			// add variables in (vars intersection  visibleVars) to visibleVars
 			private void add(MultiSet<Var> vars) {
 				for (Var v: vars) {
@@ -568,7 +568,7 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 					if (count > 0) {
 						count = count+ vars.getCount(v);
 						visibleVars.elt2Count.put(v, count);
-					} 
+					}
 				}
 			}
 			// add variables in (vars intersection  visibleVars) to visibleVars
@@ -579,10 +579,10 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 					if (count > 0) {
 						count = count+ vars.getCount(s);
 						visibleVars.elt2Count.put(v, count);
-					} 
+					}
 				}
 			}
-			
+
 			@Override
 			public void visit(ElementExists el) {
 				MultiSet<Var> vars = new MultiSet<Var>();
@@ -608,21 +608,21 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 			public void visit(ElementSubQuery el) {
 				//Do nothing
 			}
-			@Override 
+			@Override
 			public void  visit(ElementFilter el) {
 				MultiSet<String> vars = new MultiSet<String>();
 				ExprVars.varNamesMentioned(vars, el.getExpr());
 				addString(vars);
 			}
 		};
-	
+
 		SkipMinusWalker walker = new SkipMinusWalker(visitor);
 		e.visit(walker);
 		//ElementWalker.walk(e, visitor);
 		return visibleVars;
-		
+
 	}
-	
+
 	protected Set<String> getMultipleOccurrenceVars(MultiSet<Var> vars) {
 		Set<String> ret = new HashSet<String>();
 		for (Var v: vars) {
@@ -638,14 +638,14 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 
 	/**
 	 * <p>
-	 * Usage: queryFile ontologyFile (ontologyFile)* 
+	 * Usage: queryFile ontologyFile (ontologyFile)*
 	 * </p>
 	 * <p>
 	 * where
 	 *   <ul>
 	 *   	<li>queryFile: indicates the location of a semicolon separated file containing the input SPARQL queries. </li>
 	 *      <li>ontologyFile: indicates the location of the TBox files</li>
-	 *   </ul> 
+	 *   </ul>
 	 * </p>
 	 * @param args
 	 */
@@ -678,7 +678,7 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 		}
 	}
 	/**
-	 *  builds a compiler for a given Tbox ontology 
+	 *  builds a compiler for a given Tbox ontology
 	 * @param originalOntTbox the input Tbox ontology
 	 * @param conceptURIsInAbox the uris of all concepts appearing in the instance data if known; otherwise, null.
 	 * @param propertyURIsInAbox the uris of all propertoes appearing in the instance data if known; otherwise, null.
@@ -691,7 +691,7 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 	 * @param conceptURIsInAbox the uris of all concepts appearing in the instance data if known; otherwise, null.
 	 * @param propertyURIsInAbox the uris of all propertoes appearing in the instance data if known; otherwise, null.
 	 * @param tboxFiles the locations of TBox files
-	 * 
+	 *
 	 * @throws OWLOntologyCreationException
 	 */
 	public OWLQLSPARQLCompiler(Set<String> conceptURIsInAbox, Set<String> propertyURIsInAbox, String... tboxFiles) throws OWLOntologyCreationException {
@@ -721,7 +721,7 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 	}*/
 	protected static Set<Var> getAllVariablesMentioned(Element queryPattern) {
 		return FindAllVariables.getAllVariables(queryPattern);
-		
+
 	}
 	protected static Set<Var> getAllVariablesMentioned(Query query) {
 		return FindAllVariables.getAllVariables(query);
@@ -736,12 +736,12 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 		//query =toDNF(query);
 		Set<Var> vars = getAllVariablesMentioned(query);
 		return primCompile(query, getVars(vars));
-		
+
 	}
 	private Query primCompile(Query query, Set<String> allVars) {
-		// query must already be in dnf 
+		// query must already be in dnf
 		Element e = query.getQueryPattern();
-		Element newelt;	
+		Element newelt;
 		/*if (e instanceof ElementUnion) {
 			ElementUnion union= new ElementUnion();
 			for (Element ge : ((ElementUnion) e).getElements()) {
@@ -757,12 +757,12 @@ public class OWLQLSPARQLCompiler extends OWLQLToNonRecursiveDatalogCompiler {
 			ExpandBasicGraphPatterns ebgp = new ExpandBasicGraphPatterns();
 			//distinguishedVars.addAll(query.getResultVars());
 			newelt = ebgp.expand(query.getQueryPattern(), /* new LinkedList<String>(distinguishedVars),*/ allVars);
-			
+
 		//}
 		Query ret = query.cloneQuery();
 		ret.setQueryPattern(newelt);
 		return ret;
-		
+
 	}
-	
+
 }

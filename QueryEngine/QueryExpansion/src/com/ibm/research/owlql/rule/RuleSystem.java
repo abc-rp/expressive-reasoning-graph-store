@@ -35,19 +35,19 @@ import com.ibm.wala.util.collections.HashSetFactory;
  *  1) Rules are safe
  *  2) Rules have been rectified
  *  3) Predicates are  properly ordered for efficient evaluation
- *  
+ *
  *  A rule system is immutable
  * @author <a href="mailto:achille@us.ibm.com">Achille Fokoue</a>
  *
  */
 public class RuleSystem {
-	
+
 	public static interface RectificationAtomicFormulaFilter {
 		public boolean accept(AtomicFormula af);
 	}
 	private static final Logger logger = LoggerFactory.getLogger(RuleSystem.class);
-	
-	
+
+
 	public static int nextAvailableRuleId(RuleSystem rs) {
 		int ret =-1;
 		for (Rule r : rs.getRules()) {
@@ -63,7 +63,7 @@ public class RuleSystem {
 	public static int nextAvailableSuffixForGeneratedPredicate(Collection<Predicate> predicates, String prefix) {
 		int ret = -1;
 		for (Predicate p : predicates) {
-			if (p.getName().length()> prefix.length()  
+			if (p.getName().length()> prefix.length()
 			&& p.getName().startsWith(prefix)) {
 				String suffix = p.getName().substring(prefix.length());
 				int val;
@@ -71,7 +71,7 @@ public class RuleSystem {
 					val = Integer.parseInt(suffix);
 					ret = Math.max(ret, val);
 				} catch (Exception e) {
-					
+
 				}
 			}
 		}
@@ -91,12 +91,12 @@ public class RuleSystem {
 					buf.append(line+"\n");
 				}
 			}
-			RuleSystem ruleSystem = parse(buf.toString());			
+			RuleSystem ruleSystem = parse(buf.toString());
 			logger.info("rule system:\n{}",ruleSystem);
 			Graph<Predicate> dependencyGraph = DatalogEngine.buildDependencyGraph(ruleSystem);
 			LinkedList<Set<Predicate>> sccs = DatalogEngine.topologicalSortOfSCC(dependencyGraph);
-			
-			
+
+
 			logger.info("Number of predicates: {}", dependencyGraph.getNumberOfNodes());
 			logger.info("Number of SCC in dependency graph: {}", sccs.size());
 			int i=0;
@@ -108,7 +108,7 @@ public class RuleSystem {
 				}
 			}
 			logger.info(buf.toString());
-			
+
 			//Utils.getLogger().info("simplified rule system:\n"+ruleSystem.simplify());
 			AtomicFormula goal = AtomicFormula.parse(args[1]);
 			RuleSystem rectifiedRuleSystem=ruleSystem.rectifyRuleSystem(
@@ -116,7 +116,7 @@ public class RuleSystem {
 				);
 			logger.info("rectified equivalent rule system:\n"
 					+rectifiedRuleSystem);
-			
+
 			dependencyGraph = DatalogEngine.buildDependencyGraph(rectifiedRuleSystem);
 			sccs = DatalogEngine.topologicalSortOfSCC(dependencyGraph);
 			logger.info("Number of predicates: {}", dependencyGraph.getNumberOfNodes());
@@ -130,13 +130,13 @@ public class RuleSystem {
 				}
 			}
 			logger.info(buf.toString());
-			
+
 			//
 			ruleSystem=rectifiedRuleSystem;
 			ruleSystem = ruleSystem.simplify(Collections.singleton(goal.getPredicate()));
 			logger.info("simplified equivalent rule system:\n"
 					+ruleSystem);
-			
+
 			dependencyGraph = DatalogEngine.buildDependencyGraph(ruleSystem);
 			sccs = DatalogEngine.topologicalSortOfSCC(dependencyGraph);
 			logger.info("Number of predicates: {}", dependencyGraph.getNumberOfNodes());
@@ -151,10 +151,10 @@ public class RuleSystem {
 			}
 			logger.info(buf.toString());
 			//System.exit(0);
-			
+
 			RuleSystem uniqueBindingSys = ruleSystem.toUniqueBindingPattern(goal);
 			logger.info("unique binding equivalent rule system:\n{}",uniqueBindingSys);
-			
+
 			dependencyGraph = DatalogEngine.buildDependencyGraph(uniqueBindingSys);
 			sccs = DatalogEngine.topologicalSortOfSCC(dependencyGraph);
 			logger.info("Number of predicates: {}", dependencyGraph.getNumberOfNodes());
@@ -171,7 +171,7 @@ public class RuleSystem {
 			//System.exit(0);
 			RuleSystem magicSetSystem = ruleSystem.magicSetTransformation(goal);
 			logger.info("magic-set equivalent rule system:\n{}", magicSetSystem);
-			
+
 			dependencyGraph = DatalogEngine.buildDependencyGraph(magicSetSystem);
 			sccs = DatalogEngine.topologicalSortOfSCC(dependencyGraph);
 			logger.info("Number of predicates: {}", dependencyGraph.getNumberOfNodes());
@@ -185,25 +185,25 @@ public class RuleSystem {
 				}
 			}
 			logger.info(buf.toString());
-			
+
 			System.exit(0);
-			
+
 			logger.info("elimination of zero-arity predicate in the magic-set equivalent rule system:\n{}",
 					magicSetSystem.transformPredicateOfZeroArity());
 		} finally  {
 			in.close();
 		}
-	*/	
+	*/
 	}
 	private List<Rule> rules;
 	private Map<Predicate, Set<Rule>> head2Rules;
 	private Set<Predicate> nonHeadPredicates;
-	
+
 	/**
 	 * the head formula to evaluate
 	 */
 	private AtomicFormula mainHeadFormula;
-	
+
 	private boolean distinct;
 	public RuleSystem(List<Rule> rules) {
 		this(rules, null, true);
@@ -222,7 +222,7 @@ public class RuleSystem {
 		this.rules = new ArrayList<Rule>(rules);
 		this.mainHeadFormula = mainHeadFormula;
 		this.distinct = distinct;
-		
+
 		init();
 	}
 	public AtomicFormula getMainHeadFormula() {
@@ -240,7 +240,7 @@ public class RuleSystem {
 		 }
 		 return ret;
 	}
-	
+
 	public RuleSystem clone() {
 		List<Rule> rs = new ArrayList<Rule>(rules.size());
 		for (Iterator<Rule> it=rules.iterator();it.hasNext();) {
@@ -249,11 +249,11 @@ public class RuleSystem {
 		}
 		AtomicFormula main = null;
 		if (mainHeadFormula!=null) {
-			main = mainHeadFormula.clone(); 
+			main = mainHeadFormula.clone();
 		}
 		return new RuleSystem(rs, main, distinct);
 	}
-	
+
 	protected void init() {
 		head2Rules = new HashMap<Predicate, Set<Rule>>();
 		nonHeadPredicates = new HashSet<Predicate>();
@@ -270,7 +270,7 @@ public class RuleSystem {
 			for (int i=0;i<r.getBody().size();i++) {
 				nonHeadPredicates.add(r.getBody().get(i).getPredicate());
 			}
-			if (mainHeadFormula!=null 
+			if (mainHeadFormula!=null
 			&& !mainHeadFormulaFound
 			&& mainHeadFormula.equals(r.getHead())) {
 				mainHeadFormulaFound = true;
@@ -289,7 +289,7 @@ public class RuleSystem {
 	public List<Rule> getRules() {
 		return Collections.unmodifiableList(rules);
 	}
-	
+
 	/**
 	 * Constructs a Rule/Goal Graph as indicated in J.D. Ullman's
 	 * Principles of Database and knownledge-base systems  vol II
@@ -319,11 +319,11 @@ public class RuleSystem {
 					queue.offer(childNode);
 				}
 				node.addChild(childNode);
-				
+
 			}
 		}
-		return ret;	
-		
+		return ret;
+
 	}
 	/**
 	 * Implements the algorithm for making binding pattern unique described in
@@ -356,7 +356,7 @@ public class RuleSystem {
 		}
 		return new RuleSystem(newRules);
 	}
-	
+
 	protected Predicate createUniqueBindingPredicate(PredicateAdornment predAd) {
 		if (isIDB(predAd.getPredicate())
 		|| (predAd.getPredicate().isNegated() && isIDB(predAd.getPredicate().negate()))
@@ -401,14 +401,14 @@ public class RuleSystem {
 					assert child.isRule();
 					queue.offer(child);
 				}
-			}	
+			}
 		}
 		return  ret;
 	}
 	public RuleSystem magicSetTransformation(AtomicFormula goal) {
 		return magicSetTransformation(goal,true, true, true);
 	}
-	
+
 	protected boolean accept(Rule r, RectificationAtomicFormulaFilter filter) {
 		if (filter == null) {
 			return true;
@@ -442,30 +442,30 @@ public class RuleSystem {
 			// rectification of the head
 			r = rectifyRuleHead(r);
 			//
-			List<AtomicFormula>  rectifiedBody = rectifyBody(r.getBody(),toRectifyAtomicFormulas);						
+			List<AtomicFormula>  rectifiedBody = rectifyBody(r.getBody(),toRectifyAtomicFormulas);
 			//AtomicFormula rectifiedHead = rectifyHead(r.getHead(), toRectifyAtomicFormulas);
 			Rule newRule = new Rule(r.getHead(),rectifiedBody, rRules.size());
 			if (alreadySeen.add(newRule)
-				&& !newRule.isUnsatisfiableBasedOnEquilityBetweenDifferentConstants()			
+				&& !newRule.isUnsatisfiableBasedOnEquilityBetweenDifferentConstants()
 				&& accept(newRule, filter))  {
 				//rRules.add(new Rule(rectifiedHead,rectifiedBody, rRules.size()));
 				rRules.add(newRule);
 			}
 		}
-		
-		// remove from toRectifyAtomicFormulas  atomicformulas whose rectification predicate 
+
+		// remove from toRectifyAtomicFormulas  atomicformulas whose rectification predicate
 		// is already defined in the original rule system or atomicformulas not accepted by the filter
-		// 
+		//
 		for (Iterator<AtomicFormula> it = toRectifyAtomicFormulas.keySet().iterator();it.hasNext();) {
 			AtomicFormula f = it.next();
 			AtomicFormula rf = f.rectify();
-			if (head2Rules.containsKey(rf.getPredicate()) 
+			if (head2Rules.containsKey(rf.getPredicate())
 			|| (filter!=null && !filter.accept(f.unrectify())) ) {
 				it.remove();
 			}
 		}
 		//
-		
+
 		//logger.debug("Rect 0:\n{}", new RuleSystem(rRules));
 		int origSize = rRules.size();
 		for (int i=0; i< origSize; i++) {
@@ -497,12 +497,12 @@ public class RuleSystem {
 				buf.append(e.getValue()+" --> "+e.getKey()+"\n");
 			}
 			logger.info("constantMaps:\n{}",buf);
-			
+
 		}
 		return newRuleSystem.rectifyRuleSystem(filter);
 	}
-	
-	
+
+
 	List<AtomicFormula> rectifyBody(List<AtomicFormula> body, HashMap<AtomicFormula,Predicate> toRectifyAtomicFormulas){
 		List<AtomicFormula>  rectifiedBody = new LinkedList<AtomicFormula>();
 		for(AtomicFormula af: body){
@@ -512,7 +512,7 @@ public class RuleSystem {
 		}
 		return rectifiedBody;
 	}
-	
+
 	protected static Rule rectifyRuleHead(Rule rule){
 		// find arguments in the head that need
 		// to be replaced by variables
@@ -553,12 +553,12 @@ public class RuleSystem {
 				newBody.add(new AtomicFormula(new Predicate(Rule.BUILT_IN_EQUAL, 2),
 						newVar, rule.getHead().getArguments().get(i)));
 			}
-			
+
 		}
 		newBody.addAll(rule.getBody());
 		return new Rule(new AtomicFormula(rule.getHead().getPredicate().clone(), newHeadArguments), newBody, rule.getId());
 	}
-	
+
 	List<Rule> rectifyRule(Rule r, HashMap<AtomicFormula,Predicate> toRectifyAtomicFormulas, int id){
 		List<Rule> rectificationRuleList=new LinkedList<Rule>();
 		AtomicFormula head=r.getHead();
@@ -583,16 +583,16 @@ public class RuleSystem {
 		//}
 		return rectificationRuleList;
 	}
-	
+
 	public RuleSystem magicSetTransformation(AtomicFormula goal, boolean addInitRule) {
 		return magicSetTransformation(goal,addInitRule, true, true);
 	}
-	
+
 	/**
 	 * For a headPredicate h of a rule r of the form h() :- B1(...) ^ ... ^ Bn(...)
-	 * into h(Z) :- Z = 0 ^ B1(...) ^ ... ^ Bn(...) where Z is new variable not appearing 
-	 * in any Bi(...). Furthermore, in body of any rule r', h() is replaced by h(0) 
-	 * 
+	 * into h(Z) :- Z = 0 ^ B1(...) ^ ... ^ Bn(...) where Z is new variable not appearing
+	 * in any Bi(...). Furthermore, in body of any rule r', h() is replaced by h(0)
+	 *
 	 * @return
 	 */
 	public RuleSystem transformPredicateOfZeroArity() {
@@ -617,14 +617,14 @@ public class RuleSystem {
 			}
 			zeroArgPred2Variable.put(p, communVar);
 		}
-		
+
 		List<Rule> newRules = new ArrayList(rules.size());
-		
+
 		if (zeroArgPred2Variable.isEmpty()) {
 			// no zero arg predicate
 			return this;
 		}
-		
+
 		//Perform the transformation
 		for (Iterator<Rule> it = rules.iterator();it.hasNext();) {
 			Rule r = it.next();
@@ -639,7 +639,7 @@ public class RuleSystem {
 				assert var == null: r ;
 				newHead = r.getHead().clone();
 			}
-			
+
 			if (r.getHead().getPredicate().getArity()==0) {
 				// we add Z= 0
 				Predicate equal = new Predicate(Rule.BUILT_IN_EQUAL, 2);
@@ -649,13 +649,13 @@ public class RuleSystem {
 				AtomicFormula equalF = new AtomicFormula(equal,args);
 				newBody.add(equalF);
 			}
-			
+
 			//replace any f() in the body by f(0)
 			for (Iterator<AtomicFormula> fs=r.getBody().iterator();fs.hasNext();) {
 				AtomicFormula f = fs.next();
 				AtomicFormula newF;
 				if (f.getArguments().isEmpty()) {
-					newF = new AtomicFormula(f.getPredicate().cloneWithNonZeroArity(), 
+					newF = new AtomicFormula(f.getPredicate().cloneWithNonZeroArity(),
 							Collections.singletonList((Expr) new ConstantExpr(0) ));
 				} else {
 					newF = f.clone();
@@ -666,7 +666,7 @@ public class RuleSystem {
 		}
 		return new RuleSystem(newRules);
 	}
-	
+
 	/**
 	 * <p> Two body atoms A and B unify to the atom C  iff. </p>
 	 * <p>
@@ -687,11 +687,11 @@ public class RuleSystem {
 	 * @param unconstrainedVars the set of unconstrained variables in the body of the rule
 	 * @param atMostConstrainSubstitution indicates whether at most one substitution of an unconstrained variable with a constant or a constrained variable is allowed
 	 * @param rule
-	 * @return the result of the unification of two body atoms if they unify; otherwise it returns <code>null</code> 
+	 * @return the result of the unification of two body atoms if they unify; otherwise it returns <code>null</code>
 	 */
 	protected static AtomicFormula unify(AtomicFormula a, AtomicFormula b, Set<VariableExpr> unconstrainedVars, boolean atMostConstrainSubstitution) {
-		// A and B have the same predicate p and arity n. The predicate of C is also p with arity n. 
-		
+		// A and B have the same predicate p and arity n. The predicate of C is also p with arity n.
+
 		if (!a.getPredicate().equals(b.getPredicate())) {
 			return null;
 		}
@@ -712,8 +712,8 @@ public class RuleSystem {
 					return null;
 				}
 			} else if (unconstrainedVars.contains(eb)) {
-				//  B[i] is an unconstrained variable.  In this case, C[i] = A[i] 
-				if (atMostConstrainSubstitution && 
+				//  B[i] is an unconstrained variable.  In this case, C[i] = A[i]
+				if (atMostConstrainSubstitution &&
 					(ea.isConstant() || !unconstrainedVars.contains(ea))){
 					if (++constSubst>1) {
 						return null;
@@ -722,7 +722,7 @@ public class RuleSystem {
 				args.add(ea);
 			} else if (unconstrainedVars.contains(ea)) {
 				// A[i] is an unconstrained variable.	In this case C[i] = B[i]
-				if (atMostConstrainSubstitution && 
+				if (atMostConstrainSubstitution &&
 					(eb.isConstant() || !unconstrainedVars.contains(eb))){
 					if (++constSubst>1) {
 						return null;
@@ -739,7 +739,7 @@ public class RuleSystem {
 		}
 		return new AtomicFormula(p, args);
 	}
-	
+
 	/**
 	 * <p> The atomic formula A is subsumed by atomic formula B  iff. </p>
 	 * <p>
@@ -747,23 +747,23 @@ public class RuleSystem {
 	 * 	<li>A and B have the same predicate p and arity n. </li>
 	 *	<li>For each  0 &le; i < n, one of the following must hold
 	 *		<ul>
-	 *			<li> if B[i] is a constant, then A[i]=B[i]. 
+	 *			<li> if B[i] is a constant, then A[i]=B[i].
 	 *			<li> if B[i] is not an unconstrained variable, then A[i] = B[i].  An unconstrained variable is a variable that appears at most once in the body and does not appears in the head.
 	 * 			 </li>
 	 * 			<li>   B[i] is  an unconstrained variable </li>
-	 * 		
+	 *
 	 * 		</ul>
 	 *  </li>
 	 * </ol>
 	 * @param sub the first body atom (subsumee)
-	 * @param sup the second body atom (subsumer) 
+	 * @param sup the second body atom (subsumer)
 	 * @param unconstrainedVars the set of unconstrained variables in the body of the rule
 	 * @param rule
-	 * @return whether an atomic formula (sub) is subsumed by another one (sup)</code> 
+	 * @return whether an atomic formula (sub) is subsumed by another one (sup)</code>
 	 */
 	protected static boolean isSubsumedBy(AtomicFormula sub, AtomicFormula sup, Set<VariableExpr> unconstrainedVars) {
-		// A and B have the same predicate p and arity n. The predicate of C is also p with arity n. 
-		
+		// A and B have the same predicate p and arity n. The predicate of C is also p with arity n.
+
 		if (!sub.getPredicate().equals(sup.getPredicate())) {
 			return false;
 		}
@@ -795,7 +795,7 @@ public class RuleSystem {
 	 */
 	protected static Set<VariableExpr> getUnconstrainedVariables(Rule rule) {
 		Set<VariableExpr> ret = new HashSet<VariableExpr>();
-		// all variables except head variables are candidates 
+		// all variables except head variables are candidates
 		ret.addAll(rule.getAllRuleVariables());
 		ret.removeAll(rule.getHead().getAllVariables());
 		//
@@ -811,9 +811,9 @@ public class RuleSystem {
 					}
 				}
 			}
-		}		
+		}
 		return ret;
-		
+
 	}
 	protected static Set<VariableExpr> getUnconstrainedVariables(Collection<AtomicFormula> afs) {
 		Set<VariableExpr> ret = new HashSet<VariableExpr>();
@@ -838,14 +838,14 @@ public class RuleSystem {
 					}
 				}
 			}
-		}		
+		}
 		return ret;
-		
+
 	}
-	
-	
-	
-	
+
+
+
+
 	protected static boolean isDirectlyRecursive(Rule r) {
 		Predicate headp = r.getHead().getPredicate();
 		for (AtomicFormula af: r.getBody()) {
@@ -882,16 +882,16 @@ public class RuleSystem {
 							break;
 						}
 					}
-				}				
+				}
 			} else {
 				newBody.add(af.clone());
 			}
 		}
 		return newBody.size() == rule.getBody().size()? rule : new Rule(newHead, newBody, rule.getId());
-		
+
 	}
 	protected static RuleSystem removeUselessOptionalAtomicFormulas(RuleSystem ruleSystem) {
-		
+
 		List<Rule> newRules = new ArrayList<Rule>();
 		Set<Rule> seenRules = new HashSet<Rule>();
 		boolean changed = false;
@@ -911,7 +911,7 @@ public class RuleSystem {
 	*/
 	protected static Rule removeRedundantBodyAtoms(Rule rule, RuleSystem rs) {
 		Set<Integer> toRemove = new HashSet<Integer>();
-		
+
 		do {
 			Set<VariableExpr>  unconstrainedVars = getUnconstrainedVariables(rule);
 			toRemove.clear();
@@ -924,7 +924,7 @@ public class RuleSystem {
 				loopj : for (int j=i+1; j<rule.getBody().size(); j++) {
 					AtomicFormula b = rule.getBody().get(j);
 					if (toRemove.contains(j)) {
-						// already marked for removal	
+						// already marked for removal
 						continue;
 					}
 					if (isSubsumedBy(a, b, unconstrainedVars)) {
@@ -935,14 +935,14 @@ public class RuleSystem {
 						// b is subsumed by a ==> we can remove a
 						toRemove.add(i);
 						break loopj;
-					} 					
-					
+					}
+
 					{
 						//if there is a rule ra defining a such that ra is made of a single subgoal subgaola
 						// such that subgoala subsumes b
-						// ==> we can remove a 
+						// ==> we can remove a
 						// TODO: Generalize this optimization by considering indirect subsumption
-						
+
 						for (int k=0;k<2; k++) {
 							AtomicFormula sup, sub;
 							int removeIndex;
@@ -959,7 +959,7 @@ public class RuleSystem {
 								if (rsup.getBody().size()!=1) {
 									continue;
 								}
-								List<AtomicFormula> supreplacement = replaceByAtomicFormulaRuleDefinition(sup, rsup, 	
+								List<AtomicFormula> supreplacement = replaceByAtomicFormulaRuleDefinition(sup, rsup,
 										new HashSet<VariableExpr>(rule.getAllRuleVariables()));
 								if (supreplacement == null || supreplacement.size()!=1) {
 									continue;
@@ -976,10 +976,10 @@ public class RuleSystem {
 								}
 							}
 						}
-						
-						
+
+
 					}
-					
+
 					{
 						// if  rules rbs defining the predicate pb of b are all not directly recursive
 						// and for each rule rb in rbs there is a subgoal subB of rb such that
@@ -987,7 +987,7 @@ public class RuleSystem {
 						// ==> we can remove a
 						// TODO: Generalize this optimization to the case where rb is not recursive (directly or indirectly)
 						// by also considering whether a subsumes an atomic formula obtained from recursively unfolding  b
-						
+
 						Predicate pb = b.getPredicate();
 						Set<Rule> rules = rs.getRulesForHead(pb);
 						boolean directlyRecursive = false;;
@@ -997,8 +997,8 @@ public class RuleSystem {
 								break;
 							}
 						}
-						
-						
+
+
 						if (!directlyRecursive && !rules.isEmpty()) {
 							boolean removeA = true;
 							for (Rule rb : rules) {
@@ -1020,7 +1020,7 @@ public class RuleSystem {
 										//toRemove.add(i);
 										success = true;
 										break;
-									} 
+									}
 								}
 								removeA &= success;
 								if (!removeA) {
@@ -1049,10 +1049,10 @@ public class RuleSystem {
 			}
 		}
 		while (!toRemove.isEmpty());
-		
+
 		return rule;
 	}
-	
+
 	protected static RuleSystem removeRedundantBodyAtoms(RuleSystem ruleSystem) {
 		List<Rule> newRules = new ArrayList<Rule>();
 		Set<Rule> seenRules = new HashSet<Rule>();
@@ -1067,15 +1067,15 @@ public class RuleSystem {
 			}
 		}
 		return changed? new RuleSystem(newRules, ruleSystem.getMainHeadFormula(), ruleSystem.distinct) : ruleSystem;
-		
+
 		//return ruleSystem;
 	}
 	/**
 	 * Rule r is a subsumed rule iff. there exists another rule r' such that
-	 *  1) the head h of r and h' of r' have the same predicate p, 
-	 *  2) there is a variable substitution s of variables in h' by corresponding value in h 
-	 *  (i.e. if the ith argument of h' is a variable then it is mapped to the ith argument of h) such 
-	 *  that s(h') = h 
+	 *  1) the head h of r and h' of r' have the same predicate p,
+	 *  2) there is a variable substitution s of variables in h' by corresponding value in h
+	 *  (i.e. if the ith argument of h' is a variable then it is mapped to the ith argument of h) such
+	 *  that s(h') = h
 	 *  3) body(s(r')) is contained in body(r)
 	 * @param ruleSystem
 	 * @return
@@ -1102,7 +1102,7 @@ public class RuleSystem {
 
 					if (subsumerBody!=null) {
 						Set<VariableExpr> unboundVar = new HashSet<VariableExpr>(Rule.getUnboundVariables(subsumee.getHead(), subsumerBody)); // unbound in subsumerBodyList - subsumee,getHead().getAllVariables()
-						// variable substitution succeeded 
+						// variable substitution succeeded
 						//Set<AtomicFormula> subsumerBody = new HashSet<AtomicFormula>(subsumerBodyList);
 						boolean allSubsumeesContained = true;
 						for (AtomicFormula subsumerAf: subsumerBody) {
@@ -1128,10 +1128,10 @@ public class RuleSystem {
 			newRules.addAll(rulesSet);
 		}
 		return new RuleSystem(newRules, ruleSystem.getMainHeadFormula(), ruleSystem.areResultsForMainHeadFormulaDistinct());
-		
+
 	}
-	
-	
+
+
 	protected static RuleSystem removeUnsatisfiableRulesBasedOnEqualityBetweenDifferentConstants(RuleSystem ruleSystem) {
 		List<Rule> newRules = new ArrayList<Rule>();
 		boolean changed = false;
@@ -1144,7 +1144,7 @@ public class RuleSystem {
 		}
 		return changed? new RuleSystem(newRules, ruleSystem.getMainHeadFormula(), ruleSystem.distinct) : ruleSystem;
 	}
-	
+
 	public RuleSystem simplify(Set<Predicate>  nonSimplifiablePreds) {
 		if (getMainHeadFormula()!=null) {
 			nonSimplifiablePreds = HashSetFactory.make(nonSimplifiablePreds);
@@ -1154,14 +1154,14 @@ public class RuleSystem {
 			return removeRedundantBodyAtoms(removeUselessOptionalAtomicFormulas(this));
 		}
 		//Utils.getLogger().info("RuleSystem before simplification:\n"+this);
-	
+
 		RuleSystem toSimplify = this;
 		RuleSystem simplifiedRS  =toSimplify;
 		do {
 			toSimplify = removeSubsumedRules(
 					removeRedundantBodyAtoms(removeUselessOptionalAtomicFormulas(
 					removeUnsatisfiableRulesBasedOnEqualityBetweenDifferentConstants(simplifiedRS))));
-			
+
 			// compute all simplifiable predicates
 			Set<Predicate> simplifiablePredicates = toSimplify.getSimplifiableHeadPredicates(true, nonSimplifiablePreds);
 			assert simplifiablePredicates.size()<=1;
@@ -1171,7 +1171,7 @@ public class RuleSystem {
 			for (Iterator<Rule> it = toSimplify.getRules().iterator();it.hasNext();) {
 				Rule r = it.next();
 				if (r.getBody().size()==1 && r.getHead().equals(r.getBody().get(0))) {
-					// this  vacuous rule of the form A :- A  is ignored 
+					// this  vacuous rule of the form A :- A  is ignored
 				} else if (simplifiablePredicates.contains(r.getHead().getPredicate())) {
 					// this rule is ignored
 				} else {
@@ -1195,32 +1195,32 @@ public class RuleSystem {
 						newRules.add(newRule);
 					}
 				}
-				
+
 			}
-			
+
 			simplifiedRS = new RuleSystem(newRules, toSimplify.getMainHeadFormula(), toSimplify.distinct);
-			
+
 		} while (toSimplify.getRules().size()!=simplifiedRS.getRules().size());
-		
-		return simplifiedRS;		
+
+		return simplifiedRS;
 	}
-	
+
 	/**
-	 * a head predicate is simplifiable iff. 
+	 * a head predicate is simplifiable iff.
 	 * <ol>
 	 *  <li> it is defined by a single rule r, and </li>
 	 *  <li> it does not appear in the body of r, and </li>
 	 *  <li>  it is not negated in the rulesystem </li>
-	 * 	<li> one of the following must hold 
-	 * 		<ul> 
+	 * 	<li> one of the following must hold
+	 * 		<ul>
 	 * 			<li> it appears at most once as the predicate of an atomic formula af in the body of a rule and af is not negated or optional, or </li>
 	 * 		    <li> it is equivalent to true() (i.e. has no arguments), or </li>
 	 *  		<li>  the single rule defining it has a single body element </li>
 	 *  	</ul>
 	 *  </li>
 	 *  <li>  it is not in the set of non-simplifiablePredicate	</li>
-	 * 
-	 * 
+	 *
+	 *
 	 * @param r
 	 * @return
 	 */
@@ -1235,10 +1235,10 @@ public class RuleSystem {
 			Rule r = it.next();
 			for (Iterator<AtomicFormula> fs = r.getBody().iterator();fs.hasNext();) {
 				AtomicFormula f = fs.next();
-				
+
 				Predicate predWithoutQualification = f.getPredicate().withoutQualification();
-				boolean qualification = f.getPredicate().isNegated() || f.getPredicate().isOptional(); 
-				
+				boolean qualification = f.getPredicate().isNegated() || f.getPredicate().isOptional();
+
 				Boolean prevValue;
 				if ((prevValue = alreadyDiscovered2NoQualification.get(predWithoutQualification))!=null
 					&& predWithoutQualification.getArity() != 0) {
@@ -1252,7 +1252,7 @@ public class RuleSystem {
 						candidates1.remove(predWithoutQualification);
 					}
 				}
-				
+
 			}
 		}
 		//or the single rule defining it has a single body element
@@ -1267,13 +1267,13 @@ public class RuleSystem {
 			if (rules.size() == 1
 				&& rules.iterator().next().getBody().size() == 1) {
 				candidates2.add(cand);
-			} 
+			}
 		}
 		//
 		Set<Predicate> candidates = new HashSet<Predicate>(candidates1);
 		candidates.addAll(candidates2);
-				
-		
+
+
 		for (Iterator<Map.Entry<Predicate, Set<Rule>>> it=head2Rules.entrySet().iterator();it.hasNext();) {
 			Map.Entry<Predicate, Set<Rule>> e = it.next();
 			if (!candidates.contains(e.getKey())) {
@@ -1308,12 +1308,12 @@ public class RuleSystem {
 							return ret;
 						}
 					} else {
-						//  we do not get rid of non trivial facts 
+						//  we do not get rid of non trivial facts
 					}
 				}
 			}
 		}
-		
+
 		return ret;
 	}
 	// may return null
@@ -1324,15 +1324,15 @@ public class RuleSystem {
 		Rule def =defs.iterator().next();
 		return replaceByAtomicFormulaRuleDefinition(f, def, variablesInContextOfF);
 	}
-	
-	
+
+
    // may return null if f and the head of def do not unify
 	protected static List<AtomicFormula> replaceByAtomicFormulaRuleDefinition(AtomicFormula f,  Rule def, Set<VariableExpr> variablesInContextOfF) {
 		if (f.getPredicate().isNegated() || f.getPredicate().isOptional()) {
 			assert def.getBody().size() <= 1 : f +"\n" +def;
 		}
 		assert f.getPredicate().equals(def.getHead().getPredicate()) : f+"\n"+def;
-		
+
 		Map<VariableExpr, Expr> var2Expr = new HashMap<VariableExpr, Expr>();
 		for (int i=0;i<f.getArguments().size();i++) {
 			Expr e = f.getArguments().get(i);
@@ -1376,22 +1376,22 @@ public class RuleSystem {
 						} else {
 							VariableExpr newVar = oldVar2NewVar.get(var);
 							if (newVar == null) {
-								// we need to rename variable arg to avoid 
+								// we need to rename variable arg to avoid
 								int count =2;
 								do {
 									newVar= new VariableExpr(var.getName()+"_"+count++);
 								}
 								while ( variablesInContextOfF.contains(newVar));
 								oldVar2NewVar.put(var, newVar);
-							}							
+							}
 							newArgs.add(newVar);
-							
+
 						}
-						
+
 					}
 				}
 			}
-			
+
 			AtomicFormula newBF = new AtomicFormula(
 					f.getPredicate().isOptional()? bf.getPredicate().switchOptionalFlag()
 					: f.getPredicate().isNegated()? bf.getPredicate().negate(): bf.getPredicate(),
@@ -1414,10 +1414,10 @@ public class RuleSystem {
 		}
  		return ret;
 	}
-	
-	
-	
-	
+
+
+
+
 	public  RuleSystem magicSetTransformation(AtomicFormula goal, boolean addInitRule, boolean performedUniqueBindingTransfo, boolean simplify) {
 		if (performedUniqueBindingTransfo) {
 			RuleSystem ubRules = toUniqueBindingPattern(goal);
@@ -1426,16 +1426,16 @@ public class RuleSystem {
 				PredicateAdornment ad = buildAdormentForGoal(goal);
 				UniqueBindingPredicate ubp= UniqueBindingPredicate.createUniqueBindingPredicate(ad);
 				goal = new AtomicFormula(ubp, new ArrayList(goal.getArguments()));
-			} 
+			}
 			return ubRules.magicSetTransformation(goal,addInitRule, false, simplify);
 		}
-		// 
+		//
 		// IMPORTANT NOTE: do not output formulas without arguments of the form "m_f()"
 		// (i.e., magic-sets predicate for a formula without bound variables)
 		// and "sup_r_0()" (i.e., supplementary predicate for rule r whose head predicate adornment does not
 		// specify any bound variable).
-		// 
-		
+		//
+
 		//Rules for the magic predicates
 		List<Rule> newRules = new ArrayList<Rule>();
 		for (Iterator<Rule> it=rules.iterator();it.hasNext();) {
@@ -1466,8 +1466,8 @@ public class RuleSystem {
 				assert magicF.getPredicate().getArity()>0 : magicF;
 				newRules.add(new Rule(supF,Collections.singletonList(magicF),newRules.size()));
 			}
-			
-		}	
+
+		}
 		// Rules for other supplementary predicates
 		for (Iterator<Rule> it=rules.iterator();it.hasNext();) {
 			Rule rule= it.next();
@@ -1510,31 +1510,31 @@ public class RuleSystem {
 					newRules.add(new Rule(rule.getHead(),body,newRules.size()));
 				}
 			}
-			
+
 		}
 		if (addInitRule) {
 			//The initialization rule
 			if (isIDB(goal.getPredicate())) {
-				AtomicFormula magicF = MagicSetPredicate.createMagicSetAtomicFormula( 
+				AtomicFormula magicF = MagicSetPredicate.createMagicSetAtomicFormula(
 						(UniqueBindingPredicate)goal.getPredicate(), goal,true);
 				if (magicF.getPredicate().getArity()>0) {
 					newRules.add(new Rule(magicF,new ArrayList<AtomicFormula>(0),newRules.size()));
 				}
-			} 
+			}
 		}
 		Predicate goalPred = goal.getPredicate();
 		logger.info("Goal Predicate {}",goalPred);
-		
+
 		logger.debug("Magic-sets result before simplification:\n{}",new RuleSystem(newRules));
 		RuleSystem ret = simplify? new RuleSystem(newRules).simplify(Collections.singleton(goalPred)):new RuleSystem(newRules);
 		//logger.info("Magic-sets result after simplification:\n{}",ret);
 		return ret;
-		
+
 	}
-	
+
 	public Predicate getMagicSetRewrittenPredicateForGoal(AtomicFormula goal) {
 		return createUniqueBindingPredicate(buildAdormentForGoal(goal));
-		
+
 	}
 	public Set<Predicate> getHeadPredicates() {
 		return Collections.unmodifiableSet(head2Rules.keySet());
@@ -1544,7 +1544,7 @@ public class RuleSystem {
 		ret.retainAll(head2Rules.keySet());
 		return ret;
 	}
-	
+
 	public Set<Predicate> getNonHeadPredicates() {
 		return Collections.unmodifiableSet(nonHeadPredicates);
 	}
@@ -1553,13 +1553,13 @@ public class RuleSystem {
 		ret.retainAll(nonHeadPredicates);
 		return ret;
 	}
-	
+
 	public Set<Predicate> getAllPredicates() {
 		Set<Predicate> allpreds = new HashSet<Predicate>(getHeadPredicates());
 		allpreds.addAll(getNonHeadPredicates());
 		return Collections.unmodifiableSet(allpreds);
 	}
-	
+
 
 	/**
 	 * returns whether a given predicate corresponds to an
@@ -1571,7 +1571,7 @@ public class RuleSystem {
 		return getHeadPredicates().contains(predicate);
 	}
 	/**
-	 * given an atomic formula, returns its corresponding adornment, which 
+	 * given an atomic formula, returns its corresponding adornment, which
 	 * indicates bound arguments.
 	 * @param goal
 	 * @return
@@ -1589,7 +1589,7 @@ public class RuleSystem {
 		}
 		return new PredicateAdornment(goal.getPredicate(),boundExprs);
 	}
-	
+
 	/**
 	 * returns the list of rules whose head atomic formula has a given predicate.
 	 * @param predicate
@@ -1610,16 +1610,16 @@ public class RuleSystem {
 		} else if (goal.getPredicate().isNegated() ) {
 			goal = new PredicateAdornment(goal.getPredicate().negate(),goal.getBoundArguments());
 		}
-		
+
 		if (!isIDB(goal.getPredicate())){
 			return Collections.EMPTY_LIST;
 		}
 		Set<Rule> rules = getRulesForHead(goal.getPredicate());
 		assert !rules.isEmpty() : "an IDB must be the head of at least one rule";
 		/*
-		 * A goal node that is a IDB predicate p with 
+		 * A goal node that is a IDB predicate p with
 		 * an adornment ad has children corresponding to
-		 * all of the rules with head predicate p. 
+		 * all of the rules with head predicate p.
 		 * For such a rule r, then p^ad has child r0^[X1, ..., Xn
 		 * | Y1, ..,Ym] where X1,...,Xn are all of the variables that
 		 * appear in the argument of r's head that is
@@ -1640,11 +1640,11 @@ public class RuleSystem {
 					if (goal.isBoundArgument(i)) {
 						boundVariables.add((VariableExpr)arg);
 					}
-				} 
+				}
 			}
 			freeVariables.removeAll(boundVariables);
 			ret.add(new RuleAdornment(r,boundVariables,freeVariables,position));
-			
+
 		}
 		return ret;
 	}
@@ -1694,13 +1694,13 @@ public class RuleSystem {
 			return computeChildren(ad.asRuleAdornment());
 		}
 	}
-	
+
 	public RuleSystem add(RuleSystem rs) {
 		List<Rule> newRules = new LinkedList<Rule>(rules);
 		newRules.addAll(rs.getRules());
 		return new RuleSystem(newRules);
 	}
-	
+
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
 		for (Iterator<Rule>  it=rules.iterator();it.hasNext();) {
@@ -1713,7 +1713,7 @@ public class RuleSystem {
 		buf.append("\n# Number of rules: "+ rules.size());
 		return buf.toString();
 	}
-	
+
 	public static RuleSystem parse(String s) throws ParseException {
 		s=s.trim();
 		List<Rule> rules = new ArrayList<Rule>();
@@ -1757,6 +1757,6 @@ public class RuleSystem {
 			return false;
 		return true;
 	}
-	
-	
+
+
 }

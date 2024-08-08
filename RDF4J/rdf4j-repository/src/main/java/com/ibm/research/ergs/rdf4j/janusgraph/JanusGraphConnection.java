@@ -66,14 +66,14 @@ public interface JanusGraphConnection {
 
 	/**
 	 * It returns query processor for executing SPARQL queries
-	 * 
+	 *
 	 * @return SPARQLQueryProcessor object
 	 */
 	public SPARQLQueryProcessor getSPARQLQueryProcessor();
 
 	/**
 	 * It returns RDFF loader for loading RDF data
-	 * 
+	 *
 	 * @return LoadRDFData object
 	 */
 	public LoadRDFData getRDFLoader();

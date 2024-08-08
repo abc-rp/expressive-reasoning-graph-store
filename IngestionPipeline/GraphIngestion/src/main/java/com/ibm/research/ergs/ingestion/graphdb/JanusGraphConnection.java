@@ -18,7 +18,7 @@ import java.io.InputStream;
 
 /**
  * interface of JanusGraoh connection.
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */
@@ -31,21 +31,21 @@ public interface JanusGraphConnection {
 
   /**
    * returns schema creator class object for creating new properties and edges schema
-   * 
+   *
    * @return
    */
   public SchemaCreator getSchemaCreator();
 
   /**
    * returns laoder class object
-   * 
+   *
    * @return
    */
   public GraphDBLoad getLoader();
 
   /**
    * It builds combined index on all graph properties for text queries
-   * 
+   *
    * @param indexName
    */
   public void buildAllPropertyExternalIndex(String indexName);

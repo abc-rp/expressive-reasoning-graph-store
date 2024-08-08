@@ -15,12 +15,12 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class RuleAdornment implements Adornment{
-	
-	private Rule rule;	
+
+	private Rule rule;
 	private int position;
 	private Set<VariableExpr> boundVariables;
 	private Set<VariableExpr> freeVariables;
-	
+
 	public RuleAdornment(Rule rule, Set<VariableExpr> boundVariables, Set<VariableExpr> freeVariables, int position) {
 		super();
 		this.rule = rule;
@@ -29,7 +29,7 @@ public class RuleAdornment implements Adornment{
 		this.position = position;
 		assert checkConsistency();
 	}
-	
+
 	private boolean checkConsistency() {
 		Set<VariableExpr> ruleVars = getAllRuleVariables();
 		Set<Expr> boundAndFreeVariables = new HashSet<Expr>(boundVariables);
@@ -43,23 +43,23 @@ public class RuleAdornment implements Adornment{
 		:"The following variables appear to be both free and bound: "+ inter;
 		return true;
 	}
-	
+
 	public  Set<VariableExpr> getBoundVariables() {
 		return boundVariables;
 	}
-	
+
 	public Set<VariableExpr> getFreeVariables() {
 		return freeVariables;
 	}
-	
+
 	public Set<VariableExpr> getAllRuleVariables() {
 		return new HashSet<VariableExpr>(rule.getAllRuleVariables());
 	}
-	
+
 	public boolean equals(Object o) {
 		if (o==this) {
 			return true;
-		} 
+		}
 		if (o instanceof RuleAdornment) {
 			RuleAdornment other =(RuleAdornment)o;
 			return rule.equals(other.rule)
@@ -68,19 +68,19 @@ public class RuleAdornment implements Adornment{
 		}
 		return false;
 	}
-	
+
 	public int hashCode() {
 		return rule.hashCode()+ 31*(boundVariables.hashCode()+31*position);
 	}
-	
-	
-	
 
-	
+
+
+
+
 	public int getPosition() {
 		return position;
 	}
-	
+
 	public RuleAdornment next() {
 		if (position+1<rule.getBody().size()) {
 			int newPos = position+1;
@@ -103,7 +103,7 @@ public class RuleAdornment implements Adornment{
 				}
 			}
 			return new RuleAdornment(rule,newBoundVars,newFreeVars,newPos);
-	
+
 		} else {
 			return null;
 		}
@@ -128,7 +128,7 @@ public class RuleAdornment implements Adornment{
 	public Rule getRule() {
 		return rule;
 	}
-	
-	
-	
+
+
+
 }

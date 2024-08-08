@@ -35,15 +35,15 @@ import org.apache.jena.sparql.syntax.ElementVisitor;
 
 import com.ibm.research.utils.OCUtils;
 /**
- * simplifies {@link ElementGroup} and {@link ElementUnion} by removing useless nesting 
+ * simplifies {@link ElementGroup} and {@link ElementUnion} by removing useless nesting
  * and goup or union of with a single element.
  * @author fokoue
  *
  */
 public class QueryPatternSimplification  implements ElementVisitor {
 	private Element result;
-	
-	
+
+
 	public QueryPatternSimplification() {
 		super();
 	}
@@ -55,18 +55,18 @@ public class QueryPatternSimplification  implements ElementVisitor {
 	@Override
 	public void visit(ElementAssign e) {
 		result = e;
-		
-		
+
+
 	}
-    
+
 	@Override
 	public void visit(ElementBind e) {
 		result = e;
-		
-		
+
+
 	}
 
-	
+
 	@Override
 	public void visit(ElementDataset e) {
 		e.getElement().visit(this);
@@ -75,17 +75,17 @@ public class QueryPatternSimplification  implements ElementVisitor {
 	@Override
 	public void visit(ElementExists exists) {
 		exists.getElement().visit(this);
-		result = new ElementExists(result);			
+		result = new ElementExists(result);
 	}
-	
+
 
 	@Override
 	public void visit(ElementMinus e) {
 		e.getMinusElement().visit(this);
-		result = new ElementMinus(result);		
+		result = new ElementMinus(result);
 	}
 
-	
+
 	/*@Override
 	public void visit(ElementFetch e) {
 		result = e;
@@ -94,13 +94,13 @@ public class QueryPatternSimplification  implements ElementVisitor {
 	@Override
 	public void visit(ElementData e) {
 		result = e;
-		
+
 	}
 
 	@Override
 	public void visit(ElementFilter e) {
 		result = e;
-		
+
 	}
 
 
@@ -125,11 +125,11 @@ public class QueryPatternSimplification  implements ElementVisitor {
 					ret.addElement(pathBlock);
 				}
 				add(pathBlock, (ElementTriplesBlock) result);
-				
+
 			} else {
 				ret.addElement(result);
 			}
-			
+
 		}
 		if (ret.getElements().size() == 1) {
 			result = ret.getElements().get(0);
@@ -149,21 +149,21 @@ public class QueryPatternSimplification  implements ElementVisitor {
 		} else {
 			result = new ElementNamedGraph(n, elt);
 		}
-		
+
 	}
 
 	@Override
 	public void visit(ElementNotExists notExists) {
 		notExists.getElement().visit(this);
-		result = new ElementNotExists(result);		
-		
+		result = new ElementNotExists(result);
+
 	}
 
 	@Override
 	public void visit(ElementOptional opt) {
 		opt.getOptionalElement().visit(this);
 		result = new ElementOptional(result);
-		
+
 	}
 
 	@Override
@@ -199,7 +199,7 @@ public class QueryPatternSimplification  implements ElementVisitor {
 	@Override
 	public void visit(ElementTriplesBlock e) {
 		result = e;
-		
+
 	}
 
 	@Override
@@ -218,16 +218,16 @@ public class QueryPatternSimplification  implements ElementVisitor {
 				ret.addElement(result);
 			}
 		}
-		
-		
+
+
 		if (ret.getElements().size() == 1) {
 			result = ret.getElements().get(0);
 		} else {
 			result = ret;
 		}
-		
+
 	}
-	
+
 	protected void add(ElementGroup targetGroup,ElementPathBlock targetGroupPathBlock, ElementGroup newGroup) {
 		// add the subgroup content directly
 		for (Element subelt: newGroup.getElements()) {
@@ -253,7 +253,7 @@ public class QueryPatternSimplification  implements ElementVisitor {
 			targetPathBlock.addTriple(t);
 		}
 	}
-	
+
 	public Query simplify(Query q) {
 		QueryPatternSimplification qps = new QueryPatternSimplification();
 		q.getQueryPattern().visit(qps);
@@ -262,5 +262,5 @@ public class QueryPatternSimplification  implements ElementVisitor {
 		ret.setQueryPattern(newelt);
 		return ret;
 	}
-	
+
 }

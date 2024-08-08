@@ -13,10 +13,10 @@
 import java.util.List;
 
 public class RuleGoalNode {
-	
+
 	private Adornment adornment;
 	private List<RuleGoalNode> children;
-	
+
 	RuleGoalNode(Adornment adornment, List<RuleGoalNode> children) {
 		super();
 		this.adornment = adornment;
@@ -34,7 +34,7 @@ public class RuleGoalNode {
 	public boolean equals(Object o) {
 		if (o==this) {
 			return true;
-		} 
+		}
 		if (o instanceof RuleGoalNode) {
 			RuleGoalNode other =(RuleGoalNode)o;
 			return adornment.equals(other.adornment)
@@ -42,22 +42,22 @@ public class RuleGoalNode {
 		}
 		return false;
 	}
-	
+
 	public int hashCode() {
 		return adornment.hashCode()+ 31*children.hashCode();
 	}
-	
+
 	public boolean isGoal() {
 		return adornment.isAdornmentOnPredicate();
 	}
-	
+
 	public boolean isRule() {
 		return adornment.isAdornmentOnRule();
 	}
-	
+
 	public void addChild(RuleGoalNode node) {
 		children.add(node);
 	}
-	
-	
+
+
 }

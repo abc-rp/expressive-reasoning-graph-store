@@ -47,10 +47,10 @@ public class SubClassComputation implements SubsumptionComputation<OWLClassExpre
 				fac.getOWLObjectProperty(IRI.create("http://semantics.crl.ibm.com/univ-bench-dl.owl#isMemberOf")));
 		logger.info("univ#isStudentOf is subproperty of univ#isMemberOf: "+test);
 		*/
-		
-		
+
+
 		TaxonomyBuilder<OWLClassExpression> taxoBuilder = new TaxonomyBuilder<OWLClassExpression>(
-				new HashSet<OWLClassExpression>(ont.getClassesInSignature()), 
+				new HashSet<OWLClassExpression>(ont.getClassesInSignature()),
 				fac.getOWLThing(),
 				fac.getOWLNothing(),
 				subcomp);
@@ -61,12 +61,12 @@ public class SubClassComputation implements SubsumptionComputation<OWLClassExpre
 		logger.info("Number of direct subsumption tests performed: {}", subcomp.numOfDirectSubsumptionTests);
 		long size = ont.getClassesInSignature().size();
 		logger.info("Worst Case number of direct subsumption tests performed: {}^2 = {}",size, size*size);
-		
-		
+
+
 	}
 	private NormalizedOWLQLTbox tbox;
 	protected int numOfDirectSubsumptionTests;
-	
+
 	Map<OWLClassExpression, Set<OWLClassExpression>> sub2ToldSubsumers;
 	public SubClassComputation(NormalizedOWLQLTbox tbox) {
 		super();
@@ -79,7 +79,7 @@ public class SubClassComputation implements SubsumptionComputation<OWLClassExpre
 			for (OWLSubClassOfAxiom ax: axioms) {
 				OWLClassExpression sub = ax.getSubClass();
 				OWLClassExpression sup = ax.getSuperClass();
-				//if (!sub.isAnonymous()) 
+				//if (!sub.isAnonymous())
 				{
 					Set<OWLClassExpression> s = sub2ToldSubsumers.get(sub);
 					if (s == null) {
@@ -92,7 +92,7 @@ public class SubClassComputation implements SubsumptionComputation<OWLClassExpre
 			}
 		}
 		logger.debug("Max told subsumers: {}", maxToldSubsumers);
-		
+
 	}
 
 	@Override
@@ -116,8 +116,8 @@ public class SubClassComputation implements SubsumptionComputation<OWLClassExpre
 			return ret;
 		}*/
 		Set<OWLClassExpression> ret = sub2ToldSubsumers.get(sub);
-		
+
 		return  ret!=null? ret : Collections.EMPTY_SET;
 	}
-	
+
 }

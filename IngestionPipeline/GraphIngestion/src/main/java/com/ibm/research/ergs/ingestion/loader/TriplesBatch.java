@@ -36,7 +36,7 @@ import com.ibm.research.ergs.ingestion.graphdb.SchemaCreator;
 
 /**
  * This class reads batch of rdf data, partitions the batch and parallelly load in graph.
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */
@@ -77,7 +77,7 @@ class TriplesBatch {
 
   /**
    * Construct {@link TriplesBatch}, initializes all data variables
-   * 
+   *
    * @param janusGraphConnection
    * @param pool
    */
@@ -135,7 +135,7 @@ class TriplesBatch {
    * This function is called for each read triple and adds to one of the partition. It also
    * classifies triple to edge or property or conflicting triple (same predicate is used for edge
    * and property). For literal triples, their data type is stored for further use.
-   * 
+   *
    * @param st: input triple
    */
   protected void addTripleToBuffer(Statement st) {
@@ -501,7 +501,7 @@ class TriplesBatch {
 
   /**
    * This function stores degree 0 vertex which does not belong to any partition.
-   * 
+   *
    * @param nodeIds: set of degree 0 vertices
    */
   void writeNodesInDatabase(Set<String> nodeIds) {
@@ -527,7 +527,7 @@ class TriplesBatch {
 
   /**
    * this is wrapper function for writing triples.
-   * 
+   *
    * @param triples
    */
   void writeTriplesInDatabase(List<Statement> triples) {
@@ -543,7 +543,7 @@ class TriplesBatch {
   /**
    * This is main function for writing triples into graph. It is used for both intra and inter
    * partition data.
-   * 
+   *
    * @param triples
    */
   void writeTriplesInDatabaseMain(List<Statement> triples) {

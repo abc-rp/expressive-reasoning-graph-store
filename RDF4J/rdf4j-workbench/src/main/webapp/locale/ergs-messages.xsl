@@ -11,5 +11,5 @@
 	<variable name="ergs-config-file-comment.label">Upload a file containing configuration properties</variable>
 	<variable name="ergs-tbox-file.label">Tbox file</variable>
 	<variable name="ergs-tbox-file-comment.label">Upload a file containing the TBox</variable>
-	
+
 </stylesheet>

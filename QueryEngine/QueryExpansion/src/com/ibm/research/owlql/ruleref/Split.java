@@ -46,8 +46,8 @@ public class Split {
 			formulas.addAll(comp.formulas);
 			joinVars.addAll(comp.joinVars);
 		}
-		
-		
+
+
 	}
 	protected OWLDataFactory fac;
 
@@ -55,9 +55,9 @@ public class Split {
 		super();
 		this.fac = fac;
 	}
-	
+
 	/**
-	 * rule body split or null if it cannot be split 
+	 * rule body split or null if it cannot be split
 	 * @param r
 	 * @return
 	 */
@@ -65,8 +65,8 @@ public class Split {
 		Set<VariableExpr> joinVars = new HashSet<VariableExpr>(r.getAllRuleVariables());
 		joinVars.removeAll(r.getHead().getAllVariables());
 		joinVars.removeAll(r.getUnboundVariables());
-		joinVars.removeAll(TriplePredicate.getPredicateVariables(r)); 
-				
+		joinVars.removeAll(TriplePredicate.getPredicateVariables(r));
+
 		if (joinVars.isEmpty()) {
 			return null;
 		}
@@ -83,7 +83,7 @@ public class Split {
 							component.joinVars.add(v);
 							joinVar2JoinComponent.put(v, component);
 						}
-						component.formulas.add(af.clone());						
+						component.formulas.add(af.clone());
 					} else {
 						Component oldComponent =  joinVar2JoinComponent.get(v);
 						if (oldComponent != null) {
@@ -92,20 +92,20 @@ public class Split {
 								for (VariableExpr jv: oldComponent.joinVars) {
 									joinVar2JoinComponent.put(jv, component);
 								}
-							} 
+							}
 						} else {
 							joinVar2JoinComponent.put(v, component);
-							component.joinVars.add(v); 
+							component.joinVars.add(v);
 						}
 					}
-					
-					
+
+
 				}
 			}
 			if (component == null) {
 				formulasWithoutJoinVars.add(af.clone());
 			}
-			
+
 		}
 		List<List<AtomicFormula>> ret = new LinkedList<List<AtomicFormula>>();
 		Set<Component> alreadySeen = new HashSet<Component>();
@@ -119,7 +119,7 @@ public class Split {
 		}
 		return ret;
 	}
-	
+
 	protected List<Rule> split(Rule r, int[] nextAvalableSuffix, int[] nextAvailableRuleId) {
 		List<List<AtomicFormula>> components = splitRuleBody(r);
 		if (components == null || components.size()<2) {
@@ -128,7 +128,7 @@ public class Split {
 		Set<VariableExpr> headVars = r.getHead().getAllVariables();
 		List<Rule> rules = new LinkedList<Rule>();
 		List<AtomicFormula> newBody = new LinkedList<AtomicFormula>();
-		
+
 		for (List<AtomicFormula> comp: components) {
 			Set<VariableExpr> compVars = new HashSet<VariableExpr>();
 			for (AtomicFormula af: comp) {
@@ -142,13 +142,13 @@ public class Split {
 			AtomicFormula compRuleHead = new AtomicFormula(compPred, new LinkedList<Expr>(compVarList));
 			Rule compRule = new Rule(compRuleHead, comp,nextAvailableRuleId[0]++);
 			rules.add(compRule);
-			
+
 		}
 		Rule newRule = new Rule(r.getHead().clone(), newBody, r.getId());
 		rules.add(0, newRule);
 		return rules;
 	}
-	
+
 	public RuleSystem split(RuleSystem rs) {
 		List<Rule> newRules = new LinkedList<Rule>();
 		int[] nextAvailabeSuffix = new int[]{nextAvailableSuffix(rs)};
@@ -167,11 +167,11 @@ public class Split {
  		}
 		return ret;
 	}
-	
+
 	protected String generatePredicateName(int suffix) {
 		return GENERATED_PREDICATE_PREFIX+suffix;
 	}
-	
+
 	protected int nextAvailableSuffix(RuleSystem rs) {
 		return RuleSystem.nextAvailableSuffixForGeneratedPredicate(rs,
 				GENERATED_PREDICATE_PREFIX);
@@ -179,5 +179,5 @@ public class Split {
 	protected int nextAvailableRuleId(RuleSystem rs) {
 		return RuleSystem.nextAvailableRuleId(rs);
 	}
-	
+
 }

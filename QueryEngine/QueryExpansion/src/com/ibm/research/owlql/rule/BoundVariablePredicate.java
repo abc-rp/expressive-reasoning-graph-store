@@ -13,7 +13,7 @@ package com.ibm.research.owlql.rule;
 
 /**
  * Predicate whose first argument is a variable and the others arguments indicate the values
- * that this variable can take. 
+ * that this variable can take.
  * @author fokoue
  *
  */
@@ -23,15 +23,15 @@ public class BoundVariablePredicate extends Predicate {
 		super(Rule.BUILT_IN_BOUND_VAR, arity);
 		assert arity >= 2 : arity;
 	}
-	
+
 	public BoundVariablePredicate clone() {
 		return new BoundVariablePredicate(getArity());
 	}
-	
+
 	Predicate cloneWithNonZeroArity() {
 		return clone();
 	}
-	
+
 	public boolean equals(Object o) {
 		if (o instanceof BoundVariablePredicate) {
 			return super.equals(o);
@@ -40,5 +40,5 @@ public class BoundVariablePredicate extends Predicate {
 		}
 	}
 
-	
+
 }

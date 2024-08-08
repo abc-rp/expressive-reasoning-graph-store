@@ -71,14 +71,14 @@ public class RuleSystemToQueries {
 		 pr.setRuleSystem(nonRecursiveSys);
 		 RuleSystem newSys = pr.convertDLPredicateToDBTablePredicate();
 		 logger.debug("Rulesystem after transformation of dl predicate: {}", newSys);
-		 
+
 		 String prefix =  OWLQLCompiler.UNBOUND_VARIABLE_PREFIX;
 		 int suffixStart = OCUtils.nextAvailableSuffixVariable(newSys.getAllVariableNames(), prefix	);
 		 NewVariableGenerator varGen = new NewVariableGenerator(prefix, suffixStart);
 		 return  getConjunctiveQueries(newSys,nonRecursiveSys.getMainHeadFormula().getPredicate() , headPred2ConjQueries, varGen);
 	}
-	
-	
+
+
 	protected static Set<ConjunctiveQuery> getConjunctiveQueries(RuleSystem rules, Predicate headPredicate,  Map<Predicate, Set<ConjunctiveQuery>> headPred2ConjQueries, NewVariableGenerator varGen) {
 		assert rules.isIDB(headPredicate) : headPredicate;
 		Set<ConjunctiveQuery> ret = headPred2ConjQueries.get(headPredicate);
@@ -86,12 +86,12 @@ public class RuleSystemToQueries {
 			ret = new HashSet<ConjunctiveQuery>();
 			for (Rule rule: rules.getRulesForHead(headPredicate)) {
 				ret.addAll(ruleToConjunctiveQueries(rules, rule, headPred2ConjQueries, varGen));
-			}		
+			}
 			headPred2ConjQueries.put(headPredicate, ret);
 		}
 		return ret;
 	}
-	
+
 	protected static Set<ConjunctiveQuery> ruleToConjunctiveQueries(RuleSystem rules, Rule rule,
 			Map<Predicate, Set<ConjunctiveQuery>> headPred2ConjQueries, NewVariableGenerator varGen) {
 		Set<ConjunctiveQuery> ret =  new HashSet<ConjunctiveQuery>();
@@ -99,7 +99,7 @@ public class RuleSystemToQueries {
 		for (Expr e: rule.getHead().getArguments()) {
 			 assert e.isVariable() : e;
 			 cq.addResultVar(((VariableExpr)e).getName());
-			
+
 		}
 		cq.setQueryPattern(new ElementTriplesBlock());
 		ret.add(cq);
@@ -116,7 +116,7 @@ public class RuleSystemToQueries {
 		 }
 		 return ret;
 	}
-	
+
 	protected static AtomicFormula renameUnboundVariables(AtomicFormula af,
 			Set<VariableExpr> unboundVars,  NewVariableGenerator varGen) {
 		List<Expr> args = new ArrayList<Expr>(af.getArguments().size());
@@ -129,7 +129,7 @@ public class RuleSystemToQueries {
 		}
 		return new AtomicFormula(af.getPredicate(), args);
 	}
-		
+
 	protected static Set<ConjunctiveQuery> expand(Set<ConjunctiveQuery> startcqs,
 			Set<ConjunctiveQuery> flatteningOfNewConjuncts, List<? extends Expr> argsForNewConjunct) {
 		Set<ConjunctiveQuery> ret = new HashSet<ConjunctiveQuery>();
@@ -147,8 +147,8 @@ public class RuleSystemToQueries {
 			}
 		}
 		return ret;
-		
-		
+
+
 	}
 	protected static Set<ConjunctiveQuery> expand(Set<ConjunctiveQuery> startcqs,
 			AtomicFormula newConjunct, List<? extends Expr> argsForNewConjunct) {
@@ -159,18 +159,18 @@ public class RuleSystemToQueries {
 			if (Rule.isBuiltInPredicate(newConjunct.getPredicate())){
 				if ( newConjunct.getPredicate().getName().equals(Rule.BUILT_IN_EQUAL)) {
 					assert  newConjunct.getArity() == 2 : newConjunct.getArity();
-					newcq.addFilter(toEqualsFilter(newConjunct.getArguments().get(0), 
+					newcq.addFilter(toEqualsFilter(newConjunct.getArguments().get(0),
 							newConjunct.getArguments().get(1)));
 				} else if ( newConjunct.getPredicate().getName().equals(Rule.BUILT_IN_IRI_EQUAL)) {
 					assert  newConjunct.getArity() == 2 : newConjunct.getArity();
-					newcq.addFilter(toIRIEqualsFilter(newConjunct.getArguments().get(0), 
+					newcq.addFilter(toIRIEqualsFilter(newConjunct.getArguments().get(0),
 							newConjunct.getArguments().get(1)));
 				} else if (newConjunct.getPredicate().getName().equals(Rule.BUILT_IN_DIFF) ) {
 					assert  newConjunct.getArity() == 2 : newConjunct.getArity();
-					newcq.addFilter(toNotEqualsFilter(newConjunct.getArguments().get(0), 
+					newcq.addFilter(toNotEqualsFilter(newConjunct.getArguments().get(0),
 							newConjunct.getArguments().get(1)));
 				} else if ( newConjunct.getPredicate().getName().equals(Rule.BUILT_IN_IRI_DIFF)) {
-					newcq.addFilter(toIRINotEqualsFilter(newConjunct.getArguments().get(0), 
+					newcq.addFilter(toIRINotEqualsFilter(newConjunct.getArguments().get(0),
 							newConjunct.getArguments().get(1)));
 				} else {
 					assert  newConjunct.getPredicate().getName().equals(Rule.BUILT_IN_BOUND_VAR) : newConjunct;
@@ -182,18 +182,18 @@ public class RuleSystemToQueries {
 				Expr s = args.get(0);
 				Expr p = args.get(1);
 				Expr o = args.get(2);
-				newcq.addTriple(toTriple(s, p, o));				
+				newcq.addTriple(toTriple(s, p, o));
 			}
 			ret.add(newcq);
 		}
 		return ret;
-		
+
 	}
 
 	protected static Triple toTriple(Expr s, Expr p, Expr o  ) {
 		return new Triple(toNode(s), toNode(p), toNode(o));
 	}
-	
+
 	protected static E_Equals toEqualsFilter(Expr left, Expr right) {
 		Node ln = toNode(left);
 		org.apache.jena.sparql.expr.Expr le = ln.isVariable()? new ExprVar(ln.getName()) : new NodeValueNode(ln);
@@ -208,8 +208,8 @@ public class RuleSystemToQueries {
 		org.apache.jena.sparql.expr.Expr re = rn.isVariable()? new ExprVar(rn.getName()) : new NodeValueNode(rn);
 		return new E_Equals(new E_Str(le), new E_Str(re));
 	}
-	
-	
+
+
 	protected static E_NotEquals toNotEqualsFilter(Expr left, Expr right) {
 		Node ln = toNode(left);
 		org.apache.jena.sparql.expr.Expr le = ln.isVariable()? new ExprVar(ln.getName()) : new NodeValueNode(ln);
@@ -217,7 +217,7 @@ public class RuleSystemToQueries {
 		org.apache.jena.sparql.expr.Expr re = rn.isVariable()? new ExprVar(rn.getName()) : new NodeValueNode(rn);
 		return new E_NotEquals(le, re);
 	}
-	
+
 	protected static E_NotEquals toIRINotEqualsFilter(Expr left, Expr right) {
 		Node ln = toNode(left);
 		org.apache.jena.sparql.expr.Expr le = ln.isVariable()? new ExprVar(ln.getName()) : new NodeValueNode(ln);
@@ -225,7 +225,7 @@ public class RuleSystemToQueries {
 		org.apache.jena.sparql.expr.Expr re = rn.isVariable()? new ExprVar(rn.getName()) : new NodeValueNode(rn);
 		return new E_NotEquals(new E_Str(le), new E_Str(re));
 	}
-	
+
 	protected static Element processBoundFormula(AtomicFormula af) {
 		assert af.getPredicate().getName().equals(Rule.BUILT_IN_BOUND_VAR) : af;
 		assert af.getArity() >1 : af;
@@ -247,7 +247,7 @@ public class RuleSystemToQueries {
 		return ret;
 	}
 	protected static org.apache.jena.sparql.expr.Expr toJenaExpr(Expr e        ) {
-		
+
 		org.apache.jena.sparql.expr.Expr ret;
 		if(e.isVariable()) {
 			ret = new ExprVar(((VariableExpr)e).getName());
@@ -258,7 +258,7 @@ public class RuleSystemToQueries {
 		return ret;
 	}
 	protected static Node toNode(Expr e        ) {
-		
+
 		Node ret;
 		if(e.isVariable()) {
 			ret = NodeFactory.createVariable(((VariableExpr)e).getName());
@@ -275,7 +275,7 @@ public class RuleSystemToQueries {
 		}
 		return ret;
 	}
-	
+
 	protected static Pair<List<Triple>,  List<E_Equals>> instantiateBody(ConjunctiveQuery cq, List<? extends Expr> args ) {
 		List<Triple> triples = new LinkedList<Triple>();
 		List<E_Equals> filters = new LinkedList<E_Equals>();
@@ -283,7 +283,7 @@ public class RuleSystemToQueries {
 		List<String> resultVars = cq.getResultVars();
 		assert resultVars.size() == args.size() : resultVars+", " +args	;
 		for (int i=0;i<resultVars.size();i++) {
-			String  old = resultVars.get(i);	
+			String  old = resultVars.get(i);
 			Expr newE = args.get(i);
 			Node newN = toNode(newE);
 			oldVar2NewValue.put(old, newN);

@@ -25,7 +25,7 @@ public class ConsistencyCheckResult {
 
 	private Boolean consistent;
 	private Query inconsistencyDetectionAskQuery;
-	
+
 	ConsistencyCheckResult(boolean consistent) {
 		this.consistent = consistent;
 		inconsistencyDetectionAskQuery = null;
@@ -45,16 +45,16 @@ public class ConsistencyCheckResult {
 	 *  <li> {@link Boolean#TRUE} to indicate that an Abox cannot be inconsistent based on the analyzed QL Tbox</li>
 	 *  <li> {@link Boolean#FALSE} to indicate that the analyzed Tbox is inconsistent (regardless of the consisdered Abox)</li>
 	 *  <li> <code>null</code> to indicate that the consistency status depends of the content of the Abox. In this case,
-	 *  the method {@link #getInconsistencyDetectionAskQuery()} will return the ask query that needs to be evaluated against an Abox to 
-	 *  ascertain its inconsistency *  
+	 *  the method {@link #getInconsistencyDetectionAskQuery()} will return the ask query that needs to be evaluated against an Abox to
+	 *  ascertain its inconsistency *
 	 *   <li>
-	 * Tbox; 
+	 * Tbox;
 	 * @return
 	 */
 	public Boolean isConsistent() {
 		return consistent;
 	}
-	
+
 	/**
 	 * returns an ask query that should be evaluated against a Abox to determine whether is inconsistent.
 	 * The evaluation of the returned query against an Abox A yields <code>true</code> iff. A is inconsistent.
@@ -63,5 +63,5 @@ public class ConsistencyCheckResult {
 	public Query getInconsistencyDetectionAskQuery() {
 		return inconsistencyDetectionAskQuery;
 	}
-	
+
 }

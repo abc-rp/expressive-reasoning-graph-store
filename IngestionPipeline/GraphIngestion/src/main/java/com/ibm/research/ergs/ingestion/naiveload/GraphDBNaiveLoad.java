@@ -37,7 +37,7 @@ import com.ibm.research.ergs.ingestion.loader.ConstantParameters;
 /**
  * This class loads the RDF data in graph format in naive format. It does not apply any reasoning
  * technique (Forward Chaining) while loading
- * 
+ *
  * @author SumitNeelam (sumit.neelam@in.ibm.com)
  */
 
@@ -46,7 +46,7 @@ public class GraphDBNaiveLoad extends GraphDBBaseOperations implements GraphDBLo
 
   /**
    * Constructs {@link GraphDBNaiveLoad}
-   * 
+   *
    * @param g: graph traversal object for accessing graph.
    * @param connectionMode: direct mode or server mode.
    */
@@ -114,7 +114,7 @@ public class GraphDBNaiveLoad extends GraphDBBaseOperations implements GraphDBLo
 
   /**
    * This function creates outgoing edges of vertex
-   * 
+   *
    * @param vertex: source vertex
    * @param edges: outgoing edges of vertex
    */

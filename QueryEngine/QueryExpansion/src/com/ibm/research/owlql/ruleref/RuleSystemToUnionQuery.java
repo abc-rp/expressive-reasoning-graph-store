@@ -61,7 +61,7 @@ import com.ibm.research.owlql.rule.VariableExpr;
 import com.ibm.research.utils.OCUtils;
 
 public class RuleSystemToUnionQuery extends RuleSystemToQueries {
-	
+
 	public static class QueryWithRepeatedResultVars extends Query {
 
 		/**
@@ -87,8 +87,8 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 			public void add(Var var) {
 				 getVars().add(var) ;
 			}
-			
-			
+
+
 		}
 		public QueryWithRepeatedResultVars() {
 			super();
@@ -99,20 +99,20 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 			super(prologue);
 			projectVars = new QWRRV_VarExprList();
 		}
-		
+
 	}
-	
+
 	public static class VariableSubstitutionElementVisitor implements ElementVisitor, Binding  {
 
 		private Map<Var, Node> oldVar2NewValue;
 		private Element result;
-		
+
 		public VariableSubstitutionElementVisitor(
 				Map<Var, Node> oldVar2NewValue) {
 			super();
 			this.oldVar2NewValue = oldVar2NewValue;
 		}
-		
+
 		public Element getResult() {
 			return result;
 		}
@@ -126,12 +126,12 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 		public void addAll(Binding arg0) {
 			throw new UnsupportedOperationException();
 		}
-		
+
 		@Override
 		public Binding getParent() {
 			throw new UnsupportedOperationException();
 		}
-		
+
 		*/
 
 
@@ -150,7 +150,7 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 
 
 
-		
+
 
 
 
@@ -181,7 +181,7 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 			Var v = assign.getVar();
 			result = new ElementAssign(v, expr);
 		}
-		
+
 		@Override
 		public void visit(ElementBind eb) {
 			org.apache.jena.sparql.expr.Expr expr = eb.getExpr().copySubstitute(this);
@@ -201,20 +201,20 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 			arg.visit(this);
 			result = new ElementExists(result);
 		}
-		
+
 
 		@Override
 		public void visit(ElementMinus e) {
 			e.getMinusElement().visit(this);
 			result = new ElementMinus(result);
-			
+
 		}
 
 		/*@Override
 		public void visit(ElementFetch e) {
 			result = e;
 		}*/
-		
+
 
 		@Override
 		public void visit(ElementFilter filter) {
@@ -222,7 +222,7 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 			expr = expr.copySubstitute(this);
 			result = new ElementFilter(expr);
 		}
-		
+
 		@Override
 		public void visit(ElementData e) {
 			result = e;
@@ -249,7 +249,7 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 			} else {
 				result = new ElementNamedGraph(n, elt);
 			}
-			
+
 		}
 
 		@Override
@@ -257,7 +257,7 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 			Element arg = notExists.getElement();
 			arg.visit(this);
 			result = new ElementNotExists(result);
-			
+
 		}
 
 		@Override
@@ -265,7 +265,7 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 			Element elt = opt.getOptionalElement();
 			elt.visit(this);
 			result = new ElementOptional(result);
-			
+
 		}
 
 		@Override
@@ -320,13 +320,13 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 				ret.addElement(result);
 			}
 			result = ret;
-			
+
 		}
-		
+
 		public TriplePath copySubstitute(TriplePath triple) {
-			
+
 			Node newSubj = replace(triple.getSubject());
-			Node newObj =  replace(triple.getObject());			
+			Node newObj =  replace(triple.getObject());
 			Path path = triple.getPath();
 			TriplePath newTriple;
 			if (path!=null) {
@@ -341,13 +341,13 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 		}
 		public Triple copySubstitute(Triple triple) {
 			Node newSubj = replace( triple.getSubject());
-			Node newObj =  replace(triple.getObject());			
+			Node newObj =  replace(triple.getObject());
 			Node pred = replace(triple.getPredicate());
 			return new Triple(newSubj, pred, newObj);
-			
+
 
 		}
-		
+
 		protected Node replace(Node old) {
 			if (old!=null && old.isVariable()) {
 				Var var = Var.alloc(old);
@@ -358,7 +358,7 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 			}
 			return old;
 		}
-		
+
 	}
 	private static final Logger logger = LoggerFactory.getLogger(RuleSystemToUnionQuery.class);
 	public static Query  toUnionQuery(RuleSystem nonRecursiveSys) {
@@ -378,7 +378,7 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 		 pr.setRuleSystem(nonRecursiveSys);
 		 RuleSystem newSys = pr.convertDLPredicateToDBTablePredicate();
 		 logger.debug("Rulesystem after transformation of dl predicate: {}", newSys);
-		 
+
 		 String prefix =  OWLQLCompiler.UNBOUND_VARIABLE_PREFIX;
 		 int suffixStart = OCUtils.nextAvailableSuffixVariable(newSys.getAllVariableNames(), prefix	);
 		 NewVariableGenerator varGen = new NewVariableGenerator(prefix, suffixStart);
@@ -386,8 +386,8 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 		 ret.setDistinct(nonRecursiveSys.areResultsForMainHeadFormulaDistinct());
 		 return ret;
 	}
-	
-	
+
+
 	protected static Query getUnionQuery(RuleSystem rules, Predicate headPredicate,   Map<Predicate, Query> headPred2Query, NewVariableGenerator varGen) {
 		assert rules.isIDB(headPredicate) : headPredicate;
 		Query ret = headPred2Query.get(headPredicate);
@@ -396,7 +396,7 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 			if (relevantRules.size() == 1) {
 				ret = ruleToQuery(rules, relevantRules.iterator().next(), headPred2Query, varGen);
 			} else {
-				List<? extends Expr> firstRuleHeadVars = null; 
+				List<? extends Expr> firstRuleHeadVars = null;
 				for (Rule rule: rules.getRulesForHead(headPredicate)) {
 					Query q =  ruleToQuery(rules, rule, headPred2Query, varGen);
 					if (ret==null) {
@@ -420,7 +420,7 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 		}
 		return ret;
 	}
-	
+
 	protected static Query ruleToQuery(RuleSystem rules, Rule rule,
 			Map<Predicate, Query> headPred2Query, NewVariableGenerator varGen) {
 		Query cq = new QueryWithRepeatedResultVars();
@@ -428,7 +428,7 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 		for (Expr e: rule.getHead().getArguments()) {
 			 assert e.isVariable() : e;
 			 cq.addResultVar(((VariableExpr)e).getName());
-			
+
 		}
 		ElementGroup group = new ElementGroup();
 		cq.setQueryPattern(group);
@@ -447,35 +447,35 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 		 }
 		 return cq;
 	}
-	
-	
-		
-	
+
+
+
+
 	protected static Element instantiateBody(AtomicFormula newConjunct, List<? extends Expr> argsForNewConjunct) {
 		assert newConjunct.getArity() == argsForNewConjunct.size();
-		
+
 		if (Rule.isBuiltInPredicate(newConjunct.getPredicate())){
-			
+
 			if (newConjunct.getPredicate().getName().equals(Rule.BUILT_IN_EQUAL)) {
 				assert  newConjunct.getArity() == 2 : newConjunct.getArity();
-				ElementFilter filter= new ElementFilter(toEqualsFilter(newConjunct.getArguments().get(0), 
+				ElementFilter filter= new ElementFilter(toEqualsFilter(newConjunct.getArguments().get(0),
 					newConjunct.getArguments().get(1)));
 				return filter;
 			} else if  (newConjunct.getPredicate().getName().equals(Rule.BUILT_IN_IRI_EQUAL)) {
 				assert  newConjunct.getArity() == 2 : newConjunct.getArity();
-				ElementFilter filter= new ElementFilter(toIRIEqualsFilter(newConjunct.getArguments().get(0), 
+				ElementFilter filter= new ElementFilter(toIRIEqualsFilter(newConjunct.getArguments().get(0),
 					newConjunct.getArguments().get(1)));
 				return filter;
 			}
 			else if  (newConjunct.getPredicate().getName().equals(Rule.BUILT_IN_DIFF)) {
 				assert  newConjunct.getArity() == 2 : newConjunct.getArity();
-				ElementFilter filter= new ElementFilter(toNotEqualsFilter(newConjunct.getArguments().get(0), 
+				ElementFilter filter= new ElementFilter(toNotEqualsFilter(newConjunct.getArguments().get(0),
 					newConjunct.getArguments().get(1)));
 				return filter;
 			}
 			else if  (newConjunct.getPredicate().getName().equals(Rule.BUILT_IN_IRI_DIFF)) {
 				assert  newConjunct.getArity() == 2 : newConjunct.getArity();
-				ElementFilter filter= new ElementFilter(toIRINotEqualsFilter(newConjunct.getArguments().get(0), 
+				ElementFilter filter= new ElementFilter(toIRINotEqualsFilter(newConjunct.getArguments().get(0),
 					newConjunct.getArguments().get(1)));
 				return filter;
 			}
@@ -483,14 +483,14 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 				assert newConjunct.getPredicate().getName().equals(Rule.BUILT_IN_BOUND_VAR) : newConjunct;
 				return  processBoundFormula(newConjunct);
 			}
-			
+
 		} else {
 			assert newConjunct.getArity() == 3 : newConjunct;
 			List<? extends Expr> args = newConjunct.getArguments();
 			Expr s = args.get(0);
 			Expr p = args.get(1);
 			Expr o = args.get(2);
-			Triple triple = toTriple(s, p, o);	
+			Triple triple = toTriple(s, p, o);
 			ElementTriplesBlock ret = new ElementTriplesBlock();
 			ret.addTriple(triple);
 			return  ret;
@@ -498,28 +498,28 @@ public class RuleSystemToUnionQuery extends RuleSystemToQueries {
 	}
 
 
-	
+
 	protected static Element instantiateBody(Query cq, List<? extends Expr> args ) {
-		
+
 		Map<Var, Node> oldVar2NewValue = new HashMap<Var, Node>();
 		List<String> resultVars = cq.getResultVars();
 		Set<String> alreadySeenVars = new HashSet<String>();
-		
+
 		assert resultVars.size() == args.size() : resultVars+", " +args	;
 		for (int i=0;i<resultVars.size();i++) {
-			String  old = resultVars.get(i);	
+			String  old = resultVars.get(i);
 			if (alreadySeenVars.add(old)) {
 				Expr newE = args.get(i);
 				Node newN = toNode(newE);
 				oldVar2NewValue.put(Var.alloc(old), newN);
-			}		
+			}
 		}
 		VariableSubstitutionElementVisitor visitor = new VariableSubstitutionElementVisitor(oldVar2NewValue);
 		cq.getQueryPattern().visit(visitor);
 		Element result = visitor.getResult();
 		return result;
 	}
-	
+
 	/**
 	 * @param args
 	 */

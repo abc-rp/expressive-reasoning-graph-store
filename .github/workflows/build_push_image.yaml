@@ -1,0 +1,33 @@
+name: Build and Push Docker image
+on:
+  pull_request:
+    branches:
+      - main
+
+env:
+  DOCKERFILE_PATH: "./Dockerfile" # Set your Dockerfile path here
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Extract branch name
+        run: echo "BRANCH_NAME=${{ github.head_ref }}" >> $GITHUB_ENV
+
+      - name: Log in to ghcr.io
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build and tag image
+        run: |
+          COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
+          ARCHITECTURE="x86_64"
+          ROS_VERSION="ros1_noetic"
+          TAG="${ARCHITECTURE}-${ROS_VERSION}_${COMMIT_SHA}"
+          docker build --build-arg GH_PAT=${{ secrets.GH_PAT }} --build-arg BRANCH_NAME=${{ env.BRANCH_NAME }} -t ghcr.io/${{ github.repository }}:$TAG -f ${{ env.DOCKERFILE_PATH }} .
+          echo "tag=$TAG" >> $GITHUB_ENV
+
+      - name: Push image to GHCR
+        run: docker push ghcr.io/${{ github.repository }}:${{ env.tag }}

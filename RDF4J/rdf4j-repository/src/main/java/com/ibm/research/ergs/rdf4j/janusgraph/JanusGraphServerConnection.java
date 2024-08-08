@@ -130,7 +130,7 @@ public class JanusGraphServerConnection implements JanusGraphConnection {
 
   /**
    * Checks whether graph exists or not
-   * 
+   *
    * @return
    */
   public boolean isGraphExists() {

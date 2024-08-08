@@ -40,14 +40,14 @@ import com.ibm.research.owlql.rule.RuleSystem;
  *
  */
 public class RuleRenaming {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(RuleRenaming.class);
 	protected OWLDataFactory fac;
 	protected NormalizedOWLQLTbox tbox;
 	protected Set<OWLClass> classes;
 	protected Set<OWLObjectProperty> oprops;
 	protected Set<OWLDataProperty> dprops;
-	
+
 	public RuleRenaming(NormalizedOWLQLTbox tbox) {
 		super();
 		this.tbox = tbox;
@@ -59,11 +59,11 @@ public class RuleRenaming {
 
 	public Rule rename(Rule r) {
 		AtomicFormula newHead = r.getHead();//.clone();
-		List<AtomicFormula> newBody = new ArrayList<AtomicFormula>(r.getBody().size()); 
+		List<AtomicFormula> newBody = new ArrayList<AtomicFormula>(r.getBody().size());
 		for (AtomicFormula af: r.getBody()) {
 			Predicate newPred ;
-			
-			
+
+
 			if (af.getPredicate().getArity()==1) {
 				IRI predName = IRI.create(af.getPredicate().getName());
 				// arity 1 ==> it must be a class
@@ -75,8 +75,8 @@ public class RuleRenaming {
 					logger.warn("Unknown class in query: {}", owlclass);
 					newPred = new Predicate(predName.toString(), 1);
 				}
-				
-			} else if (af.getPredicate().getArity() ==2) {	
+
+			} else if (af.getPredicate().getArity() ==2) {
 				IRI predName = IRI.create(af.getPredicate().getName());
 				//assert af.getPredicate().getArity() ==2 : af.getPredicate().getArity();
 				// data or object property
@@ -96,14 +96,14 @@ public class RuleRenaming {
 				}
 			} else if (af.getPredicate() instanceof TriplePredicate) {
 				Expr e;
-				OWLClass c ; 
+				OWLClass c ;
 				// triple( *, ?X, conceptURI)  ---> conceptURI(*) && ?X = rdf:type
 				if( af.getArguments().get(1).isVariable()
 				&& (e=af.getArguments().get(2)).isConstant()){
 					ConstantExpr ce =(ConstantExpr) e;
 					if ((ce.getValue() instanceof URI)
 					&& tbox.getNormalizedOntology().getClassesInSignature().contains(c =tbox.getFactory().getOWLClass(IRI.create(ce.getValue().toString())))) {
-						// af to C(x) 
+						// af to C(x)
 						try {
 							newPred = new DLAnnotatedPredicate(c);
 							newBody.add(new AtomicFormula(newPred,af.getArguments().get(0)));
@@ -116,9 +116,9 @@ public class RuleRenaming {
 					}
 				}
 				newPred = af.getPredicate();
-				assert af.getArguments().get(1).isVariable() 
+				assert af.getArguments().get(1).isVariable()
 				|| (((ConstantExpr) af.getArguments().get(1)).getValue().equals(getRDFType()) && af.getArguments().get(2).isVariable()) : "Wildcard must either have a variable in predicate position or have rdf:type in predicate position and a variable as object\n"+af;
-				
+
 				/*if (af.getArguments().get(1).isVariable()) {
 					newPred = new TriplePredicate(af.getPredicate().getName());
 				} else if (((ConstantExpr) af.getArguments().get(1)).getValue().equals(getRDFType()) && af.getArguments().get(2).isVariable()) {
@@ -130,15 +130,15 @@ public class RuleRenaming {
 			} else {
 				newPred = new Predicate(af.getPredicate().getName(), af.getPredicate().getArity());
 				logger.warn("Unknown predicate: {}", af);
-				
+
 			}
 			//assert newPred!=null : af.getPredicate().getName() +" unknown DL atom";
 			newBody.add(new AtomicFormula(newPred, af.getArguments()));
 		}
 		return new Rule(newHead, newBody,r.getId());
-	
+
 	}
-	
+
 	public RuleSystem rename(RuleSystem rs) {
 		List<Rule> newRules = new ArrayList<Rule>(rs.getRules().size());
 		for (Rule r:rs.getRules()) {

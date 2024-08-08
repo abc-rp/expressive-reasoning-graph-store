@@ -15,18 +15,18 @@ import com.ibm.research.owlql.rule.RuleSystem;
 
 public interface IRDFStoreDBSchemaProcessor {
 
-	
+
 	public void setRuleSystem(RuleSystem rs);
-	public RuleSystem convertDLPredicateToDBTablePredicate(); 
-	
+	public RuleSystem convertDLPredicateToDBTablePredicate();
+
 	/**
 	 * definition of a table with a single column and a single row.
 	 *  We use that table to add in sql
-	 * query select statement that return a single constant value 
-	 * (e.g select 3 from singletonTable) 
+	 * query select statement that return a single constant value
+	 * (e.g select 3 from singletonTable)
 	 */
-	public CreatableTable getSingletonTable(); 
-	
+	public CreatableTable getSingletonTable();
+
 	public CreatableTable getDBTable(Predicate p);
-	
+
 }

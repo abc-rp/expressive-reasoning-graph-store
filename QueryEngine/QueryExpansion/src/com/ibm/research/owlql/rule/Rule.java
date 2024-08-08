@@ -35,14 +35,14 @@ public class Rule {
 	public final static  String BUILT_IN_EQUAL ="=";
 	public final static  String BUILT_IN_IRI_DIFF ="IRI!=";
 	public final static  String BUILT_IN_IRI_EQUAL ="IRI=";
-	
+
 	public final static  String BUILT_IN_LESSTHAN ="<";
 	public final static  String BUILT_IN_LESSTHAN_OR_EQUAL ="<=";
 	public final static  String BUILT_IN_GREATERTHAN =">";
 	public final static  String BUILT_IN_GREATERTHAN_OR_EQUAL =">=";
 	public final static  String BUILT_IN_UNBOUNDVAR ="NILLVAR";
 	/**Predicate whose first argument is a variable and the others arguments indicate the values
-	 * that this variable can take. 
+	 * that this variable can take.
 	 * @see BoundVariablePredicate
 	 */
 	public final static String BUILT_IN_BOUND_VAR ="boundVar";
@@ -85,7 +85,7 @@ public class Rule {
 			}
 		}
 		Set<VariableExpr> headVars =head.getAllVariables();
-		
+
 		//var2Occurrence.keySet().removeAll(q.getProjectedVariables());
 		for (VariableExpr pv : headVars) {
 			ret.remove(pv);
@@ -102,7 +102,7 @@ public class Rule {
 		Set<VariableExpr> tmpset = new HashSet<VariableExpr>();
 		for (AtomicFormula af : body) {
 			for (Expr e : af.getArguments()) {
-				if (e.isVariable() && !tmpset.add(e.asVariable())) ret.add(e.asVariable()); 
+				if (e.isVariable() && !tmpset.add(e.asVariable())) ret.add(e.asVariable());
 			}
 		}
 		return ret;
@@ -140,7 +140,7 @@ public class Rule {
 	public List<AtomicFormula> getBody() {
 		return body;
 	}
-	
+
 	/**
 	 * returns non-optional atomic formula in the body of the rule
 	 * @return
@@ -154,7 +154,7 @@ public class Rule {
 		}
 		return ret;
 	}
-	
+
 	public int getLastMandatoryFormulaPosition() {
 		int ret =0;
 		for (int i=0;i<body.size();i++) {
@@ -179,9 +179,9 @@ public class Rule {
 		return ret;
 	}
 	/**
-	 * each variable in the returned list appears only once. Furthermore, variables 
-	 * appears in the same order as in the rule. 
-	 * 
+	 * each variable in the returned list appears only once. Furthermore, variables
+	 * appears in the same order as in the rule.
+	 *
 	 * @return
 	 */
 	public List<VariableExpr> getAllRuleVariables() {
@@ -220,7 +220,7 @@ public class Rule {
 	public boolean equals(Object o) {
 		if (o==this) {
 			return true;
-		} 
+		}
 		if (o.getClass().equals(getClass())) {
 			Rule other = (Rule) o;
 			return head.equals(other.head)
@@ -228,11 +228,11 @@ public class Rule {
 		}
 		return false;
 	}
-	
+
 	public int hashCode() {
 		return head.hashCode()+31*body.hashCode();
 	}
-	
+
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
 		//buf.append("# Rule id = "+ id+"\n" );
@@ -247,31 +247,31 @@ public class Rule {
 				}
 			}
 		}
-		
+
 		return buf.toString();
 	}
-	
+
 	public static Rule parse(String s, int id) throws ParseException {
 		s=s.trim();
 		// logger.info("Rule: {}",s);
 		int entailSymb = s.indexOf(":-");
-		
+
 		if (entailSymb==0) {
 			throw new ParseException("':-' is not allowed at the beginning of a rule: "+s,0);
 		}
 		AtomicFormula headF;
 		if (entailSymb<0) {
 			headF = AtomicFormula.parse(s);
-			
+
 			//throw new ParseException("Missing ':-' in rule: "+s,0);
 			return new Rule(headF, new ArrayList<AtomicFormula>(0),id);
 		}
 		String head = s.substring(0,entailSymb);
 		headF = AtomicFormula.parse(head);
-		
+
 		if (entailSymb+3>= s.length()) {
 			throw new ParseException("':-' is not allowed at the end of a rule: "+s,0);
-			
+
 		}
 		String body = s.substring(entailSymb+3);
 		StringTokenizer tok = new StringTokenizer(body, "^");
@@ -295,7 +295,7 @@ public class Rule {
 		}
 		return ret;
 	}
-	
+
 
 	public Set<Predicate> getAllBodyPredicates() {
 		Set<Predicate> ret = new HashSet<Predicate>(body.size());
@@ -313,7 +313,7 @@ public class Rule {
 		}
 		return ret;
 	}
-	
+
 	public Set<VariableExpr> getVariablesInOrdinaryPredicates() {
 		Set<VariableExpr> ret = new HashSet<VariableExpr>();
 		for (Iterator<AtomicFormula> it=body.iterator();it.hasNext();) {
@@ -324,7 +324,7 @@ public class Rule {
 		}
 		return ret;
 	}
-	
+
 	public Set<VariableExpr> getVariablesInBuiltInPredicates() {
 		Set<VariableExpr> ret = new HashSet<VariableExpr>();
 		for (Iterator<AtomicFormula> it=body.iterator();it.hasNext();) {
@@ -335,15 +335,15 @@ public class Rule {
 		}
 		return ret;
 	}
-	
+
 	public boolean isUnsatisfiableBasedOnEquilityBetweenDifferentConstants() {
 		return !computeVariableEquivalenceClass(new HashMap<VariableExpr, Set<VariableExpr>>(), new HashMap<VariableExpr, ConstantExpr>());
 	}
-	/** 
+	/**
 	 * This methods iterates over formulas of the form  X=Y and X = const, where X and Y are variables and const is
 	 * a constant, and computes the equivalence class of each variable and the mapping from variable to constant.
-	 * It returns false if a variable is found to value two distinct values or if a formula of the form const1 = const2 
-	 * is found (where const1 and const2 are two distinct constants); otherwise it returns true. Note: the update to the 
+	 * It returns false if a variable is found to value two distinct values or if a formula of the form const1 = const2
+	 * is found (where const1 and const2 are two distinct constants); otherwise it returns true. Note: the update to the
 	 * two maps is only meaningful when the return value is true.
 	* */
 	protected boolean computeVariableEquivalenceClass(	Map<VariableExpr, Set<VariableExpr>> var2IdenticalVars,
@@ -365,7 +365,7 @@ public class Rule {
 			Set<VariableExpr> equiv2 = null;
 			if (arg1.isVariable()) {
 				var1 = (VariableExpr) arg1;
-				equiv1= var2IdenticalVars.get(var1); 
+				equiv1= var2IdenticalVars.get(var1);
 				if (equiv1==null) {
 					equiv1= new  HashSet<VariableExpr>();
 					var2IdenticalVars.put(var1, equiv1);
@@ -374,7 +374,7 @@ public class Rule {
 			}
 			if (arg2.isVariable()) {
 				var2 = (VariableExpr) arg2;
-				equiv2= var2IdenticalVars.get(var2); 
+				equiv2= var2IdenticalVars.get(var2);
 				if (equiv2==null) {
 					equiv2= new  HashSet<VariableExpr>();
 					var2IdenticalVars.put(var2, equiv2);
@@ -382,7 +382,7 @@ public class Rule {
 				equiv2.add(var2);
 			}
  			if (arg1.isConstant() || arg2.isConstant()) {
- 				
+
 				if (arg1.isVariable()) {
 					assert var1!=null: arg1;
 					ConstantExpr old = var2Constant.put(var1,(ConstantExpr)arg2 );
@@ -401,11 +401,11 @@ public class Rule {
 					// equality between two different constants
 					return false;
 				}
-				
+
 			} else {
 				equiv1.add(var2);
 				equiv2.add(var1);
-				
+
 			}
 		}
 		closureEquivalentClass(var2IdenticalVars);
@@ -422,12 +422,12 @@ public class Rule {
 					}
 				}
 			}
-				
+
 		}
 		//
 		return true;
 	}
-	
+
 	protected  static void closureEquivalentClass(Map<VariableExpr, Set<VariableExpr>> var2IdenticalVars) {
 		Set<VariableExpr> updated = new HashSet<VariableExpr>(var2IdenticalVars.keySet());
 		while (!updated.isEmpty()) {

@@ -18,9 +18,9 @@ package com.ibm.research.owlql.rule;
  */
 public class VariableExpr extends Expr{
 
-	
+
 	private String varName;
-	
+
 	public VariableExpr(String varName) {
 		super();
 		this.varName = varName;
@@ -41,7 +41,7 @@ public class VariableExpr extends Expr{
 	public void setName(String varName) {
 		this.varName = varName;
 	}
-	
+
 	@Override
 	public ConstantExpr asConstant() {
 		return null;
@@ -55,13 +55,13 @@ public class VariableExpr extends Expr{
 	public boolean equals(Object o) {
 		if (o==this) {
 			return true;
-		} 
+		}
 		if (o instanceof VariableExpr) {
 			return varName.equals(((VariableExpr)o).getName());
 		}
 		return false;
 	}
-	
+
 	public int hashCode() {
 		return varName.hashCode();
 	}
@@ -74,5 +74,5 @@ public class VariableExpr extends Expr{
 	public VariableExpr clone() {
 		return new VariableExpr(varName);
 	}
-	
+
 }

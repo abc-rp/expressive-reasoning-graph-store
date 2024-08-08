@@ -340,7 +340,7 @@ public class TaxonomyImpl implements Taxonomy {
 
   /**
    * check maximality wrt inverse
-   * 
+   *
    * @param roleCandidates
    * @return
    */
@@ -621,7 +621,7 @@ public class TaxonomyImpl implements Taxonomy {
    * map.get(k) = getMostGeneralSubsumees(classes, properties, 0,0,k) . NOTE: for k>=
    * minimalNumberOfConceptWildcardsToReport, map.get(k) may be null if
    * getMostGeneralSubsumees(classes, properties, 0,0,k).isEmpty().
-   * 
+   *
    * @param classes
    * @param properties
    * @param conceptWildcardsToProcess

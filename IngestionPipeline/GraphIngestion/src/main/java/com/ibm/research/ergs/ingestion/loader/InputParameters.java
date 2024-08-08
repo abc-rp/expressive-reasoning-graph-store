@@ -20,7 +20,7 @@ import java.util.Properties;
 
 /**
  * Class holds loading related setting and configuration options
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */

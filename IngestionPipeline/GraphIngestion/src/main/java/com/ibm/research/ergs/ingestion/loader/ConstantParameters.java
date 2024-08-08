@@ -16,7 +16,7 @@ package com.ibm.research.ergs.ingestion.loader;
 
 /**
  * This class contains internal (external user can't see these) loading related options.
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */

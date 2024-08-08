@@ -25,7 +25,7 @@ import org.janusgraph.core.JanusGraphFactory;
 
 /**
  * Class contains bulk loader function executed from docker environment.
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */

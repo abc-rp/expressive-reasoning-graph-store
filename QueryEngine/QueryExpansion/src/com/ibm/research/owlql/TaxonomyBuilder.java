@@ -37,7 +37,7 @@ public class TaxonomyBuilder<T> {
 		 */
 		public Set<T> getToldSubsumers(T sub);
 	}
-	
+
 	public class TaxoNode {
 		private T representative;
 		private int hashcode;
@@ -48,7 +48,7 @@ public class TaxonomyBuilder<T> {
 			addEquivalentElt(elt);
 			hashcode = computeHashCode();
 		}
-		
+
 		private void addEquivalentElt(T elt) {
 			equivElts.add(elt);
 			elt2Node.put(elt, this);
@@ -62,7 +62,7 @@ public class TaxonomyBuilder<T> {
 		public Iterator<? extends TaxoNode> getSubs() {
 			return lattice.getPredNodes(this);
 		}
-		
+
 		public Iterator<? extends TaxoNode> getSupers() {
 			return lattice.getSuccNodes(this);
 		}
@@ -97,7 +97,7 @@ public class TaxonomyBuilder<T> {
 				return false;
 			return true;
 		}
-		
+
 		private TaxonomyBuilder getOuterType() {
 			return TaxonomyBuilder.this;
 		}
@@ -106,23 +106,23 @@ public class TaxonomyBuilder<T> {
 			return "TaxoNode [representative=" + representative
 					+ ", equivElts=" + equivElts + "]";
 		}
-		
-		
+
+
 	}
-	
+
 	protected Graph<TaxoNode> lattice;
 	protected Map<T, TaxoNode> elt2Node;
 	protected Collection<? extends T> elements;
 	protected T top;
 	protected TaxoNode topNode;
 	protected T bottom;
-	protected TaxoNode bottomNode;	
+	protected TaxoNode bottomNode;
 	protected Map<T, Set<T>> elt2finalSubs;
 	protected Map<T, Set<T>> elt2finalSupers;
 	protected boolean built;
 	protected SubsumptionComputation<T> subcomputation;
-	
-	
+
+
 	public TaxonomyBuilder(Collection<? extends T> elements, T top, T bottom,
 			SubsumptionComputation<T> subcomputation) {
 		super();
@@ -141,17 +141,17 @@ public class TaxonomyBuilder<T> {
 		//TODO: Talk to Julian about using a better graph implementation
 		lattice =  new SlowSparseNumberedGraph<TaxoNode>(3);
 		// add top and bottom
-		Pair<TaxoNode, TaxoNode> p =addEdge(bottom, top);		
+		Pair<TaxoNode, TaxoNode> p =addEdge(bottom, top);
 		topNode = p.snd;
 		bottomNode = p.fst;
-	}	
-	
-	
+	}
+
+
 	protected Graph<TaxoNode> getLattice() {
 		return lattice;
 	}
 	/**
-	 * 
+	 *
 	 */
 	public Set<TaxoNode> getNodes() {
 		if (!built) {
@@ -171,7 +171,7 @@ public class TaxonomyBuilder<T> {
 		}
 		return elt2Node.get(t);
 	}
-	
+
 	public void build() {
 		//TODO: Talk to Julian about using a better graph implementation
 		Graph<T> toldSubsumerGraph =  new SlowSparseNumberedGraph<T>(3);
@@ -197,7 +197,7 @@ public class TaxonomyBuilder<T> {
 				int s1 = subcomputation.getToldSubsumers(t1).size();
 				return s0<s1? 1: s0==s1? 0: -1;
 			}
-			
+
 		});*/
 		//for (T c: elements) {
 		for (;sortedIt.hasNext();) {
@@ -210,7 +210,7 @@ public class TaxonomyBuilder<T> {
 				Set<TaxoNode> subsumers = topSearch(c);
 				Set<TaxoNode> subsumees = bottomSearch(c, subsumers);
 				TaxoNode nc = null;
-				// check if c is equivalent to one of its subsumers 
+				// check if c is equivalent to one of its subsumers
 				// or subsumes
 				Set<TaxoNode> subsumeAndSubsumer = new HashSet<TaxonomyBuilder<T>.TaxoNode>(subsumees);
 				subsumeAndSubsumer.retainAll(subsumers);
@@ -220,9 +220,9 @@ public class TaxonomyBuilder<T> {
 					// equivalence
 					equiv.addEquivalentElt(c);
 					nc = equiv;
-				}	 
+				}
 				//
-				
+
 				if (nc ==null) {
 					nc = addNode(c);
 				} else {
@@ -232,8 +232,8 @@ public class TaxonomyBuilder<T> {
 				for (TaxoNode sup: subsumers) {
 					assert !nc.equals(sup) /*|| nc == sup*/ : nc+"\n"+sup+"\n"+(nc==sup);
 					/*if (nc==sup) {
-						assert nc.getRepresentative().equals(top) 
-							|| nc.getRepresentative().equals(bottom); 
+						assert nc.getRepresentative().equals(top)
+							|| nc.getRepresentative().equals(bottom);
 					}*/
 					lattice.addEdge(nc, sup);
 					// remove edge (sub, sup) where sub is in the set of subsumees of nc
@@ -262,9 +262,9 @@ public class TaxonomyBuilder<T> {
 						}
 					}*/
 					//
-								
+
 				}
-			}		
+			}
 		}
 		built = true;
 	}
@@ -277,7 +277,7 @@ public class TaxonomyBuilder<T> {
 		}
 		return ret;
 	}
-	
+
 	protected Pair<TaxoNode, TaxoNode> addEdge(T sub, T sup) {
 		assert !sub.equals(sup) : sub+"\n"+sup;
 		TaxoNode subN = addNode(sub);
@@ -287,9 +287,9 @@ public class TaxonomyBuilder<T> {
 		}
 		return Pair.make(subN, supN);
 	}
-	
+
 	/**
-	 * performs the top search to find all the most specific subsumers of elt already in the 
+	 * performs the top search to find all the most specific subsumers of elt already in the
 	 * lattice
 	 * @param elt
 	 * @return
@@ -324,16 +324,16 @@ public class TaxonomyBuilder<T> {
 				TaxoNode sub = it.next();
 				boolean subIsKnownNonSubsumers = nonSubsumers.contains(sub);
 				if (discovered.contains(sub) && !subIsKnownNonSubsumers) {
-					// sub is known to be a subsumer of elt 
+					// sub is known to be a subsumer of elt
 					supFound = true;
 				} else	if (!subIsKnownNonSubsumers) {
-					assert comparisons.add(Pair.make(elt, sub.getRepresentative())) 
+					assert comparisons.add(Pair.make(elt, sub.getRepresentative()))
 					: comparisons+"\n"+elt+"\n"+sub.getRepresentative();
 					// not visited, status unknown
-					if (toldSubsumers.contains(sub) 
+					if (toldSubsumers.contains(sub)
 					|| subcomputation.isSubumedBy(elt, sub.getRepresentative())) {
 						queue.add(sub);
-						supFound = true;					
+						supFound = true;
 					} else {
 						getSubsumeesOrSelf(sub, nonSubsumers);
 					}
@@ -343,25 +343,25 @@ public class TaxonomyBuilder<T> {
 			if (!supFound) {
 				ret.add(t);
 			}
-			
+
 		}
 		return ret;
 	}
-	
+
 	/**
-	 * performs the bottom search to find all the most general subsumees of elt already in the 
+	 * performs the bottom search to find all the most general subsumees of elt already in the
 	 * lattice
 	 * @param elt
 	 * @return
 	 */
 	protected Set<TaxoNode> bottomSearch(T elt, Set<TaxoNode> topSearchSubsumers) {
-		
-		
+
+
 		Set<TaxoNode> ret = new HashSet<TaxoNode>();
 		Set<TaxoNode> nonSubsumees = new HashSet<TaxoNode>();
-		
+
 		for (TaxoNode n: topSearchSubsumers) {
-			// strict subsumers of topSearchSubsumers 
+			// strict subsumers of topSearchSubsumers
 			// not allowed
 			boolean self = nonSubsumees.contains(n);
 			getSubsumersOrSelf(n, nonSubsumees);
@@ -369,7 +369,7 @@ public class TaxonomyBuilder<T> {
 				nonSubsumees.remove(n);
 			}
 		}
-	
+
 		// check that two nodes are not compared more than once
 		boolean assertionsEnable = false;
 		assert assertionsEnable = true;
@@ -391,9 +391,9 @@ public class TaxonomyBuilder<T> {
 				boolean supIsKnownNonSubsumees = nonSubsumees.contains(sup);
 				if (discovered.contains(sup) && !supIsKnownNonSubsumees) {
 					// known to be a subsumee
-					subFound = true; 
+					subFound = true;
 				} else 	if (!supIsKnownNonSubsumees) {
-					assert comparisons.add(Pair.make(sup.getRepresentative(), elt)) 
+					assert comparisons.add(Pair.make(sup.getRepresentative(), elt))
 						: comparisons+"\n"+sup.getRepresentative()+"\n"+ elt ;
 					if (subcomputation.isSubumedBy(sup.getRepresentative(), elt)) {
 						queue.add(sup);
@@ -407,7 +407,7 @@ public class TaxonomyBuilder<T> {
 			if (!subFound) {
 				ret.add(t);
 			}
-			
+
 		}
 		return ret;
 	}
@@ -417,7 +417,7 @@ public class TaxonomyBuilder<T> {
 	protected void getSubsumersOrSelf(TaxoNode node, Set<TaxoNode> alreadyVisited) {
 		traverseLattice(node, alreadyVisited, false);
 	}
-	
+
 	protected void traverseLattice(TaxoNode node, Set<TaxoNode> alreadyVisited, boolean fromSuperToSub) {
 		if (alreadyVisited == null) {
 			alreadyVisited = new HashSet<TaxonomyBuilder<T>.TaxoNode>();
@@ -439,9 +439,9 @@ public class TaxonomyBuilder<T> {
 		//return ret;
 	}
 	/**
-	 * returns the direct and indirect subsumees of a given element. 
+	 * returns the direct and indirect subsumees of a given element.
 	 * Returns null if the element is not in the built taxonomy.
-	 * 
+	 *
 	 * NOTE: Should only be invoked after calling {@link #build()}.
 	 * @param sup
 	 * @return
@@ -453,7 +453,7 @@ public class TaxonomyBuilder<T> {
 		TaxoNode node = get(sup);
 		if (node == null ) {
 			return null;
-		}	
+		}
 		Set<T> ret = elt2finalSubs.get(sup);
 		if (ret == null) {
 			ret = new HashSet<T>();
@@ -466,9 +466,9 @@ public class TaxonomyBuilder<T> {
 		}
 		return ret;
 	}
-	
+
 	/**
-	 * returns the direct and indirect subsumers of a given element. 
+	 * returns the direct and indirect subsumers of a given element.
 	 * Returns null if the element is not in the built taxonomy.
 	 * NOTE: Should only be invoked after calling {@link #build()}.
 	 *
@@ -482,7 +482,7 @@ public class TaxonomyBuilder<T> {
 		TaxoNode node = get(sub);
 		if (node == null ) {
 			return null;
-		}	
+		}
 		Set<T> ret = elt2finalSupers.get(sub);
 		if (ret == null) {
 			ret = new HashSet<T>();
@@ -496,7 +496,7 @@ public class TaxonomyBuilder<T> {
 		return ret;
 	}
 	/**
-	 * returns whether sub is subsumes by sup. If sub or sup is not in the 
+	 * returns whether sub is subsumes by sup. If sub or sup is not in the
 	 * built taxonomy an RuntimeException is thrown
 	 * NOTE: Should only be invoked after calling {@link #build()}.
 	 *
@@ -516,7 +516,7 @@ public class TaxonomyBuilder<T> {
 		}
 		return getSubsumeesOrSelf(sup).contains(sub);
 	}
-	
+
 	public T getTop() {
 		return  top;
 	}
@@ -529,12 +529,12 @@ public class TaxonomyBuilder<T> {
 	public TaxoNode getBottomNode() {
 		return bottomNode;
 	}
-	
-	
-
-	
 
 
-	
+
+
+
+
+
 
 }

@@ -16,7 +16,7 @@ package com.ibm.research.ergs.ingestion.graphdb;
 
 /**
  * This class contains JanusGraph internal schema related constants
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */

@@ -25,7 +25,7 @@ import com.ibm.research.ergs.ingestion.graphdb.SchemaCreator;
 
 /**
  * This class contains data of input tbox ontology
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */
@@ -45,7 +45,7 @@ public class OntologyData {
 
   /**
    * gets super properties of property
-   * 
+   *
    * @param propName
    * @return
    */
@@ -55,7 +55,7 @@ public class OntologyData {
 
   /**
    * sets super properties of property
-   * 
+   *
    * @param objSuperProperties
    */
   public void setObjectSuperProperties(HashMap<String, HashSet<String>> objSuperProperties) {
@@ -177,7 +177,7 @@ public class OntologyData {
 
   /**
    * following function will be needed for version 2 release
-   * 
+   *
    * @param janusGraphConnection
    */
   public void writeSuperPropertiesSchemaInformation(JanusGraphConnection janusGraphConnection) {
@@ -226,4 +226,3 @@ public class OntologyData {
     logger.info(transitiveProperties.toString());
   }
 }
-

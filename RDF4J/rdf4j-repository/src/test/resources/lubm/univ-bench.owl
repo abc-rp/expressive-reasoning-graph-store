@@ -3,7 +3,7 @@
   xmlns = "http://swat.cse.lehigh.edu/onto/univ-bench.owl#"
   xml:base = "http://swat.cse.lehigh.edu/onto/univ-bench.owl"
   xmlns:rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
   xmlns:owl="http://www.w3.org/2002/07/owl#"
 >
 
@@ -41,11 +41,11 @@
 <owl:Class rdf:ID="Chair">
   <rdfs:label>chair</rdfs:label>
   <owl:intersectionOf rdf:parseType="Collection">
-  <owl:Class rdf:about="#Person" /> 
+  <owl:Class rdf:about="#Person" />
   <owl:Restriction>
-  <owl:onProperty rdf:resource="#headOf" /> 
+  <owl:onProperty rdf:resource="#headOf" />
   <owl:someValuesFrom>
-  <owl:Class rdf:about="#Department" /> 
+  <owl:Class rdf:about="#Department" />
   </owl:someValuesFrom>
   </owl:Restriction>
   </owl:intersectionOf>
@@ -76,9 +76,9 @@
   <rdfs:label>dean</rdfs:label>
   <owl:intersectionOf rdf:parseType="Collection">
   <owl:Restriction>
-  <owl:onProperty rdf:resource="#headOf" /> 
+  <owl:onProperty rdf:resource="#headOf" />
   <owl:someValuesFrom>
-  <owl:Class rdf:about="#College" /> 
+  <owl:Class rdf:about="#College" />
   </owl:someValuesFrom>
   </owl:Restriction>
   </owl:intersectionOf>
@@ -93,11 +93,11 @@
 <owl:Class rdf:ID="Director">
   <rdfs:label>director</rdfs:label>
   <owl:intersectionOf rdf:parseType="Collection">
-  <owl:Class rdf:about="#Person" /> 
+  <owl:Class rdf:about="#Person" />
   <owl:Restriction>
-  <owl:onProperty rdf:resource="#headOf" /> 
+  <owl:onProperty rdf:resource="#headOf" />
   <owl:someValuesFrom>
-  <owl:Class rdf:about="#Program" /> 
+  <owl:Class rdf:about="#Program" />
   </owl:someValuesFrom>
   </owl:Restriction>
   </owl:intersectionOf>
@@ -106,9 +106,9 @@
 <owl:Class rdf:ID="Employee">
   <rdfs:label>Employee</rdfs:label>
   <owl:intersectionOf rdf:parseType="Collection">
-  <owl:Class rdf:about="#Person" /> 
+  <owl:Class rdf:about="#Person" />
   <owl:Restriction>
-  <owl:onProperty rdf:resource="#worksFor" /> 
+  <owl:onProperty rdf:resource="#worksFor" />
   <owl:someValuesFrom>
   <owl:Class rdf:about="#Organization" />
   </owl:someValuesFrom>
@@ -133,12 +133,12 @@
 
 <owl:Class rdf:ID="GraduateStudent">
   <rdfs:label>graduate student</rdfs:label>
-  <rdfs:subClassOf rdf:resource="#Person" /> 
+  <rdfs:subClassOf rdf:resource="#Person" />
   <rdfs:subClassOf>
   <owl:Restriction>
-  <owl:onProperty rdf:resource="#takesCourse" /> 
+  <owl:onProperty rdf:resource="#takesCourse" />
   <owl:someValuesFrom>
-  <owl:Class rdf:about="#GraduateCourse" /> 
+  <owl:Class rdf:about="#GraduateCourse" />
   </owl:someValuesFrom>
   </owl:Restriction>
   </rdfs:subClassOf>
@@ -198,12 +198,12 @@
 
 <owl:Class rdf:ID="ResearchAssistant">
   <rdfs:label>university research assistant</rdfs:label>
-  <rdfs:subClassOf rdf:resource="#Person" /> 
+  <rdfs:subClassOf rdf:resource="#Person" />
   <rdfs:subClassOf>
   <owl:Restriction>
-  <owl:onProperty rdf:resource="#worksFor" /> 
+  <owl:onProperty rdf:resource="#worksFor" />
   <owl:someValuesFrom>
-  <owl:Class rdf:about="#ResearchGroup" /> 
+  <owl:Class rdf:about="#ResearchGroup" />
   </owl:someValuesFrom>
   </owl:Restriction>
   </rdfs:subClassOf>
@@ -231,11 +231,11 @@
 <owl:Class rdf:ID="Student">
   <rdfs:label>student</rdfs:label>
   <owl:intersectionOf rdf:parseType="Collection">
-  <owl:Class rdf:about="#Person" /> 
+  <owl:Class rdf:about="#Person" />
   <owl:Restriction>
-  <owl:onProperty rdf:resource="#takesCourse" /> 
+  <owl:onProperty rdf:resource="#takesCourse" />
   <owl:someValuesFrom>
-  <owl:Class rdf:about="#Course" /> 
+  <owl:Class rdf:about="#Course" />
   </owl:someValuesFrom>
   </owl:Restriction>
   </owl:intersectionOf>
@@ -249,11 +249,11 @@
 <owl:Class rdf:ID="TeachingAssistant">
   <rdfs:label>university teaching assistant</rdfs:label>
   <owl:intersectionOf rdf:parseType="Collection">
-  <owl:Class rdf:about="#Person" /> 
+  <owl:Class rdf:about="#Person" />
   <owl:Restriction>
-  <owl:onProperty rdf:resource="#teachingAssistantOf" /> 
+  <owl:onProperty rdf:resource="#teachingAssistantOf" />
   <owl:someValuesFrom>
-  <owl:Class rdf:about="#Course" /> 
+  <owl:Class rdf:about="#Course" />
   </owl:someValuesFrom>
   </owl:Restriction>
   </owl:intersectionOf>
@@ -464,8 +464,7 @@
 
 <owl:ObjectProperty rdf:ID="worksFor">
   <rdfs:label>Works For</rdfs:label>
-  <rdfs:subPropertyOf rdf:resource="#memberOf" />	
+  <rdfs:subPropertyOf rdf:resource="#memberOf" />
 </owl:ObjectProperty>
 
 </rdf:RDF>
-

@@ -27,14 +27,14 @@ import java.util.StringTokenizer;
 public class SPARQLFileParser {
 
 	/**
-	 * reads an input stream consisting of semicolon separated SPARQL queries, and returns the list of SPARQL 
+	 * reads an input stream consisting of semicolon separated SPARQL queries, and returns the list of SPARQL
 	 * queries as strings.
 	 * @param ins
 	 * @return
 	 * @throws IOException
 	 */
 	public static String[] readQueries(Reader ins) throws IOException {
-	
+
 		BufferedReader in = new BufferedReader(ins);
 		StringBuffer buf = new StringBuffer();
 		String line = null;
@@ -52,6 +52,6 @@ public class SPARQLFileParser {
 			}
 		}
 		return ret.toArray(new String[ret.size()]);
-		
+
 	}
 }

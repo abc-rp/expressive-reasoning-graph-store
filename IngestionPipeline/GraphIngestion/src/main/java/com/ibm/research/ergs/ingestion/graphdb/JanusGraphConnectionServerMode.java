@@ -36,7 +36,7 @@ import com.ibm.research.ergs.ingestion.naiveload.GraphDBNaiveLoad;
 
 /**
  * This is JanusGraphConnection interface implementation class for server mode loading.
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */
@@ -51,7 +51,7 @@ public class JanusGraphConnectionServerMode implements JanusGraphConnection {
 
   /**
    * Constructs {@link JanusGraphConnectionServerMode}
-   * 
+   *
    * @param client
    * @param graphName
    * @param tboxStream
@@ -173,7 +173,7 @@ public class JanusGraphConnectionServerMode implements JanusGraphConnection {
 
   /**
    * returns GraphTraversalSource object for accessing and modification of graph
-   * 
+   *
    * @return
    */
   private GraphTraversalSource getTraversal() {
@@ -185,7 +185,7 @@ public class JanusGraphConnectionServerMode implements JanusGraphConnection {
 
   /**
    * This function executes schema commands
-   * 
+   *
    * @param schemaCommands
    */
   public void executeSchemaCreationStatements(String schemaCommands) {

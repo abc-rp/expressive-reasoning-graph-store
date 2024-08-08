@@ -16,14 +16,14 @@ package com.ibm.research.ergs.ingestion.graphdb;
 
 /**
  * It holds scheme creation functions.
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */
 public interface SchemaCreator {
   /**
    * It creates JanusGraph property.
-   * 
+   *
    * @param propertyName: property name
    * @param propertyType: property datatype
    * @param multivalued: is multivalued
@@ -34,7 +34,7 @@ public interface SchemaCreator {
 
   /**
    * It creates JanusGraph indexed property.
-   * 
+   *
    * @param propertyName: property name
    * @param propertyType: property datatype
    * @param isUnique
@@ -46,7 +46,7 @@ public interface SchemaCreator {
 
   /**
    * It creates JanusGraph external indexed property.
-   * 
+   *
    * @param propertyName: property name
    * @param indexName: name of index in indexing backend
    * @param propertyType: property datatype
@@ -59,7 +59,7 @@ public interface SchemaCreator {
 
   /**
    * It creates JanusGraph indexed edge property.
-   * 
+   *
    * @param propertyName: property name
    * @param propertyType: property datatype
    * @param isUnique
@@ -70,14 +70,14 @@ public interface SchemaCreator {
 
   /**
    * It creates JanusGraph edge.
-   * 
+   *
    * @param edgeLabel
    */
   public void createEdgeLabel(String edgeLabel);
 
   /**
    * It creates JanusGraph simple edge, i.e., avoids parallel edge for edgeLabel.
-   * 
+   *
    * @param edgeLabel
    */
   public void createSimpleEdgeLabel(String edgeLabel);

@@ -39,7 +39,7 @@ import com.ibm.research.utils.OCUtils;
 
 public class OWLQLToNonRecursiveDatalogCompiler implements IOWLQLCompiler {
 
-	
+
 	//private static final String GENERATED_VAR_PRFIX ="genVar_";
 	private static final Logger logger = LoggerFactory.getLogger(OWLQLToNonRecursiveDatalogCompiler.class);
 	/**
@@ -81,7 +81,7 @@ public class OWLQLToNonRecursiveDatalogCompiler implements IOWLQLCompiler {
 			count++;
 		}
 	}
-	
+
 	protected NormalizedOWLQLTbox tbox;
 	protected RuleRenaming rename;
 	protected Split splitter;
@@ -124,12 +124,12 @@ public class OWLQLToNonRecursiveDatalogCompiler implements IOWLQLCompiler {
 			throw new RuntimeException(e);
 		}
 	}
-	  
-	
+
+
 	public RuleSystem compileToNonRecursiveDatalog(ConjunctiveQuery query) {
 		return compileToNonRecursiveDatalog(toRules(query));
 	}
-	
+
 	public RuleSystem compileToNonRecursiveDatalog(RuleSystem inputRs) {
 		boolean distinct = inputRs.areResultsForMainHeadFormulaDistinct();
 		RuleSystem rs = rename.rename(inputRs);
@@ -145,12 +145,12 @@ public class OWLQLToNonRecursiveDatalogCompiler implements IOWLQLCompiler {
 		if (rs2 == null) {
 			return null;
 		}
-		if (inputRs.getMainHeadFormula()!=null 
+		if (inputRs.getMainHeadFormula()!=null
 		&& rs2.getRulesForHead(inputRs.getMainHeadFormula().getPredicate()).isEmpty()) {
 			logger.debug("Main head formula elimitated: {}", inputRs.getMainHeadFormula());
 			return null;
 		}
-		
+
 		RuleSystem rulesystem = rs2;
 		List<Rule> newRules= rulesystem.getRules();
 		boolean hasChanged = true;
@@ -189,7 +189,7 @@ public class OWLQLToNonRecursiveDatalogCompiler implements IOWLQLCompiler {
 		if (rulesystem == null) {
 			return null;
 		}
-		if (inputRs.getMainHeadFormula()!=null 
+		if (inputRs.getMainHeadFormula()!=null
 		&& rulesystem.getRulesForHead(inputRs.getMainHeadFormula().getPredicate()).isEmpty()) {
 			logger.info("Main head formula elimitated: {}", inputRs.getMainHeadFormula());
 			return null;
@@ -197,13 +197,13 @@ public class OWLQLToNonRecursiveDatalogCompiler implements IOWLQLCompiler {
 		//logger.info("Compiled rule system:\n{}", rulesystem);
 		return new RuleSystem(rulesystem.getRules(), inputRs.getMainHeadFormula(), distinct);
 	}
-	
-	
+
+
 	public RuleSystem toRules(ConjunctiveQuery query) {
 		return new TriplesToRuleSystem(tbox).toRules(query);
-	} 
-	
-	
+	}
+
+
 	public ConsistencyCheckResult computeConsistencyCheck() {
 		return tbox.computeConsistencyCheck(taxo);
 	}
@@ -215,7 +215,7 @@ public class OWLQLToNonRecursiveDatalogCompiler implements IOWLQLCompiler {
 		return true;
 	}
 	public boolean canCompileToSQL(boolean returnIDs) {
-		return false; 
+		return false;
 	}
 	public RuleSystem compileToRules(ConjunctiveQuery q) {
 		return compileToNonRecursiveDatalog(q);
@@ -231,7 +231,7 @@ public class OWLQLToNonRecursiveDatalogCompiler implements IOWLQLCompiler {
 			return Collections.emptySet();
 		}
 	}
-	
+
 	@Override
 	public Query compileToUnionQuery(ConjunctiveQuery q) {
 		RuleSystem rules = compileToRules(q);
@@ -249,7 +249,7 @@ public class OWLQLToNonRecursiveDatalogCompiler implements IOWLQLCompiler {
 		return tbox;
 	}
 
-	
-	
-	
+
+
+
 }

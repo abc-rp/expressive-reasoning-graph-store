@@ -51,7 +51,7 @@ import com.ibm.wala.util.collections.HashSetFactory;
  */
 public class FindAllVariables implements ElementVisitor {
 
-	
+
 	/**
 	 * returns all variables mentioned in a query
 	 * @param query
@@ -70,7 +70,7 @@ public class FindAllVariables implements ElementVisitor {
 					ExprVars.varsMentioned(vars, e);
 				}
 			}
-			
+
 			if (query.hasAggregators() && query.getAggregators()!=null) {
 				for (ExprAggregator e: query.getAggregators()) {
 					ExprVars.varsMentioned(vars, e);
@@ -81,18 +81,18 @@ public class FindAllVariables implements ElementVisitor {
 			}
 			return vars;
 	}
-	
+
 	public static Set<Var> getAllVariables(Element e) {
 			Set<Var> vars = HashSetFactory.make();
 			FindAllVariables visitor = new FindAllVariables(vars);
 			e.visit(visitor);
 			return vars;
 	}
-	
-	
+
+
 	protected Collection<Var> vars;
-	
-	
+
+
 	public FindAllVariables(Collection<Var> vars) {
 		super();
 		this.vars = vars;
@@ -115,14 +115,14 @@ public class FindAllVariables implements ElementVisitor {
 		}
 		addVar(t.getObject());
 	}
-	
+
 	@Override
 	public void visit(ElementAssign e) {
 		addVar(e.getVar());
 		ExprVars.varsMentioned(vars, e.getExpr());
 	}
 
-	
+
 	@Override
 	public void visit(ElementBind e) {
 		addVar(e.getVar());
@@ -138,7 +138,7 @@ public class FindAllVariables implements ElementVisitor {
 	public void visit(ElementExists e) {
 		e.getElement().visit(this);
 	}
-	
+
 	/*@Override
 	public void visit(ElementFetch e) {
 		addVar(e.getFetchNode());
@@ -147,7 +147,7 @@ public class FindAllVariables implements ElementVisitor {
 	@Override
 	public void visit(ElementData ed) {
 		vars.addAll(ed.getVars());
-		
+
 	}
 
 	@Override
@@ -160,12 +160,12 @@ public class FindAllVariables implements ElementVisitor {
 		for (Element ge : e.getElements()) {
 			ge.visit(this);
 		}
-		
+
 	}
 
 	@Override
 	public void visit(ElementMinus e) {
-	
+
 		e.getMinusElement().visit(this);
 	}
 
@@ -185,7 +185,7 @@ public class FindAllVariables implements ElementVisitor {
 		e.getOptionalElement().visit(this);
 	}
 
-	
+
 
 	@Override
 	public void visit(ElementService e) {
@@ -197,7 +197,7 @@ public class FindAllVariables implements ElementVisitor {
 	public void visit(ElementSubQuery e) {
 		vars.addAll(PatternVars.vars(e));
 		e.getQuery().getQueryPattern().visit(this);
-		
+
 	}
 
 	@Override
@@ -205,7 +205,7 @@ public class FindAllVariables implements ElementVisitor {
 		for (Triple t: e.getPattern().getList()) {
 			addVars(t);
 		}
-		
+
 	}
 	@Override
 	public void visit(ElementPathBlock e) {
@@ -219,6 +219,6 @@ public class FindAllVariables implements ElementVisitor {
 			ge.visit(this);
 		}
 	}
-	
-	
+
+
 }

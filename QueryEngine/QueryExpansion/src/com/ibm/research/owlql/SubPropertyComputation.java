@@ -31,7 +31,7 @@ import com.ibm.wala.util.graph.Graph;
 public class SubPropertyComputation implements SubsumptionComputation<OWLPropertyExpression> {
 	private static final Logger logger = LoggerFactory.getLogger(SubPropertyComputation.class);
 
-	
+
 
 	public static void main(String[] args) throws Exception {
 		OWLOntology ont = OCUtils.load(args);
@@ -48,9 +48,9 @@ public class SubPropertyComputation implements SubsumptionComputation<OWLPropert
 				fac.getOWLObjectProperty(IRI.create("http://semantics.crl.ibm.com/univ-bench-dl.owl#isMemberOf")));
 		logger.info("univ#isStudentOf is subproperty of univ#isMemberOf: "+test);
 		*/
-		
+
 		TaxonomyBuilder<OWLPropertyExpression> taxoBuilder = new TaxonomyBuilder<OWLPropertyExpression>(
-				ont.getObjectPropertiesInSignature(), 
+				ont.getObjectPropertiesInSignature(),
 				fac.getOWLTopObjectProperty(),
 				fac.getOWLBottomObjectProperty(),
 				subcomp);
@@ -59,10 +59,10 @@ public class SubPropertyComputation implements SubsumptionComputation<OWLPropert
 
 		logger.info("{}", lattice);
 		logger.info("Number of direct subsumption tests performed: {}", subcomp.numOfDirectSubsumptionTests);
-		long size = ont.getObjectPropertiesInSignature().size(); 
+		long size = ont.getObjectPropertiesInSignature().size();
 		logger.info("Worst Case number of direct subsumption tests performed: {}^2 = {}",size, size*size);
-	
-		
+
+
 	}
 	private NormalizedOWLQLTbox tbox;
 	protected int numOfDirectSubsumptionTests;
@@ -104,6 +104,6 @@ public class SubPropertyComputation implements SubsumptionComputation<OWLPropert
 		}
 		return Collections.EMPTY_SET;
 	}
-	
-	
+
+
 }

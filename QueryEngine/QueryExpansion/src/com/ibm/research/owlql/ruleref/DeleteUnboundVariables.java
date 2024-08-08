@@ -41,14 +41,14 @@ public class DeleteUnboundVariables {
 		super();
 		this.fac = fac;
 	}
-	
+
 	public Rule deleteUnboundVariables(Rule r) {
-		Set<VariableExpr> uvars = new HashSet<VariableExpr>(r.getUnboundVariables()); 
+		Set<VariableExpr> uvars = new HashSet<VariableExpr>(r.getUnboundVariables());
 		if (uvars.isEmpty()) {
 			return r;
 		}
 		AtomicFormula newHead = r.getHead();
-		List<AtomicFormula> newBody = new LinkedList<AtomicFormula>(); 
+		List<AtomicFormula> newBody = new LinkedList<AtomicFormula>();
 		for (AtomicFormula af: r.getBody()) {
 			if (!(af.getPredicate() instanceof DLAnnotatedPredicate)) {
 				newBody.add(af);
@@ -71,7 +71,7 @@ public class DeleteUnboundVariables {
 				assert p.getPropertyAnnotation()!= null : p;
 				Expr e1 = af.getArguments().get(0);
 				Expr e2 = af.getArguments().get(1);
-				
+
 				if (!uvars.contains(e1) && !uvars.contains(e2)) {
 					newBody.add(af);
 				} else if (!uvars.contains(e1) && uvars.contains(e2)) {
@@ -82,15 +82,15 @@ public class DeleteUnboundVariables {
 						some =fac.getOWLObjectSomeValuesFrom( (OWLObjectPropertyExpression) prop, fac.getOWLThing());
 					} else {
 						some =fac.getOWLDataSomeValuesFrom( (OWLDataPropertyExpression) prop, fac.getTopDatatype());
-						
+
 					}
 					DLAnnotatedPredicate newPred = new DLAnnotatedPredicate(some, false);
 					newBody.add(new AtomicFormula(newPred, e1));
-					
+
 				} else if (uvars.contains(e1) && !uvars.contains(e2)) {
 					//p_R(unbound, bound) --> p_some(inv(R))(bound)
 					OWLPropertyExpression prop = p.getPropertyAnnotation();
-					OWLClassExpression some ; 
+					OWLClassExpression some ;
 					if (prop.isObjectPropertyExpression()) {
 						some =fac.getOWLObjectSomeValuesFrom( ((OWLObjectPropertyExpression) prop).getInverseProperty().getSimplified(), fac.getOWLThing());
 						DLAnnotatedPredicate newPred = new DLAnnotatedPredicate(some, false);
@@ -112,7 +112,7 @@ public class DeleteUnboundVariables {
 		}
 		return new Rule(newHead, newBody,r.getId());
 	}
-	
+
 	public RuleSystem deleteUnboundVariables(RuleSystem rs) {
 		List<Rule> newRules = new ArrayList<Rule>(rs.getRules().size());
 		for (Rule r:rs.getRules()) {

@@ -29,7 +29,7 @@ import com.ibm.research.ergs.ingestion.graphdb.JanusGraphConnection;
 
 /**
  * This is custom rdf reader listener class.
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */
@@ -45,7 +45,7 @@ class RDFReaderListener extends AbstractRDFHandler {
 
   /**
    * Constructs {@link RDFReaderListener}
-   * 
+   *
    * @param janusGraphConnection
    */
   public RDFReaderListener(JanusGraphConnection janusGraphConnection) {
@@ -77,7 +77,7 @@ class RDFReaderListener extends AbstractRDFHandler {
 
   /**
    * Checks whether statement is tbox or abox axiom
-   * 
+   *
    * @param st
    * @return
    */
@@ -140,7 +140,7 @@ class RDFReaderListener extends AbstractRDFHandler {
 
   /**
    * Thread class for parallel load
-   * 
+   *
    * @author Sumit Neelam (sumit.neelam@in.ibm.com)
    *
    */
