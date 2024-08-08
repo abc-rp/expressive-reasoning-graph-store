@@ -1,4 +1,4 @@
-- name: Deploy JanusGraph, Cassandra, and RDF4J with Podman
+- name: Deploy JanusGraph and RDF4J with Podman
   hosts: localhost
   tasks:
     - name: Create necessary volumes
@@ -7,36 +7,8 @@
         state: present
       loop:
         - data_index
-        - data_cass
         - data_rdf4j
         - bulkloading_data
-
-    - name: Run Cassandra container
-      containers.podman.podman_container:
-        name: ergo_cass
-        image: docker.io/cassandra:latest
-        state: started
-        user: root
-        env:
-          CASSANDRA_START_RPC: "true"
-        volumes:
-          - "data_cass:/var/lib/cassandra"
-        # healthcheck:
-        #   test: ["CMD-SHELL", "nodetool status || exit 1"]
-        #   interval: 30s
-        #   retries: 3
-
-    - name: Wait for Cassandra to initialize (1 minute delay)
-      wait_for:
-        timeout: 60
-
-    # - name: Wait for Cassandra to be ready
-    #   retries: 10
-    #   delay: 30
-    #   containers.podman.podman_container_info:
-    #     name: ergo_cass
-    #   register: cassandra_info
-    #   until: cassandra_info.containers[0].State.Health.Status == 'healthy'
 
     - name: Run JanusGraph container
       containers.podman.podman_container:
@@ -44,23 +16,15 @@
         image: docker.io/janusgraph/janusgraph:1.0.1-20240806-071648.ba2d662
         state: started
         user: root
+        privileged: true
         volumes:
-          - "{{ playbook_dir }}/docker/janusgraph/:/etc/opt/janusgraph/:ro"
           - "data_index:/var/lib/janusgraph/index"
         ports:
           - "8182:8182"
-        # healthcheck:
-        #   test: ["CMD-SHELL", "curl -f http://localhost:8182 || exit 1"]
-        #   interval: 30s
-        #   retries: 3
 
-    # - name: Wait for JanusGraph to be ready
-    #   retries: 10
-    #   delay: 30
-    #   containers.podman.podman_container_info:
-    #     name: ergo_janusgraph
-    #   register: janusgraph_info
-    #   until: janusgraph_info.containers[0].State.Health.Status == 'healthy'
+    - name: Wait for Janusgraph to initialize (1 minute delay)
+      wait_for:
+        timeout: 60
 
     - name: Run RDF4J container
       containers.podman.podman_container:
@@ -73,16 +37,4 @@
         volumes:
           - "data_rdf4j:/root/.RDF4J/"
           - "bulkloading_data:/usr/local/tomcat/bulkloading/data"
-          - "bulkloading/bulkload.properties:/usr/local/tomcat/bulkload.properties"
-        # healthcheck:
-        #   test: ["CMD-SHELL", "curl -f http://localhost:8080 || exit 1"]
-        #   interval: 30s
-        #   retries: 3
-
-    # - name: Wait for RDF4J to be ready
-    #   retries: 10
-    #   delay: 30
-    #   containers.podman.podman_container_info:
-    #     name: ergo_rdf4j
-    #   register: rdf4j_info
-    #   until: rdf4j_info.containers[0].State.Health.Status == 'healthy'
+          - "{{ playbook_dir }}/docker/bulkloading/bulkload.properties:/usr/local/tomcat/bulkload.properties"
