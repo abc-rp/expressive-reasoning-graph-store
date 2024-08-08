@@ -9,22 +9,30 @@
         - data_index
         - data_rdf4j
         - bulkloading_data
+        - data_janusgraph
+
+    - name: Create a custom network
+      containers.podman.podman_network:
+        name: custom_network
+        state: present
 
     - name: Run JanusGraph container
       containers.podman.podman_container:
         name: ergo_janusgraph
-        image: docker.io/janusgraph/janusgraph:1.0.1-20240806-071648.ba2d662
+        image: docker.io/janusgraph/janusgraph:latest
         state: started
         user: root
         privileged: true
+        network: custom_network
         volumes:
           - "data_index:/var/lib/janusgraph/index"
+          - "data_janusgraph:/var/lib/janusgraph/data"
         ports:
           - "8182:8182"
 
-    - name: Wait for Janusgraph to initialize (1 minute delay)
+    - name: Wait for JanusGraph to initialize
       wait_for:
-        timeout: 60
+        timeout: 10
 
     - name: Run RDF4J container
       containers.podman.podman_container:
@@ -32,6 +40,7 @@
         image: ghcr.io/abc-rp/expressive-reasoning-graph-store:rdf4j_af7caab
         state: started
         user: root
+        network: custom_network
         ports:
           - "8080:8080"
         volumes:
