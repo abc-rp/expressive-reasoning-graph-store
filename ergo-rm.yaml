@@ -1,0 +1,77 @@
+---
+- name: Stop and remove running JanusGraph, Cassandra, and RDF4J containers and volumes
+  hosts: localhost
+  tasks:
+    # - name: Stop and remove RDF4J container if running
+    #   containers.podman.podman_container_info:
+    #     name: ergo_rdf4j
+    #   register: rdf4j_info
+    #   failed_when: false
+
+    # - name: Stop RDF4J container
+    #   when: rdf4j_info.containers[0].State.Status == 'running'
+    #   containers.podman.podman_container:
+    #     name: ergo_rdf4j
+    #     state: stopped
+
+    # - name: Remove RDF4J container
+    #   when: rdf4j_info.containers[0].State.Status == 'running'
+    #   containers.podman.podman_container:
+    #     name: ergo_rdf4j
+    #     state: absent
+
+    # - name: Stop and remove JanusGraph container if running
+    #   containers.podman.podman_container_info:
+    #     name: ergo_janusgraph
+    #   register: janusgraph_info
+    #   failed_when: false
+
+    # - name: Stop JanusGraph container
+    #   when: janusgraph_info.containers[0].State.Status == 'running'
+    #   containers.podman.podman_container:
+    #     name: ergo_janusgraph
+    #     state: stopped
+
+    # - name: Remove JanusGraph container
+    #   when: janusgraph_info.containers[0].State.Status == 'running'
+    #   containers.podman.podman_container:
+    #     name: ergo_janusgraph
+    #     state: absent
+
+    # - name: Stop and remove Cassandra container if running
+    #   containers.podman.podman_container_info:
+    #     name: ergo_cass
+    #   register: cassandra_info
+    #   failed_when: false
+
+    # - name: Stop Cassandra container
+    #   when: cassandra_info.containers[0].State.Status == 'running'
+    #   containers.podman.podman_container:
+    #     name: ergo_cass
+    #     state: stopped
+
+    # - name: Remove Cassandra container
+    #   when: cassandra_info.containers[0].State.Status == 'running'
+    #   containers.podman.podman_container:
+    #     name: ergo_cass
+    #     state: absent
+
+    - name: Remove data_index volume
+      containers.podman.podman_volume:
+        name: data_index
+        state: absent
+
+    - name: Remove data_cass volume
+      containers.podman.podman_volume:
+        name: data_cass
+        state: absent
+
+    - name: Remove data_rdf4j volume
+      containers.podman.podman_volume:
+        name: data_rdf4j
+        state: absent
+
+    - name: Remove bulkloading_data volume
+      containers.podman.podman_volume:
+        name: bulkloading_data
+        state: absent

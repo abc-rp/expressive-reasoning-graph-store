@@ -23,7 +23,7 @@ jobs:
       - name: Build and tag image
         run: |
           COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
-          TAG="rdf4j_${COMMIT_SHA}"
+          TAG="rdf4j_ergo${COMMIT_SHA}"
           docker build -t ghcr.io/${{ github.repository }}:$TAG -f ${{ env.DOCKERFILE_PATH }} .
           echo "tag=$TAG" >> $GITHUB_ENV
 
