@@ -19,7 +19,7 @@ import java.util.Set;
 public class UniqueBindingPredicate extends Predicate {
 
 	private List<Integer> boundArguments;
-	
+
 	public static UniqueBindingPredicate createUniqueBindingPredicate(PredicateAdornment predAd) {
 		StringBuffer buf = new StringBuffer();
 		buf.append(predAd.getPredicate().getName()+"_");
@@ -43,7 +43,7 @@ public class UniqueBindingPredicate extends Predicate {
 	public UniqueBindingPredicate clone() {
 		return new UniqueBindingPredicate(getName(),getArity(), new ArrayList<Integer>(boundArguments), isNegated(), isOptional());
 	}
-	
+
 	public Predicate negate() {
 		return  new UniqueBindingPredicate(getName(),getArity(), new ArrayList<Integer>(boundArguments), !isNegated(), isOptional());
 	}
@@ -53,13 +53,13 @@ public class UniqueBindingPredicate extends Predicate {
 	public Predicate withoutQualification() {
 		return  new UniqueBindingPredicate(getName(),getArity(), new ArrayList<Integer>(boundArguments), false, false);
 	}
-	
+
 	UniqueBindingPredicate cloneWithNonZeroArity() {
 		return getArity()!=0?
 				new UniqueBindingPredicate(getName(),getArity(), new ArrayList<Integer>(boundArguments),isNegated(),isOptional())
 				:  new UniqueBindingPredicate(getName(),1, new ArrayList<Integer>(boundArguments), isNegated(), isOptional());
-				 
-		
+
+
 	}
 	public List<Integer> getBoundArguments() {
 		return Collections.unmodifiableList(boundArguments);
@@ -68,14 +68,14 @@ public class UniqueBindingPredicate extends Predicate {
 		return boundArguments.contains(pos);
 	}
 	List<VariableExpr> getBoundVariablesList(AtomicFormula f) {
-		
+
 		assert this.equals(f.getPredicate());
 		List<VariableExpr> ret = new ArrayList<VariableExpr>();
 		Set<VariableExpr> alreadySeenVars = new HashSet<VariableExpr>();
 		for (int i=0;i<f.getArguments().size();i++) {
 			Expr e = f.getArguments().get(i);
-			if (isBoundArgument(i) 
-			&& e.isVariable() 
+			if (isBoundArgument(i)
+			&& e.isVariable()
 			&& alreadySeenVars.add((VariableExpr) e)) {
 				ret.add((VariableExpr)e);
 			}
@@ -105,6 +105,6 @@ public class UniqueBindingPredicate extends Predicate {
 			return false;
 		return true;
 	}*/
-	
+
 
 }

@@ -33,7 +33,7 @@ import com.ibm.research.owlql.rule.VariableExpr;
 import com.ibm.research.utils.OCUtils;
 
 /**
- * 
+ *
  * @author fokoue
  *
  */
@@ -58,7 +58,7 @@ public class TriplesToRuleSystem {
 
   /**
    * converts a set of triples in a basic graph pattern into a rule system.
-   * 
+   *
    * @param triples the input set of triples
    * @param allVarNamesInQuery all the names of variables (including both variables appearing in the
    *        input set of triples and variables appearing in sparql query containing the input set of
@@ -81,7 +81,7 @@ public class TriplesToRuleSystem {
 
   /**
    * converts a set of triples in a basic graph pattern into a rule system.
-   * 
+   *
    * @param triples the input set of triples
    * @param resultVars set of results variables
    * @param allVarNamesInQuery all the names of variables (including both variables appearing in the
@@ -163,7 +163,7 @@ public class TriplesToRuleSystem {
 
   /**
    * converts a {@link Node} into an {l@ink Expr}
-   * 
+   *
    * @param n
    * @return
    */
@@ -186,7 +186,7 @@ public class TriplesToRuleSystem {
 
   /**
    * returns the next suffix that can be used for a variable without name conflict.
-   * 
+   *
    * @param vars
    * @param additionaVars
    * @param prefix
@@ -201,7 +201,7 @@ public class TriplesToRuleSystem {
 
   /**
    * returns the set of variables appearing in a set of triples
-   * 
+   *
    * @param triples
    * @return
    */

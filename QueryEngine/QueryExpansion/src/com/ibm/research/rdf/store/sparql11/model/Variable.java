@@ -16,12 +16,12 @@
 public class Variable {
    private boolean isSystemVariable;
 	private String name;
-	
+
 	public Variable(String name) {
 		this.name = name;
 		this.isSystemVariable = false;
 	}
-	
+
 	public Variable(String name, boolean isSystemVariable) {
      assert ! name.contains(":");
      this.name = name;
@@ -34,7 +34,7 @@ public class Variable {
 	   }
 
    public String getName() { return name; }
-	
+
 	public String toString() { return "?" + name; }
 
 	@Override
@@ -61,6 +61,6 @@ public class Variable {
 			return false;
 		return true;
 	}
-	
-	
+
+
 }

@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
 import uk.ac.manchester.cs.owl.owlapi.OWLDataFactoryImpl;
 
 /**
- * 
+ *
  * @author achille
  *
  */
@@ -116,7 +116,7 @@ public class OWLQLNormalizer {
   /**
    * whether for composite axioms (e.g. equivalence class axioms), sub axioms that can be converted
    * in QL should be converted.
-   * 
+   *
    */
   protected boolean bestEffort;
 
@@ -161,7 +161,7 @@ public class OWLQLNormalizer {
    * <li>reflexive(R), where R is a reflexive atomic property</li>
    * <li>irreflexive(R), where R is an irreflexive atomic property</li>
    * </ul>
-   * 
+   *
    * @param axioms list of axioms to normalize in QL form
    * @param nonQLAxioms nonQLAxioms will be added to this set if it is non-null
    * @return list of axioms in QL normal form
@@ -186,7 +186,7 @@ public class OWLQLNormalizer {
    * <li>reflexive(R), where R is a reflexive atomic property</li>
    * <li>irreflexive(R), where R is an irreflexive atomic property</li>
    * </ul>
-   * 
+   *
    * @param axioms list of axioms to normalize in QL form
    * @param nonQLAxioms nonQLAxioms will be added to this set if it is non-null
    * @return list of axioms in QL normal form
@@ -273,7 +273,7 @@ public class OWLQLNormalizer {
    * <li>subprop(R', R)</li>
    * <li>normalize(subclass(some(inv(R'), Top), C))</li>
    * </ul>
-   * 
+   *
    * @param ax
    * @return
    */

@@ -65,7 +65,7 @@ import com.ibm.research.owlql.ConjunctiveQuery;
 import com.ibm.research.rdf.store.sparql11.model.Variable;
 
 /**
- * 
+ *
  * @author achille
  *
  */
@@ -74,7 +74,7 @@ public class OCUtils {
 
   /**
    * filesAndDirectoriesToConvertToNTriples.
-   * 
+   *
    * @param args
    */
   public static void main(String[] args) {
@@ -304,7 +304,7 @@ public class OCUtils {
   /**
    * reads an input stream consisting of semicolon separated SPARQL queries, and returns the list of
    * SPARQL queries as strings.
-   * 
+   *
    * @param ins
    * @return
    * @throws IOException

@@ -35,7 +35,7 @@ import org.eclipse.rdf4j.rio.RDFParseException;
 
 /**
  * It is used for calculating cold and warm cache time for a given query
- * 
+ *
  * @author Udit Sharma
  *
  */
@@ -78,7 +78,7 @@ public class ComputeTime {
   }
 
   /**
-   * 
+   *
    * @param query SPARQL query string
    * @param conn Repository connection object
    * @return number of results for given query
@@ -104,7 +104,7 @@ public class ComputeTime {
   }
 
   /**
-   * 
+   *
    * @param query SPARQL SELECT query string
    * @param conn Repository connection object
    * @return number of results for given query
@@ -131,7 +131,7 @@ public class ComputeTime {
 
 
   /**
-   * 
+   *
    * @param query SPARQL ASK query string
    * @param conn Repository connection object
    * @return number of results for given query
@@ -147,7 +147,7 @@ public class ComputeTime {
 
 
   /**
-   * 
+   *
    * @param query SPARQL DESCRIBE/CONSTRUCT query string
    * @param conn Repository connection object
    * @return number of results for given query

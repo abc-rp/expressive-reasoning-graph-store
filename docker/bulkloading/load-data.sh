@@ -32,6 +32,3 @@ docker exec -it -w /usr/local/tomcat/IngestionPipeline/GraphIngestion ergo_rdf4j
 
 #delete the data from mapped directory
 rm -r $MAPPED_DATA_DIR/*
-
-
-

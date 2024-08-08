@@ -22,7 +22,7 @@ import org.eclipse.rdf4j.repository.config.RepositoryImplConfig;
 
 /**
  * {@link RepositoryFactory} for ERGS
- * 
+ *
  * @author Udit Sharma
  *
  */

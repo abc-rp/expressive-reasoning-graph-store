@@ -18,7 +18,7 @@ import com.ibm.research.owlql.rule.Predicate;
 
 /**
  * A predicate annotated with a DL role or concept expression.
- * 
+ *
  * @author achille
  *
  */

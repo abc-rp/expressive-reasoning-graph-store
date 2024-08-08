@@ -40,7 +40,7 @@ import com.ibm.research.ergs.ingestion.graphdb.JanusGraphConnectionServerMode;
  * This is Entry class for loading RDF data into property graph.It performs following tasks:
  * 1.Creates appropriate janusgraph connection instance through constructor. 2.Creates RDF4J parser
  * object. 3.Load input RDF data based on type of input source.
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */
@@ -52,7 +52,7 @@ public class LoadRDFData {
 
   /**
    * Constructs {@link LoadRDFData}
-   * 
+   *
    * @param janusGraph: janusgraph object for direct loading
    * @param properties: loading related configuration
    * @param tboxStream: tbox ontology file stream
@@ -64,7 +64,7 @@ public class LoadRDFData {
 
   /**
    * Constructs {@link LoadRDFData}
-   * 
+   *
    * @param client: client object for server based loaading
    * @param graphName: name of graph in server
    * @param properties: loading related configuration
@@ -77,7 +77,7 @@ public class LoadRDFData {
 
   /**
    * Constructs {@link LoadRDFData}
-   * 
+   *
    * @param janusGraph: janusgraph object for direct loading
    * @param properties: loading related configuration
    */
@@ -98,7 +98,7 @@ public class LoadRDFData {
   /**
    * This function gets graphName from janusgraph Configuration, for external indexing purpose. This
    * is used in direct loading.
-   * 
+   *
    * @param configuration: janusgraph configuration object
    * @return: graph Name
    */
@@ -117,7 +117,7 @@ public class LoadRDFData {
 
   /**
    * This function creates {@link RDFParser} object based on input format.
-   * 
+   *
    * @param format: input data format
    * @param rdfReaderListener: custom rdfReader Listener class object.
    * @return
@@ -134,7 +134,7 @@ public class LoadRDFData {
 
   /**
    * This function loads all files present in loadDirectory.
-   * 
+   *
    * @param loadDirectory: rdf files directory
    * @param rdfFormat: rdf data format
    * @param baseURI: baseURI of data.
@@ -156,7 +156,7 @@ public class LoadRDFData {
 
   /**
    * This function is used by loadDirectoryAllFiles() function for individual file loading.
-   * 
+   *
    * @param inputFile
    * @param rdfParser
    * @param baseURI
@@ -176,7 +176,7 @@ public class LoadRDFData {
 
   /**
    * This function loads single file.
-   * 
+   *
    * @param inputFile: input file
    * @param rdfFormat: rdf data format
    * @param baseURI: baseURI of data.
@@ -201,7 +201,7 @@ public class LoadRDFData {
 
   /**
    * loads data from from input stream
-   * 
+   *
    * @param in: input stream
    * @param format: rdf data format
    * @param baseURI: baseURI of data.
@@ -219,7 +219,7 @@ public class LoadRDFData {
 
   /**
    * loads data from reader object
-   * 
+   *
    * @param reader
    * @param format: rdf data format
    * @param baseURI: baseURI of data.
@@ -237,7 +237,7 @@ public class LoadRDFData {
 
   /**
    * loads individual rdf statement
-   * 
+   *
    * @param stmt
    */
   public void loadRDFStatement(Statement stmt) {

@@ -34,3 +34,5 @@ local.properties
 *.launch
 
 *.DS_Store
+
+/docker/janusgraph/*

@@ -17,15 +17,15 @@ public class PredicateAdornment implements Adornment {
 
 	private Predicate predicate;
 	private List<Integer> boundArguments;
-	
-	
+
+
 	public PredicateAdornment(Predicate predicate, List<Integer> boundArgumentPositions) {
 		super();
 		this.predicate = predicate;
 		this.boundArguments = boundArgumentPositions;
 		assert checkConsistency();
 	}
-	
+
 	public boolean checkConsistency() {
 		for (Iterator<Integer> it = boundArguments.iterator();it.hasNext();) {
 			int pos = it.next();
@@ -34,7 +34,7 @@ public class PredicateAdornment implements Adornment {
 				+") of the predicate " + predicate.getName();
 		}
 		return true;
-	} 
+	}
 
 	/**
 	 * returns the list of indexes of bound arguments (the first argument has index 0).
@@ -43,16 +43,16 @@ public class PredicateAdornment implements Adornment {
 	public List<Integer> getBoundArguments() {
 		return boundArguments;
 	}
-	
+
 	public boolean isBoundArgument(int pos) {
 		return boundArguments.contains(pos);
 	}
-	
+
 	/**
-	 * returns the list of free arguments. Note that list is 
+	 * returns the list of free arguments. Note that list is
 	 * compute as the difference between {@link AtomicFormula#getArguments()}
-	 * and {@link #getBoundArguments()}. Therefore, it should be 
-	 * recomputed if one of those two lists is updated. 
+	 * and {@link #getBoundArguments()}. Therefore, it should be
+	 * recomputed if one of those two lists is updated.
 	 * @return
 	 */
 	/*public List<VariableExpr> getFreeVariables() {
@@ -60,11 +60,11 @@ public class PredicateAdornment implements Adornment {
 		ret.removeAll(boundArguments);
 		return new ArrayList<VariableExpr>(ret);
 	}*/
-	
+
 	public boolean equals(Object o) {
 		if (o==this) {
 			return true;
-		} 
+		}
 		if (o instanceof PredicateAdornment) {
 			PredicateAdornment other =(PredicateAdornment)o;
 			return predicate.equals(other.predicate)
@@ -72,13 +72,13 @@ public class PredicateAdornment implements Adornment {
 		}
 		return false;
 	}
-	
+
 	public int hashCode() {
 		return predicate.hashCode()+ 31*boundArguments.hashCode();
 	}
 
 
-	
+
 	public Predicate getPredicate() {
 		return predicate;
 	}
@@ -104,9 +104,9 @@ public class PredicateAdornment implements Adornment {
 		return "PredicateAdornment [predicate=" + predicate
 				+ ", boundArguments=" + boundArguments + "]";
 	}
-	
-	
-	
-	
+
+
+
+
 
 }

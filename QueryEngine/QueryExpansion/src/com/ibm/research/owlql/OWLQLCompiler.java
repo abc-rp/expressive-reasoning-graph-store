@@ -44,7 +44,7 @@ import com.ibm.research.owlql.rule.RuleSystem;
 /**
  * Given a SPARQL conjunctive query, this OWLQL compiler reformulates it into a set of new
  * conjunctive queries to take into account relevant Tbox axioms
- * 
+ *
  * @author achille
  *
  */
@@ -65,7 +65,7 @@ public class OWLQLCompiler implements IOWLQLCompiler {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see com.ibm.research.owlql.IOWLQLComipler#getTBox()
    */
   @Override
@@ -194,7 +194,7 @@ public class OWLQLCompiler implements IOWLQLCompiler {
    * <li>R --> x R y</li>
    * <li>inv(R) --> y R x</li>
    * </ul>
-   * 
+   *
    */
   protected Triple toTriple(OWLPropertyExpression pe, Node x, Node y, NewVariableGenerator varGen) {
     return NormalizedOWLQLTbox.toTriple(pe, x, y, varGen);
@@ -207,7 +207,7 @@ public class OWLQLCompiler implements IOWLQLCompiler {
    * <li>some(R, top) --> x R ?y</li>
    * <li>some(inv(R), top) --> ?y R x</li>
    * </ul>
-   * 
+   *
    * @param lhsConcept
    * @param var
    * @return
@@ -302,7 +302,7 @@ public class OWLQLCompiler implements IOWLQLCompiler {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see com.ibm.research.owlql.IOWLQLComipler#compile(com.ibm.research.owlql.ConjunctiveQuery)
    */
   @Override
@@ -402,7 +402,7 @@ public class OWLQLCompiler implements IOWLQLCompiler {
   /**
    * Returns the result of the unification of two triples if they unify; otherwise, returns
    * <code>null</code>. This assumes unbounded query are already marked unbounded.
-   * 
+   *
    * @param t1 a triple in the conjunctive query q s.t t1 != t2
    * @param t2 a triple in the conjunctive query q s.t t1 != t2
    * @param q a conjunctive query
@@ -726,7 +726,7 @@ public class OWLQLCompiler implements IOWLQLCompiler {
   /**
    * returns all unbound variables (ie. variables that are not in the select clause and appear at
    * most once). Variables appear in the same order as in the query
-   * 
+   *
    * @param q
    * @return
    */

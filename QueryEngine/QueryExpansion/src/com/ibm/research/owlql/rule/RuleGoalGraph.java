@@ -19,21 +19,21 @@ import java.util.Set;
 
 public class RuleGoalGraph {
 
-	
-	
-	
+
+
+
 	private Map<Adornment, RuleGoalNode> adorn2Node;
 	private Set<RuleGoalNode> ruleNodes;
 	private Set<RuleGoalNode> goalNodes;
 	private RuleGoalNode topGoal;
-	
+
 	public RuleGoalGraph(PredicateAdornment goal) {
 		adorn2Node = new HashMap<Adornment, RuleGoalNode>();
 		ruleNodes = new HashSet<RuleGoalNode>();
 		goalNodes = new HashSet<RuleGoalNode>();
 		topGoal = add(goal);
 	}
-	
+
 	public RuleGoalNode get(Adornment ad) {
 		RuleGoalNode ret = adorn2Node.get(ad);
 		return ret;
@@ -63,5 +63,5 @@ public class RuleGoalGraph {
 	public Set<RuleGoalNode> getRuleNodes() {
 		return Collections.unmodifiableSet(ruleNodes);
 	}
-	
+
 }

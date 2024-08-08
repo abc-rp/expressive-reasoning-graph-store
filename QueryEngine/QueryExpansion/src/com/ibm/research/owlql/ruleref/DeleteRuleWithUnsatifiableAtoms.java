@@ -42,15 +42,15 @@ public class DeleteRuleWithUnsatifiableAtoms {
 	NormalizedOWLQLTbox tbox;
 	protected Set<OWLClassExpression> unsatisfiableClassExpressions;
 	protected Set<OWLPropertyExpression> unsatisfiablePropertyExpressions;
-	
-	
+
+
 	public DeleteRuleWithUnsatifiableAtoms(Taxonomy taxo, NormalizedOWLQLTbox tbox) {
 		super();
 		this.taxo = taxo;
 		this.tbox = tbox;
 		unsatisfiableClassExpressions = taxo.getUnsatisfiableClassExpressions();
 		unsatisfiablePropertyExpressions = taxo.getUnsatisfiablePropertyExpressions();
-		
+
 	}
 
 	/**
@@ -69,20 +69,20 @@ public class DeleteRuleWithUnsatifiableAtoms {
 	 */
 	protected Rule deleteRuleWithUnsatifiableAtoms(Rule r, Set<Predicate> unsatisfiablePredicates) {
 		List<AtomicFormula> newBody = new LinkedList<AtomicFormula>();
-		
+
 		for (AtomicFormula af : r.getBody()) {
 			if (unsatisfiablePredicates.contains(af.getPredicate())) {
 				return null;
 			}
 			if (af.getPredicate() instanceof ExistInverseDataPropertyAnnotatedPredicate) {
-				ExistInverseDataPropertyAnnotatedPredicate p = 
+				ExistInverseDataPropertyAnnotatedPredicate p =
 					(ExistInverseDataPropertyAnnotatedPredicate) af.getPredicate();
 				OWLDataProperty dprop = p.getProperty();
 				if (unsatisfiablePropertyExpressions.contains(dprop)) {
-					// dprop unsatisfiable 
+					// dprop unsatisfiable
 					logger.debug("Unsatisfiable formula : {}", af);
 					return null;
-				} 
+				}
 				if (tbox.getNormalizer().isGeneratedRole(dprop.getIRI().toString())) {
 					return null;
 				}
@@ -113,7 +113,7 @@ public class DeleteRuleWithUnsatifiableAtoms {
 		}
 		return new Rule(r.getHead(), newBody, r.getId());
 	}
-	
+
 	public String getName(OWLPropertyExpression propexp) {
 		String name;
 		if (!propexp.isAnonymous()) {
@@ -129,7 +129,7 @@ public class DeleteRuleWithUnsatifiableAtoms {
 		return name;
 	}
 	/**
-	 * returns the rule system after removing rules with unsatisfiable atoms. It returns <code>null</code> to indicate that all rules were eliminated 
+	 * returns the rule system after removing rules with unsatisfiable atoms. It returns <code>null</code> to indicate that all rules were eliminated
 	 *
 	 * @param rs
 	 *  @return
@@ -138,13 +138,13 @@ public class DeleteRuleWithUnsatifiableAtoms {
 		return deleteRuleWithUnsatifiableAtoms(rs,  null);
 	}
 	/**
-	 * returns the rule system after removing rules with unsatisfiable atoms. It returns <code>null</code> to indicate that all rules were eliminated 
+	 * returns the rule system after removing rules with unsatisfiable atoms. It returns <code>null</code> to indicate that all rules were eliminated
 	 * @param rs
 	 * @param outputUnsatisfiableHeadPredicates where unsatisfiable head predicates will be stored
 	 * @return
 	 */
 	public RuleSystem deleteRuleWithUnsatifiableAtoms(RuleSystem rs,Set<Predicate> outputUnsatisfiableHeadPredicates) {
-		
+
 		Set<Predicate> satisfiableZeroArityPredicates = new HashSet<Predicate>();
 		Set<Predicate> unsatisfiablePredicates = new HashSet<Predicate>();
 		List<Rule> rules = rs.getRules();
@@ -177,7 +177,7 @@ public class DeleteRuleWithUnsatifiableAtoms {
 			rules = newRules;
 			//compute new unsatisfiable predicates:
 			// head of removed rules that are no longer head of any new rules
-			// 
+			//
 			removedHeadPred.removeAll(newHeads);
 			unsatisfiablePredicates = removedHeadPred;
 			unsatisfiablePredicates.removeAll(newSatisfiableZeroArityPredicates);
@@ -194,7 +194,7 @@ public class DeleteRuleWithUnsatifiableAtoms {
 			}
 		} while ((!satisfiableZeroArityPredicates.isEmpty() || !unsatisfiablePredicates.isEmpty())
 				&& !rules.isEmpty());
-		
+
 		return rules.isEmpty()? null : new RuleSystem(rules);
 	}
 }

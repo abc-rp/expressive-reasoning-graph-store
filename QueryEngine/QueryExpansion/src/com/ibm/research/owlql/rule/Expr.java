@@ -21,31 +21,31 @@ import java.util.StringTokenizer;
 
 /**
  * An expression used as an argument of an {@link AtomicFormula}
- *  Note: In this simple implementation, there are only 
- *  two expressions: variables and constants. 
-	 
+ *  Note: In this simple implementation, there are only
+ *  two expressions: variables and constants.
+
  * @author <a href="mailto:achille@us.ibm.com">Achille Fokoue</a>
- * 
+ *
  */
 public abstract class Expr {
 
 	/**
-	 * whether this argument is a constant. 
-	 ** 
+	 * whether this argument is a constant.
+	 **
 	 * @return
 	 */
 	public abstract boolean isConstant();
-	
+
 	public abstract ConstantExpr asConstant();
 	/**
-	 * whether this argument is a variable. 
-	 ** 
+	 * whether this argument is a variable.
+	 **
 	 * @return
 	 */
 	public abstract boolean isVariable();
 	public abstract VariableExpr asVariable();
-	
-	
+
+
 	public static Expr parse(String s ) throws ParseException {
 		s=s.trim();
 		if (s.length()==0) {
@@ -54,7 +54,7 @@ public abstract class Expr {
 		int firstCh = s.charAt(0);
 		//
 		if (Character.isLetter(firstCh) ) {
-					
+
 			StringTokenizer tok= new StringTokenizer(s);
 			int numOfTokens = 0;
 			while(tok.hasMoreTokens()) {
@@ -64,15 +64,15 @@ public abstract class Expr {
 					throw new ParseException("Invalid variable: "+s,0);
 				}
 			}
-			return new VariableExpr(s);		
+			return new VariableExpr(s);
 		} else {
 			if (s.length()>1) {
 				if (s.startsWith("'") && s.endsWith("'")) {
 					return new ConstantExpr(s.substring(1,s.length()-1));
-				} 
+				}
 				if (s.startsWith("\"") && s.endsWith("\"")) {
 					return new ConstantExpr(s.substring(1,s.length()-1));
-				} 
+				}
 				if (s.startsWith("<") && s.endsWith(">")) {
 					try {
 						return new ConstantExpr(new URI(s.substring(1,s.length()-1)));
@@ -94,13 +94,13 @@ public abstract class Expr {
 				} catch (NumberFormatException ex) {
 					throw new ParseException("Invalid constant " + s, 0);
 				}
-				
-				
+
+
 			}
-				
+
 		}
 	}
-	
+
 	public abstract Expr clone();
-	
+
 }

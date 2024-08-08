@@ -45,7 +45,7 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 /**
  * This class contains functions to parse ontology file using JFact reasoner.
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */
@@ -55,7 +55,7 @@ public class JFactOntologyProcessor {
 
   /**
    * Constructs {@link JFactOntologyProcessor}
-   * 
+   *
    * @param stream
    * @return
    * @throws OWLOntologyCreationException
@@ -68,7 +68,7 @@ public class JFactOntologyProcessor {
 
   /**
    * Constructs {@link JFactOntologyProcessor}
-   * 
+   *
    * @param filePath
    * @return
    * @throws OWLOntologyCreationException
@@ -81,7 +81,7 @@ public class JFactOntologyProcessor {
 
   /**
    * processes input ontology
-   * 
+   *
    * @param ont
    * @return
    */

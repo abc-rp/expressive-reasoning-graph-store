@@ -21,8 +21,8 @@ import java.net.URI;
 public class ConstantExpr extends Expr {
 
 	private Object value;
-	
-	
+
+
 	public ConstantExpr(String value) {
 		super();
 		this.value = value;
@@ -61,10 +61,10 @@ public class ConstantExpr extends Expr {
 		return value;
 	}
 
-	
-	
-	
-	
+
+
+
+
 	@Override
 	public ConstantExpr asConstant() {
 		return this;
@@ -73,7 +73,7 @@ public class ConstantExpr extends Expr {
 	public VariableExpr asVariable() {
 		return null;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -102,7 +102,7 @@ public class ConstantExpr extends Expr {
 			return "'"+ value.toString()+"'";
 		} else if (value instanceof URI){
 			return "<"+value.toString()+">";
-		} 
+		}
 		return value.toString();
 	}
 	@Override
@@ -116,11 +116,11 @@ public class ConstantExpr extends Expr {
 		} else if (value instanceof URI) {
 			return new ConstantExpr((URI) value);
 		} else  {
-		
+
 			return new ConstantExpr(value.toString());
 		}
 	}
-	
-	
+
+
 
 }

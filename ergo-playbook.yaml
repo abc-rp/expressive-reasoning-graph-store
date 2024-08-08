@@ -1,0 +1,49 @@
+- name: Deploy JanusGraph and RDF4J with Podman
+  hosts: localhost
+  tasks:
+    - name: Create necessary volumes
+      containers.podman.podman_volume:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - data_index
+        - data_rdf4j
+        - bulkloading_data
+        - data_janusgraph
+
+    - name: Create a custom network
+      containers.podman.podman_network:
+        name: custom_network
+        state: present
+
+    - name: Run JanusGraph container
+      containers.podman.podman_container:
+        name: ergo_janusgraph
+        image: docker.io/janusgraph/janusgraph:latest
+        state: started
+        user: root
+        privileged: true
+        network: custom_network
+        volumes:
+          - "data_index:/var/lib/janusgraph/index"
+          - "data_janusgraph:/var/lib/janusgraph/data"
+        ports:
+          - "8182:8182"
+
+    - name: Wait for JanusGraph to initialize
+      wait_for:
+        timeout: 10
+
+    - name: Run RDF4J container
+      containers.podman.podman_container:
+        name: ergo_rdf4j
+        image: ghcr.io/abc-rp/expressive-reasoning-graph-store:rdf4j_af7caab
+        state: started
+        user: root
+        network: custom_network
+        ports:
+          - "8080:8080"
+        volumes:
+          - "data_rdf4j:/root/.RDF4J/"
+          - "bulkloading_data:/usr/local/tomcat/bulkloading/data"
+          - "{{ playbook_dir }}/docker/bulkloading/bulkload.properties:/usr/local/tomcat/bulkload.properties"

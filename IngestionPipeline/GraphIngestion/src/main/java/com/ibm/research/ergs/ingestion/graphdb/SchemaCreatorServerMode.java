@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * SchemaCreator implementation class for server mode execution.
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */
@@ -32,7 +32,7 @@ public class SchemaCreatorServerMode implements SchemaCreator {
 
   /**
    * Constructs {@link SchemaCreatorServerMode}
-   * 
+   *
    * @param janusGraphServerModeConnection
    */
   public SchemaCreatorServerMode(JanusGraphConnectionServerMode janusGraphServerModeConnection) {

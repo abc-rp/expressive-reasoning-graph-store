@@ -26,7 +26,7 @@ import com.ibm.research.ergs.ingestion.graphdb.SchemaCreator;
 
 /**
  * This class contains function for creating base graph schema.
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */
@@ -37,7 +37,7 @@ public class CreateGraphFoundationSchema {
 
   /**
    * Construcs {@link CreateGraphFoundationSchema} for direct load
-   * 
+   *
    * @param janusGraph
    */
   public CreateGraphFoundationSchema(JanusGraph janusGraph, InputStream tboxStream,
@@ -49,7 +49,7 @@ public class CreateGraphFoundationSchema {
 
   /**
    * Construcs {@link CreateGraphFoundationSchema} for server based load.
-   * 
+   *
    * @param client
    * @param graphName
    */

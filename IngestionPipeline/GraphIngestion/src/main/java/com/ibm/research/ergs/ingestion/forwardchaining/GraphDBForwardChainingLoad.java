@@ -43,7 +43,7 @@ import com.ibm.research.ergs.ingestion.loader.ConstantParameters;
 
 /**
  * This class contains function to load data with forward chaining enabled
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */
@@ -57,7 +57,7 @@ public class GraphDBForwardChainingLoad extends GraphDBBaseOperations implements
 
   /**
    * Constructs {@link GraphDBForwardChainingLoad}
-   * 
+   *
    * @param g
    * @param connectionMode
    * @param ontologyData
@@ -81,7 +81,7 @@ public class GraphDBForwardChainingLoad extends GraphDBBaseOperations implements
   /**
    * This function creates schema information for data super properties, object super properties and
    * inverse properties.
-   * 
+   *
    * @param schemaCreator
    */
   private void createAndWriteOntologySchemaSchema(SchemaCreator schemaCreator) {
@@ -162,7 +162,7 @@ public class GraphDBForwardChainingLoad extends GraphDBBaseOperations implements
 
   /**
    * It creates combined vertices for EquivalentClass axioms.
-   * 
+   *
    * @param equivalentClasses
    */
   private void createEquivalentClassVertices(HashMap<String, ArrayList<String>> equivalentClasses) {
@@ -177,7 +177,7 @@ public class GraphDBForwardChainingLoad extends GraphDBBaseOperations implements
 
   /**
    * This function creates class hierarchy vertices.
-   * 
+   *
    * @param superClasses
    */
   private void createClassHierarchyVertices(HashMap<String, ArrayList<String>> superClasses) {
@@ -210,7 +210,7 @@ public class GraphDBForwardChainingLoad extends GraphDBBaseOperations implements
 
   /**
    * It writes ontology data in the form of graph.
-   * 
+   *
    * @param ontologyData
    */
   public void writeOntologyData(SchemaCreator schemaCreator) {
@@ -554,7 +554,7 @@ public class GraphDBForwardChainingLoad extends GraphDBBaseOperations implements
 
   /**
    * It add super properties values of given propertyKey.
-   * 
+   *
    * @param vertex
    * @param propertyKey
    * @param propVal
@@ -574,7 +574,7 @@ public class GraphDBForwardChainingLoad extends GraphDBBaseOperations implements
 
   /**
    * It add outgoing edges from vertex with forward chaining enabled.
-   * 
+   *
    * @param vertex
    * @param edges
    * @throws Exception
@@ -620,7 +620,7 @@ public class GraphDBForwardChainingLoad extends GraphDBBaseOperations implements
 
   /**
    * This is main function for creating forward chaining enable edge.
-   * 
+   *
    * @param source
    * @param target
    * @param edgeLabel
@@ -731,7 +731,7 @@ public class GraphDBForwardChainingLoad extends GraphDBBaseOperations implements
 
   /**
    * Checks source and target are connected with edge of edgeLabel
-   * 
+   *
    * @param source
    * @param target
    * @param edgeLabel
@@ -753,7 +753,7 @@ public class GraphDBForwardChainingLoad extends GraphDBBaseOperations implements
 
   /**
    * This functions add edge between source and target with adding domain and range information
-   * 
+   *
    * @param source
    * @param target
    * @param edgeLabel
@@ -819,7 +819,7 @@ public class GraphDBForwardChainingLoad extends GraphDBBaseOperations implements
 
   /**
    * This function adds transitive relations from source to set of targetVertices
-   * 
+   *
    * @param source
    * @param targetVertices: map of target vertices <targer, isInferred>
    * @param edgeLabel
@@ -893,7 +893,7 @@ public class GraphDBForwardChainingLoad extends GraphDBBaseOperations implements
 
   /**
    * This function connects source node to type node with typeNodeId
-   * 
+   *
    * @param source
    * @param typeNodeID
    * @param edgeLabel
@@ -925,7 +925,7 @@ public class GraphDBForwardChainingLoad extends GraphDBBaseOperations implements
 
   /**
    * This function loads data for owl:sameAs for sourceID vertex.
-   * 
+   *
    * @param sourceID
    * @param sameAsList: list contains vertex connected to sourceID with owl:sameAs
    * @return
@@ -968,7 +968,7 @@ public class GraphDBForwardChainingLoad extends GraphDBBaseOperations implements
 
   /**
    * checks if vertex exists for propertyKey = propertyValue
-   * 
+   *
    * @param propertyKey
    * @param propertyValue
    * @return
@@ -984,7 +984,7 @@ public class GraphDBForwardChainingLoad extends GraphDBBaseOperations implements
 
   /**
    * This function merges two vertices. It merges smaller degree vertex to larger degree vertex
-   * 
+   *
    * @param v1
    * @param v2
    * @return

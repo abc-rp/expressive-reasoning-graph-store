@@ -100,7 +100,7 @@ public class JanusGraphEmbeddedConnection implements JanusGraphConnection {
 
   /**
    * It generates graph builder by fetching different {@link SystemConfig} properties
-   * 
+   *
    * @return janusgraph builder
    */
   private Builder getConfiguration() {
@@ -139,7 +139,7 @@ public class JanusGraphEmbeddedConnection implements JanusGraphConnection {
 
   /**
    * It checks whether the graph already exist in the database
-   * 
+   *
    * @return
    */
   private boolean isGraphExists() {

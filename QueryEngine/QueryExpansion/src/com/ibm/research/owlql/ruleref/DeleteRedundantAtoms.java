@@ -40,7 +40,7 @@ import com.ibm.research.owlql.rule.RuleSystem;
 public class DeleteRedundantAtoms {
 
 	private static final Logger logger = LoggerFactory.getLogger(DeleteRedundantAtoms.class);
-	
+
 	protected Taxonomy taxo;
 	protected OWLDataFactory fac;
 	protected DeleteUnboundVariables delUnboundVars;
@@ -62,7 +62,7 @@ public class DeleteRedundantAtoms {
 		/*if (true) {
 			return r;
 		}*/
-		//TODO: 
+		//TODO:
 		// REVISIT: implement the simplification rules involving zero arity atoms
 		//
 		Set<AtomicFormula> newBody = new HashSet<AtomicFormula>(r.getBody());
@@ -73,17 +73,17 @@ public class DeleteRedundantAtoms {
 				continue;
 			}
 			for (int j=0;j<r.getBody().size();j++) {
-				
+
 				AtomicFormula af2 = r.getBody().get(j);
 				Predicate p2 = af2.getPredicate();
 				if (af1 == af2
 				|| !newBody.contains(af2)) {
 					continue;
 				}
-				
+
 				if (af1.equals(af2)) {
 					newBody.remove(af2);
-					
+
 				} else if ( (p1 instanceof TriplePredicate)
 				&& (p2 instanceof TriplePredicate) ) {
 					Expr predVar1 = af1.getArguments().get(1);
@@ -92,14 +92,14 @@ public class DeleteRedundantAtoms {
 					Expr obj1 = af1.getArguments().get(2);
 					Expr subj2 = af2.getArguments().get(0);
 					Expr subj1 = af1.getArguments().get(0);
-					if ( (subj1.equals(subj2) || r.getUnboundVariables().contains(subj2))  
-					&& (predVar1.equals(predVar2)  || r.getUnboundVariables().contains(predVar2)) 
+					if ( (subj1.equals(subj2) || r.getUnboundVariables().contains(subj2))
+					&& (predVar1.equals(predVar2)  || r.getUnboundVariables().contains(predVar2))
 					&& (obj1.equals(obj2) || r.getUnboundVariables().contains(obj2)) ) {
-						// (u1, v1, w1) and (u2, v2, w2) and (u1 = u2 or u2 is an unbound variable) and 
+						// (u1, v1, w1) and (u2, v2, w2) and (u1 = u2 or u2 is an unbound variable) and
 						//(v1 = v2 or v2 is an unbound variable) and (w1=w2 or w2 is an unbound variable) ==> get rid of (u2, v2, w2)
 						newBody.remove(af2);
 						logger.debug("Redundant atom {} removed from rule : {}", af2, r);
-					} 
+					}
 				} else if ( (p1 instanceof DLAnnotatedPredicate)
 				&& p1.getArity()>0
 				&& (p2 instanceof TriplePredicate) ) {
@@ -122,7 +122,7 @@ public class DeleteRedundantAtoms {
 						|| !((OWLObjectPropertyExpression)prop1).getSimplified().isAnonymous()) {
 							subj1 = af1.getArguments().get(0);
 							obj1 = af1.getArguments().get(1);
-							predVar1 = new ConstantExpr( prop1.isDataPropertyExpression()? 
+							predVar1 = new ConstantExpr( prop1.isDataPropertyExpression()?
 									((OWLProperty) prop1).getIRI().toURI(): ((OWLObjectPropertyExpression)prop1).getSimplified().getNamedProperty().getIRI().toURI());
 						} else {
 							// inverse
@@ -132,19 +132,19 @@ public class DeleteRedundantAtoms {
 						}
 					}
 					//
-					
-					if ( (subj1.equals(subj2) || r.getUnboundVariables().contains(subj2)) 					
-					&& (predVar1.equals(predVar2)  || r.getUnboundVariables().contains(predVar2)) 
+
+					if ( (subj1.equals(subj2) || r.getUnboundVariables().contains(subj2))
+					&& (predVar1.equals(predVar2)  || r.getUnboundVariables().contains(predVar2))
 					&& obj1!=null && (obj1.equals(obj2) || r.getUnboundVariables().contains(obj2)) ) { // obj1 ==null for C(u) with C a complex class
 						// (u1, v1, w1) and (u2, v2, w2) and (u1=u2 or u2 is an unbound variable)
 						// and (v1 = v2 or v2 is an unbound variable) and (w1=w2 or w2 is an unbound variable) ==> get rid of (u2, v2, w2)
 						newBody.remove(af2);
 						logger.debug("Redundant atom {} removed from rule : {}", af2, r);
-						
+
 					}
-					
+
 				}
-				
+
 				if (!(p1 instanceof DLAnnotatedPredicate)
 				|| !(p2 instanceof DLAnnotatedPredicate)) {
 					continue;
@@ -153,11 +153,11 @@ public class DeleteRedundantAtoms {
 				DLAnnotatedPredicate dlp2 = (DLAnnotatedPredicate) p2;
 				OWLPropertyExpression prop1 = dlp1.getPropertyAnnotation();
 				OWLPropertyExpression prop2 = dlp2.getPropertyAnnotation();
-				
+
 				if (af1.getArguments().equals(af2.getArguments())) {
 					if (af1.getPredicate().getArity() == 2) {
 						// p1_R(a, b) and p2_S(a, b) and R <= S  ==> get rid of p2_S(a,b)
-						
+
 						if (taxo.isSubProperty(prop1, prop2)) {
 							newBody.remove(af2);
 							logger.debug("Redundant atom {} removed from rule : {}", af2, r);
@@ -173,7 +173,7 @@ public class DeleteRedundantAtoms {
 								newBody.remove(af2);
 								logger.debug("Redundant atom {} removed from rule : {}", af2, r);
 							}
-							
+
 						} else if (!onlyOneInstanceOfExistInvDataPropAnnotedPredicate(dlp1, dlp2)) {
 							// normal case
 							if (taxo.isSubClass(dlp1.getClassAnnotation(),dlp2.getClassAnnotation())) {
@@ -184,7 +184,7 @@ public class DeleteRedundantAtoms {
 						}
 						//
 					}
-					
+
 				} else {
 					if (af1.getArity() == 2 && af2.getArity() ==2 ) {
 						if (prop1.isObjectPropertyExpression() && prop2.isObjectPropertyExpression()
@@ -226,7 +226,7 @@ public class DeleteRedundantAtoms {
 								}
 								//
 							} else {
-								// general case 
+								// general case
 								if (prop1.isObjectPropertyExpression()) {
 									OWLObjectSomeValuesFrom some = fac.getOWLObjectSomeValuesFrom(
 											((OWLObjectPropertyExpression) prop1).getInverseProperty().getSimplified(),
@@ -240,7 +240,7 @@ public class DeleteRedundantAtoms {
 						}
 					}
 				}
-				
+
 			}
 		}
 		Rule newRule = new Rule(r.getHead(), new LinkedList<AtomicFormula>(newBody), r.getId());

@@ -45,8 +45,8 @@ public class DeleteRuleWithConceptOrPropertyNotInAbox {
 	NormalizedOWLQLTbox tbox;
 	protected Set<String> conceptsAbsentFromAbox;
 	protected Set<String> propertiesAbsentFromAbox;
-	
-	
+
+
 	public DeleteRuleWithConceptOrPropertyNotInAbox(Taxonomy taxo, NormalizedOWLQLTbox tbox,  Set<String> conceptURIsInAbox, Set<String> propertyURIsInAbox) {
 		super();
 		this.taxo = taxo;
@@ -60,7 +60,7 @@ public class DeleteRuleWithConceptOrPropertyNotInAbox {
 				}
 			}
 		}
-		
+
 		if (propertyURIsInAbox!=null) {
 			for (OWLObjectProperty prop : tbox.getNormalizedOntology().getObjectPropertiesInSignature()) {
 				if (!propertyURIsInAbox.contains(prop.getIRI().toString())) {
@@ -91,12 +91,12 @@ public class DeleteRuleWithConceptOrPropertyNotInAbox {
 	 */
 	protected Rule deleteRuleWithConceptOrPropertyNotInAbox(Rule r, Set<Predicate> unsatisfiablePredicates) {
 		List<AtomicFormula> newBody = new LinkedList<AtomicFormula>();
-		
+
 		for (AtomicFormula af : r.getBody()) {
 			if (unsatisfiablePredicates.contains(af.getPredicate())) {
 				return null;
 			}
-			if (!(af.getPredicate() instanceof ExistInverseDataPropertyAnnotatedPredicate) 
+			if (!(af.getPredicate() instanceof ExistInverseDataPropertyAnnotatedPredicate)
 				&& !(af.getPredicate() instanceof DLAnnotatedPredicate)) {
 				String name = af.getPredicate().getName();
 				if (conceptsAbsentFromAbox.contains(name) || propertiesAbsentFromAbox.contains(name) ) {
@@ -106,12 +106,12 @@ public class DeleteRuleWithConceptOrPropertyNotInAbox {
 					return null;
 				}
 
-			} 
+			}
 			newBody.add(af);
 		}
 		return new Rule(r.getHead(), newBody, r.getId());
 	}
-	
+
 	public String getName(OWLPropertyExpression propexp) {
 		String name;
 		if (!propexp.isAnonymous()) {
@@ -126,7 +126,7 @@ public class DeleteRuleWithConceptOrPropertyNotInAbox {
 		}
 		return name;
 	}
-	
+
 	public OWLProperty getNamedProperty(OWLPropertyExpression propexp) {
 		OWLProperty ret;
 		if (!propexp.isAnonymous()) {
@@ -141,11 +141,11 @@ public class DeleteRuleWithConceptOrPropertyNotInAbox {
 		}
 		return ret;
 	}
-	
-	
-	
+
+
+
 	/**
-	 * returns the rule system after removing rules with unsatisfiable atoms. It returns <code>null</code> to indicate that all rules were eliminated 
+	 * returns the rule system after removing rules with unsatisfiable atoms. It returns <code>null</code> to indicate that all rules were eliminated
 	 *
 	 * @param rs
 	 *  @return
@@ -154,13 +154,13 @@ public class DeleteRuleWithConceptOrPropertyNotInAbox {
 		return deleteRuleWithConceptOrPropertyNotInAbox(rs,  null);
 	}
 	/**
-	 * returns the rule system after removing rules with concepts or properties not memtioned in the instance data. It returns <code>null</code> to indicate that all rules were eliminated 
+	 * returns the rule system after removing rules with concepts or properties not memtioned in the instance data. It returns <code>null</code> to indicate that all rules were eliminated
 	 * @param rs
 	 * @param outputUnsatisfiableHeadPredicates where unsatisfiable head predicates will be stored
 	 * @return
 	 */
 	public RuleSystem deleteRuleWithConceptOrPropertyNotInAbox(RuleSystem rs,Set<Predicate> outputUnsatisfiableHeadPredicates) {
-		
+
 		Set<Predicate> satisfiableZeroArityPredicates = new HashSet<Predicate>();
 		Set<Predicate> unsatisfiablePredicates = new HashSet<Predicate>();
 		List<Rule> rules = rs.getRules();
@@ -193,7 +193,7 @@ public class DeleteRuleWithConceptOrPropertyNotInAbox {
 			rules = newRules;
 			//compute new unsatisfiable predicates:
 			// head of removed rules that are no longer head of any new rules
-			// 
+			//
 			removedHeadPred.removeAll(newHeads);
 			unsatisfiablePredicates = removedHeadPred;
 			unsatisfiablePredicates.removeAll(newSatisfiableZeroArityPredicates);
@@ -210,7 +210,7 @@ public class DeleteRuleWithConceptOrPropertyNotInAbox {
 			}
 		} while ((!satisfiableZeroArityPredicates.isEmpty() || !unsatisfiablePredicates.isEmpty())
 				&& !rules.isEmpty());
-		
+
 		return rules.isEmpty()? null : new RuleSystem(rules);
 	}
 }

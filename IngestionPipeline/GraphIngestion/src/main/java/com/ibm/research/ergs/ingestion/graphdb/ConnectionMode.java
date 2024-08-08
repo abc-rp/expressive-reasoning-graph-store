@@ -17,7 +17,7 @@ package com.ibm.research.ergs.ingestion.graphdb;
 /**
  * This enum is used for loading connection mode. Current loading support direct and server based
  * connection mode.
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */

@@ -1,0 +1,42 @@
+- name: Tear down JanusGraph and RDF4J containers and remove volumes
+  hosts: localhost
+  tasks:
+    - name: Stop JanusGraph container
+      containers.podman.podman_container:
+        name: ergo_janusgraph
+        state: stopped
+
+    - name: Remove JanusGraph container
+      containers.podman.podman_container:
+        name: ergo_janusgraph
+        state: absent
+
+    - name: Stop RDF4J container
+      containers.podman.podman_container:
+        name: ergo_rdf4j
+        state: stopped
+
+    - name: Remove RDF4J container
+      containers.podman.podman_container:
+        name: ergo_rdf4j
+        state: absent
+
+    - name: Remove data_index volume
+      containers.podman.podman_volume:
+        name: data_index
+        state: absent
+
+    - name: Remove data_janusgraph volume
+      containers.podman.podman_volume:
+        name: data_janusgraph
+        state: absent
+
+    - name: Remove data_rdf4j volume
+      containers.podman.podman_volume:
+        name: data_rdf4j
+        state: absent
+
+    - name: Remove bulkloading_data volume
+      containers.podman.podman_volume:
+        name: bulkloading_data
+        state: absent

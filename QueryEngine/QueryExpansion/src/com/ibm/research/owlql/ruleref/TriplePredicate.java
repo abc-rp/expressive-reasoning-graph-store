@@ -46,9 +46,9 @@ public class TriplePredicate extends Predicate {
 		}
 		return ret;
 	}
-	
-	
-	
+
+
+
 	public TriplePredicate() {
 		super(TRIPLE_PREDICATE, 3);
 	}

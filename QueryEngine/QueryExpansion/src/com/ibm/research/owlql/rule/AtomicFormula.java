@@ -30,10 +30,10 @@ import java.util.StringTokenizer;
  */
 public class AtomicFormula {
 
-	private Predicate predicate;	
+	private Predicate predicate;
 	private List<? extends Expr> args;
-	
-	
+
+
 	/*
 	 * @param arguments
 	 */
@@ -44,7 +44,7 @@ public class AtomicFormula {
 		assert predicate.getArity()== arguments.size()
 			: "Incorrect number of arguments for predicate "+predicate.getName()+" with arity "+predicate.getArity();
 	}
-	
+
 	public AtomicFormula(Predicate predicate, Expr... arg) {
 		this(predicate, Arrays.asList(arg));
 	}
@@ -83,7 +83,7 @@ public class AtomicFormula {
 	/*public boolean equals(Object o) {
 		if (o==this) {
 			return true;
-		} 
+		}
 		if (o instanceof AtomicFormula) {
 			AtomicFormula other =(AtomicFormula)o;
 			return predicate.equals(other.predicate)
@@ -91,24 +91,24 @@ public class AtomicFormula {
 		}
 		return false;
 	}
-	
+
 	public int hashCode() {
 		return predicate.hashCode()+ 31*args.hashCode();
 	}*/
-	
+
 
 	public Predicate getPredicate() {
 		return predicate;
 	}
-	
-	
-	
+
+
+
 	public AtomicFormula negate() {
 		return new AtomicFormula(predicate.negate(), args);
 	}
-	
-	
-	
+
+
+
 
 	@Override
 	public int hashCode() {
@@ -129,7 +129,7 @@ public class AtomicFormula {
 		if (getClass() != obj.getClass())
 			return false;
 		AtomicFormula other = (AtomicFormula) obj;
-		
+
 		if (predicate == null) {
 			if (other.predicate != null)
 				return false;
@@ -140,7 +140,7 @@ public class AtomicFormula {
 				return false;
 		} else if (!args.equals(other.args))
 			return false;
-		
+
 		return true;
 	}
 
@@ -159,7 +159,7 @@ public class AtomicFormula {
 		return buf.toString();
 	}
 	/**
-	 * 
+	 *
 	 * @param s
 	 * @return
 	 * @throws ParseException
@@ -181,7 +181,7 @@ public class AtomicFormula {
 		}
 		if (s.indexOf(")")!=s.length()-1) {
 			throw new ParseException("')' appears more than once in the atomic formula: "+s,0);
-			
+
 		}
 		String name=s.substring(0,firstPara);
 		boolean isNegated;
@@ -197,7 +197,7 @@ public class AtomicFormula {
 				throw new ParseException("Optional symbol not allowed after negation symbol: "+s, 0);
 			} else if (name.charAt(0) == Predicate.NEGATION_SYMBOL) {
 				throw new ParseException("Two consecutive negation symbols not allowed: "+s, 0);
-			} 
+			}
 		} else  if (name.charAt(0) == Predicate.OPTIONAL_SYMBOL) {
 			isOptional = true;
 			isNegated = false;
@@ -209,17 +209,17 @@ public class AtomicFormula {
 				throw new ParseException("Negation symbol not allowed after optional symbol: "+s, 0);
 			} else if (name.charAt(0) == Predicate.NEGATION_SYMBOL) {
 				throw new ParseException("Two consecutive optional symbols not allowed: "+s, 0);
-			} 
+			}
 		} else 	{
 			isNegated = false;
 			isOptional = false;
 		}
-		
-		List<Expr> args = new ArrayList<Expr>(); 
+
+		List<Expr> args = new ArrayList<Expr>();
 		if (firstPara==s.length()-2) {
 			//no args
 		} else {
-			String argsAsString=s.substring(firstPara+1,s.length()-1); 
+			String argsAsString=s.substring(firstPara+1,s.length()-1);
 			StringTokenizer tokzer = new StringTokenizer(argsAsString,",");
 			while (tokzer.hasMoreTokens()) {
 				String arg = tokzer.nextToken();
@@ -240,11 +240,11 @@ public class AtomicFormula {
 			}
 		}
 		return ret;
-		
+
 	}
 	/**
-	 *Checks if the atomic formula contains constant arguments or 
-	 *same variable argument multiple times 
+	 *Checks if the atomic formula contains constant arguments or
+	 *same variable argument multiple times
 	 */
 	public boolean needsRectification(){
 		Set<VariableExpr> varSet = new HashSet<VariableExpr>();
@@ -258,9 +258,9 @@ public class AtomicFormula {
 		}
 		return false;
 	}
-	
+
 	/* changes the name of the predicate
-	 * eliminates constants and redundant 
+	 * eliminates constants and redundant
 	 * variables from the arguments
 	 * */
 	@SuppressWarnings("unchecked")
@@ -268,14 +268,14 @@ public class AtomicFormula {
 		if (needsRectification()) {
 			//get the variableArguments for the rectified predicate
 			List<Expr> varArgs = getVarArguments4RectifiedPredicate();
-			
-			//get the constant terms and positions that cause rectification 
+
+			//get the constant terms and positions that cause rectification
 			Map<Integer, Expr> constantRectificationTerms = getConstanstRectificationTerms();
-			
+
 			List<List<Integer>> variableRectificationTerms=getVariableRectificationTerms();
-			
+
 			Predicate p = new RectificationPredicate(predicate,varArgs.size(),
-					predicate.isNegated(), predicate.isOptional(), 
+					predicate.isNegated(), predicate.isOptional(),
 					constantRectificationTerms, variableRectificationTerms);
 			return new AtomicFormula(p,varArgs);
 		} else {
@@ -290,13 +290,13 @@ public class AtomicFormula {
 			Map<Integer, Expr> pos2Val = rp.getConstRectificationTerms();
 			List<List<Integer>> listOfListOfSameVarPos = new LinkedList<List<Integer>>(
 					rp.getVariableRectificationTerms()) ;
-			
+
 			// add constants
 			for (Map.Entry<Integer, Expr> e : pos2Val.entrySet()) {
 				newArgs[e.getKey()] = e.getValue();
 			}
 			//
-			
+
 			int nextNull = 0;
 			// add variables and non-rectified constants
 			for (Expr exp: args) {
@@ -305,7 +305,7 @@ public class AtomicFormula {
 					nextNull++;
 				}
 				//
-				
+
 				List<Integer> sameVarPos;
 				if (!listOfListOfSameVarPos.isEmpty()
 				&& nextNull == (sameVarPos= listOfListOfSameVarPos.get(0)).get(0)) {
@@ -319,17 +319,17 @@ public class AtomicFormula {
 					assert listOfListOfSameVarPos.isEmpty() || (sameVarPos= listOfListOfSameVarPos.get(0)).contains(nextNull) :nextNull;//+"\n"+sameVarPos;
 					newArgs[nextNull] = exp;
 				}
-				
+
 			}
 			return new AtomicFormula(originalPredicate, Arrays.asList(newArgs)).unrectify();
-			
+
 		} else {
 			return this;
 		}
 	}
-	
+
 	private List<List<Integer>> getVariableRectificationTerms() {
-		Map<Expr,List<Integer>> varToPositionsMap=new LinkedHashMap<Expr,List<Integer>>();	
+		Map<Expr,List<Integer>> varToPositionsMap=new LinkedHashMap<Expr,List<Integer>>();
 		List<Expr> orderedExprs = new LinkedList<Expr>();
 		int argPosition=0;
 		for(Expr e: args){
@@ -342,9 +342,9 @@ public class AtomicFormula {
 					newSameVarList.add(argPosition);
 					varToPositionsMap.put(e, newSameVarList );
 					orderedExprs.add(e);
-				}				
-			}			
-			argPosition++;	
+				}
+			}
+			argPosition++;
 		}
 		List<List<Integer>> variableRectificationTerms = new LinkedList<List<Integer>>();
 		for(Expr e : orderedExprs){
@@ -362,7 +362,7 @@ public class AtomicFormula {
 				constantRectificationTerms.put(argPosition, e);
 			}
 			argPosition++;
-		}		
+		}
 		return constantRectificationTerms;
 	}
 
@@ -372,12 +372,12 @@ public class AtomicFormula {
 			if(e.isVariable()){
 				if( !varArgs.contains(e)){
 					varArgs.add(e);
-				}		
+				}
 			}
 		}
 		return varArgs;
 	}
-	
+
 	/*Assumes the predicates are equal, including the same arity*/
 	public HashMap<Expr,Expr> computeArgumentMapping(AtomicFormula af){
 		HashMap<Expr,Expr> mappings=new HashMap<Expr,Expr>();
@@ -392,7 +392,7 @@ public class AtomicFormula {
 		}
 		return mappings;
 	}
-	
+
 	public AtomicFormula cloneWithArgumentMapping(HashMap<Expr,Expr> mappings){
 		List<Expr> clonedExprList=new LinkedList<Expr>();
 		for(Expr e : args){
@@ -403,7 +403,7 @@ public class AtomicFormula {
 		}
 		return new AtomicFormula(predicate.clone(),clonedExprList);
 	}
-	
+
 	public boolean hasSameArgumentType(AtomicFormula af){
 		if(args.size()!=af.getArguments().size())return false;
 		Iterator<? extends Expr> itThis = getArguments().iterator();
@@ -418,7 +418,7 @@ public class AtomicFormula {
 		}
 		return true;
 	}
-	
+
 	public int getArity() {
 		return predicate.getArity();
 	}

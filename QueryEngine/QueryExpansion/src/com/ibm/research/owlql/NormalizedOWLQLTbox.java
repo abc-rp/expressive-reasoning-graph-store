@@ -624,7 +624,7 @@ public class NormalizedOWLQLTbox {
 
   /**
    * returns an unmodifiable set of OWL QL normalized axioms
-   * 
+   *
    * @return
    */
   public Set<OWLAxiom> getNormalizedAxioms() {
@@ -647,7 +647,7 @@ public class NormalizedOWLQLTbox {
 
   /**
    * returns an unmodifiable set of non OWL QL axioms
-   * 
+   *
    * @return
    */
   public Set<OWLAxiom> getNonQLAxioms() {
@@ -761,7 +761,7 @@ public class NormalizedOWLQLTbox {
 
   /**
    * returns the key associated with a class expression
-   * 
+   *
    * @param lhsConcept
    * @return
    */
@@ -782,7 +782,7 @@ public class NormalizedOWLQLTbox {
 
   /**
    * returns the key associated with a property expression
-   * 
+   *
    * @param pe
    * @return
    */
@@ -932,7 +932,7 @@ public class NormalizedOWLQLTbox {
    * deltaNegObjSubPropAx, deltaNegDataSubPropAx, deltaPosIncAx, deltaPosSubPropAx); // clear
    * ret.negIncAxInNegClos = null; ret.negObjectSubPropAxInNegClos = null;
    * ret.negDataSubPropAxInNegClos = null; // ret.negativeInclClosure = newNegClos; return ret;
-   * 
+   *
    * }
    */
 
@@ -979,7 +979,7 @@ public class NormalizedOWLQLTbox {
    * (getUnsatisfiableNamedClasses().contains(normalizedConcept)) { return true; } } else if
    * (normalizedConcept.getClassExpressionType().equals(ClassExpressionType.OBJECT_COMPLEMENT_OF)) {
    * OWLObjectComplementOf c = (OWLObjectComplementOf) normalizedConcept; OWLClassExpression }
-   * 
+   *
    * }
    */
 
@@ -1172,7 +1172,7 @@ public class NormalizedOWLQLTbox {
    * returns <code> null</code> if the Tbox entails an inconsistent KB;otherwise, returns a boolean
    * query which, when evaluated against the Abox, returns <code>true</code> to indicate that the KB
    * is inconsistent.
-   * 
+   *
    * @param taxo
    * @return
    */
@@ -1302,7 +1302,7 @@ public class NormalizedOWLQLTbox {
    * <li>some(R, top) --> x R ?y if</li>
    * <li>some(inv(R), top) --> ?y R x</li>
    * </ul>
-   * 
+   *
    * @param lhsConcept
    * @param var
    * @return
@@ -1350,7 +1350,7 @@ public class NormalizedOWLQLTbox {
    * <li>R --> x R y</li>
    * <li>inv(R) --> y R x</li>
    * </ul>
-   * 
+   *
    */
   protected static Triple toTriple(OWLPropertyExpression pe, Node x, Node y,
       NewVariableGenerator varGen) {

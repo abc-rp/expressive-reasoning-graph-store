@@ -11,7 +11,7 @@
  package com.ibm.research.owlql;
 
 /**
- * A generator of new fresh variables 
+ * A generator of new fresh variables
  * @author achille
  *
  */
@@ -26,9 +26,9 @@ public class NewVariableGenerator {
 		this.prefix = prefix;
 		this.suffixCount = suffixCount;
 	}
-	
+
 	public String createNewVariable(){
 		return prefix+(suffixCount++);
 	}
-	
+
 }

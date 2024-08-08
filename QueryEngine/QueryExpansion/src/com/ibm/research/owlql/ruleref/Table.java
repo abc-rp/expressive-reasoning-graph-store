@@ -12,7 +12,7 @@ public class Table extends CreatableTable {
 
 	public void addColumn(String string, Object createInt, boolean b) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

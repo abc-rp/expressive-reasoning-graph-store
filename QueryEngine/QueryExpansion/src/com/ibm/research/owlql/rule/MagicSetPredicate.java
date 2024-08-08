@@ -16,7 +16,7 @@ import java.util.List;
 public class MagicSetPredicate extends Predicate {
 
 	private UniqueBindingPredicate predicate;
-	
+
 	static MagicSetPredicate createMagicSetPredicate(UniqueBindingPredicate predicate) {
 		int arity = 0;
 		for (int i=0;i<predicate.getArity();i++) {
@@ -58,19 +58,19 @@ public class MagicSetPredicate extends Predicate {
 		return new MagicSetPredicate(getName(),getArity(), predicate.clone());
 	}
 	MagicSetPredicate cloneWithNonZeroArity() {
-		return getArity()!=0 ? 
+		return getArity()!=0 ?
 				new MagicSetPredicate(getName(),getArity(), predicate.clone())
 				: new MagicSetPredicate(getName(),1, predicate.cloneWithNonZeroArity());
 	}
-	
+
 	public Predicate negate() {
 		throw new RuntimeException("Cannot negate a magic-set predicate: "+ getName());
-		
+
 	}
 	public Predicate switchOptionalFlag() {
 		throw new RuntimeException("Cannot make a magic-set predicate optional: "+ getName());
 	}
-	
+
 	public Predicate withoutQualification() {
 		return clone();
 	}
@@ -97,5 +97,5 @@ public class MagicSetPredicate extends Predicate {
 			return false;
 		return true;
 	}*/
-	
+
 }

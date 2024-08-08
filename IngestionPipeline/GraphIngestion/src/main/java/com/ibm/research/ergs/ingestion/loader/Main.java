@@ -33,7 +33,7 @@ import org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry;
 /**
  * This is main class for running ingestion modele. This is used for only for checking ingestion
  * module separately.
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */
@@ -92,7 +92,7 @@ public class Main {
       String dataDir = "src/test/resources/lubm1u";
       RDFFormat rdfFormat = RDFFormat.RDFXML;
       String baseURI = "http://swat.cse.lehigh.edu/onto/univ-bench.owl";
-      
+
       InputStream i = null;
       try {
         i = new FileInputStream(tboxFile);

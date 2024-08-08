@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * SchemaCreator implementation class for direct mode execution.
- * 
+ *
  * @author Sumit Neelam (sumit.neelam@in.ibm.com)
  *
  */
@@ -40,7 +40,7 @@ public class SchemaCreatorDirectMode implements SchemaCreator {
 
   /**
    * Constructs {@link SchemaCreatorDirectMode}
-   * 
+   *
    * @param mgmt
    */
   public SchemaCreatorDirectMode(JanusGraphManagement mgmt) {

@@ -1,7 +1,7 @@
 version: '3'
 services:
   janusgraph-docker:
-    image: docker.io/janusgraph/janusgraph:0.4.0
+    image: docker.io/janusgraph/janusgraph:1.0.1-20240806-071648.ba2d662
     container_name: ergo_janusgraph
     user: root
     volumes:
@@ -14,7 +14,7 @@ services:
     links:
      - cass-docker
   cass-docker:
-    image: docker.io/cassandra:2.2.16
+    image: docker.io/cassandra:latest
     container_name: ergo_cass
     user: root
     environment:
